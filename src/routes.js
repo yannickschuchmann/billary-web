@@ -1,14 +1,15 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRedirect } from 'react-router';
 
 import App from './components/App';
-import FuelSavingsPage from './containers/FuelSavingsPage';
+import Tracking from './containers/TrackingPage.jsx';
 import AboutPage from './components/AboutPage.js';
 import NotFoundPage from './components/NotFoundPage.js';
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={FuelSavingsPage} />
+    <IndexRedirect to="tracking" />
+    <Route path="tracking" component={Tracking}/>
     <Route path="about" component={AboutPage}/>
     <Route path="*" component={NotFoundPage} />
   </Route>
