@@ -8,7 +8,7 @@ import * as calls from '../actions';
 import objectAssign from 'object-assign';
 
 const initialState = {
-    projects: ["furfm", "arsch"]
+    projects: []
 };
 
 //IMPORTANT: Note that with Redux, state should NEVER be changed.
@@ -24,7 +24,7 @@ let reducer = createReducer({
   [calls.getProjects.ok]: (state, payload) => {
     console.log('login.ok ', payload);
     let newState = objectAssign({}, state);
-    newState.projects = payload.projects;
+    newState.projects = payload.body.projects;
     return newState;
   },
   [calls.getProjects.error]: (state, payload) => {
