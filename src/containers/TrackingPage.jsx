@@ -1,25 +1,30 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../actions/fuelSavingsActions';
-import FuelSavingsForm from '../components/FuelSavingsForm';
+import * as actions from '../actions';
+import ProjectListing from '../components/ProjectListing';
 
 class TrackingPage extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    appState: PropTypes.object.isRequired
+    projectsState: PropTypes.object.isRequired
   };
+
+  componentDidMount() {
+    this.props.actions.getProjects();
+  }
 
   render() {
     return (
-      <div className="furfm">asd</div>
+      <ProjectListing projects={this.props.projectsState.projects} />
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    appState: state.fuelSavingsAppState
+    appState: state.projectsAppState,
+    projectsState: state.projectsAppState
   };
 }
 
