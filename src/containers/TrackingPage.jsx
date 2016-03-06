@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions';
 import ProjectListing from '../components/ProjectListing';
+import ProjectForm from '../components/ProjectForm';
 
 class TrackingPage extends Component {
   static propTypes = {
@@ -12,11 +13,23 @@ class TrackingPage extends Component {
 
   componentDidMount() {
     this.props.actions.getProjects();
-  }
+  };
 
   render() {
     return (
-      <ProjectListing projects={this.props.projectsState.projects} />
+      <div>
+        <ProjectListing
+          projects={this.props.projectsState.projects}
+          onClick={(id) => {
+            this.props.actions.deleteProject(id);
+          }} />
+        <ProjectForm
+          projectsAppState={this.props.projectsState}
+          submitNewProject={(name) => {
+            const parent_id = this.props.projectsState.selectedProject;
+            this.props.actions.postProject({name, parent_id});
+          }} />
+      </div>
     );
   }
 }
