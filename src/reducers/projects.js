@@ -8,13 +8,19 @@ import {unflattenEntities} from '../businessLogic/treeHelper';
 import * as calls from '../actions';
 
 import objectAssign from 'object-assign';
+import deepAssign from 'updeep';
 
 const initialState = {
-  selectedId: 15,
-  isLoading: false,
-  items: [],
-  tree: [],
-  unfoldedItems: [1]
+  view: {
+    selected: null,
+    isFetching: false,
+    tree: []
+  },
+  _data: {
+    selectedId: 1,
+    collection: [],
+    unfoldedItems: [1]
+  }
 };
 
 //IMPORTANT: Note that with Redux, state should NEVER be changed.
@@ -24,31 +30,38 @@ const initialState = {
 //and update values on the copy.
 
 const setUnfoldedToChildren = (item, unfoldedItems) => {
-  item.unfolded = _.indexOf(unfoldedItems, item.id) != -1;
-  item.children = item.children.map((item, i) => {
-    return setUnfoldedToChildren(item, unfoldedItems);
+  const newItem = objectAssign({}, item, {
+    unfolded: _.indexOf(unfoldedItems, item.id) != -1,
+    children: item.children.map((item, i) => {
+      return setUnfoldedToChildren(item, unfoldedItems);
+    })
   });
-  return item;
+  return newItem;
 }
 
 let reducer = createReducer({
 
   // GET_PROJECTS
   [calls.getProjects.request]: (state, payload) => {
-    return objectAssign({}, state, {
-      isLoading: true
-    });
+    return deepAssign({
+      view: {
+        isFetching: true
+      }
+    }, state);
   },
   [calls.getProjects.ok]: (state, payload) => {
     const tree = unflattenEntities(payload.body.projects).map((item, i) => {
-      return setUnfoldedToChildren(item, state.unfoldedItems);
+      return setUnfoldedToChildren(item, state._data.unfoldedItems);
     });
-
-    return objectAssign({}, state, {
-      tree,
-      isLoading: false,
-      items: payload.body.projects,
-    });
+    return deepAssign({
+      view: {
+        tree: tree,
+        isFetching: false
+      },
+      _data: {
+        collection: payload.body.projects
+      }
+    }, state);
   },
   [calls.getProjects.error]: (state, payload) => {
     return state;
@@ -82,8 +95,8 @@ let reducer = createReducer({
 
   // OPEN_PROJECT
   [calls.openProject]: (state, payload) => {
-    let unfoldedItems = [...state.unfoldedItems];
-    if (_.indexOf(state.unfoldedItems, payload.id) == -1) {
+    let unfoldedItems = [...state._data.unfoldedItems];
+    if (_.indexOf(unfoldedItems, payload.id) == -1) {
       // open
       unfoldedItems.push(payload.id);
     } else {
@@ -91,14 +104,18 @@ let reducer = createReducer({
       unfoldedItems = _.without(unfoldedItems, payload.id);
     }
 
-    const tree = state.tree.map((item, i) => {
+    const tree = state.view.tree.map((item, i) => {
       return setUnfoldedToChildren(item, unfoldedItems);
     });
 
-    return objectAssign({}, state, {
-      unfoldedItems,
-      tree
-    });
+    return deepAssign({
+      view: {
+        tree
+      },
+      _data: {
+        unfoldedItems,
+      }
+    }, state);
   }
 
 }, initialState);

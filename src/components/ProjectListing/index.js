@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import ProjectItem from './_item';
 
-const ProjectListing = ({tree, isLoading, onUnfold, onDelete}) => {
+const ProjectListing = ({tree, isFetching, onUnfold, onDelete}) => {
 
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
@@ -29,7 +29,7 @@ const ProjectListing = ({tree, isLoading, onUnfold, onDelete}) => {
   return (
     <div>
       <ul>{list}</ul>
-      <span>{isLoading ? "Loading" : ""}</span>
+      <span>{isFetching ? "Loading" : ""}</span>
     </div>
   );
 };
@@ -38,7 +38,7 @@ const ProjectListing = ({tree, isLoading, onUnfold, onDelete}) => {
 //the component is defined, which is why it's separate and down here.
 ProjectListing.propTypes = {
   tree: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  isFetching: PropTypes.bool.isRequired,
   onUnfold: PropTypes.func,
   onDelete: PropTypes.func
 };

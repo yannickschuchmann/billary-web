@@ -16,12 +16,11 @@ class TrackingPage extends Component {
   };
 
   render() {
-    console.log(this.props.projectsState)
     return (
       <div>
         <ProjectListing
           tree={this.props.projectsState.tree}
-          isLoading={this.props.projectsState.isLoading}
+          isFetching={this.props.projectsState.isFetching}
           onUnfold={(id) => {
             this.props.actions.openProject(id);
           }}
@@ -45,7 +44,7 @@ class TrackingPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    projectsState: state.projectsState
+    projectsState: state.projectsState.view
   };
 }
 
