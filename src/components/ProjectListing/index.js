@@ -6,7 +6,7 @@ const ProjectListing = ({tree, isLoading, onUnfold, onDelete}) => {
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
     let children = "";
-    if (project.opened && project.children.length > 0) {
+    if (project.unfolded && project.children.length > 0) {
       children = (<ul>
         {project.children.map((item, i) => {
           return getProjectChildren(item, i + 1, depth + 1);

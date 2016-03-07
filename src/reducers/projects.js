@@ -14,7 +14,7 @@ const initialState = {
   isLoading: false,
   items: [],
   tree: [],
-  openedItems: [1]
+  unfoldedItems: [1]
 };
 
 //IMPORTANT: Note that with Redux, state should NEVER be changed.
@@ -23,10 +23,10 @@ const initialState = {
 //Note that I'm using Object.assign to create a copy of current state
 //and update values on the copy.
 
-const setOpenedToChildren = (item, openedItems) => {
-  item.opened = _.indexOf(openedItems, item.id) != -1;
+const setUnfoldedToChildren = (item, unfoldedItems) => {
+  item.unfolded = _.indexOf(unfoldedItems, item.id) != -1;
   item.children = item.children.map((item, i) => {
-    return setOpenedToChildren(item, openedItems);
+    return setUnfoldedToChildren(item, unfoldedItems);
   });
   return item;
 }
@@ -41,7 +41,7 @@ let reducer = createReducer({
   },
   [calls.getProjects.ok]: (state, payload) => {
     const tree = unflattenEntities(payload.body.projects).map((item, i) => {
-      return setOpenedToChildren(item, state.openedItems);
+      return setUnfoldedToChildren(item, state.unfoldedItems);
     });
 
     return objectAssign({}, state, {
@@ -82,21 +82,21 @@ let reducer = createReducer({
 
   // OPEN_PROJECT
   [calls.openProject]: (state, payload) => {
-    let openedItems = [...state.openedItems];
-    if (_.indexOf(state.openedItems, payload.id) == -1) {
+    let unfoldedItems = [...state.unfoldedItems];
+    if (_.indexOf(state.unfoldedItems, payload.id) == -1) {
       // open
-      openedItems.push(payload.id);
+      unfoldedItems.push(payload.id);
     } else {
       // close
-      openedItems = _.without(openedItems, payload.id);
+      unfoldedItems = _.without(unfoldedItems, payload.id);
     }
 
     const tree = state.tree.map((item, i) => {
-      return setOpenedToChildren(item, openedItems);
+      return setUnfoldedToChildren(item, unfoldedItems);
     });
 
     return objectAssign({}, state, {
-      openedItems,
+      unfoldedItems,
       tree
     });
   }
