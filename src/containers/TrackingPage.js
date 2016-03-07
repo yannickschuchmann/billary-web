@@ -44,8 +44,7 @@ class TrackingPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    appState: state.projectsAppState,
-    projectsState: state.projectsAppState
+    projectsState: state.projectsState
   };
 }
 

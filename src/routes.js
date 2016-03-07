@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRedirect } from 'react-router';
 
-import App from './components/App';
+import App from './containers/App';
 import Tracking from './containers/TrackingPage.js';
 import AboutPage from './components/AboutPage.js';
 import NotFoundPage from './components/NotFoundPage.js';
