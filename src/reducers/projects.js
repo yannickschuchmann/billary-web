@@ -39,6 +39,10 @@ const setUnfoldedToChildren = (item, unfoldedItems) => {
   return newItem;
 }
 
+const findById = (items, id) => {
+  return _.findLast(items, {id})
+}
+
 let reducer = createReducer({
 
   // GET_PROJECTS
@@ -56,7 +60,8 @@ let reducer = createReducer({
     return deepAssign({
       view: {
         tree: tree,
-        isFetching: false
+        isFetching: false,
+        selected: findById(payload.body.projects, state._data.selectedId)
       },
       _data: {
         collection: payload.body.projects
@@ -114,6 +119,18 @@ let reducer = createReducer({
       },
       _data: {
         unfoldedItems,
+      }
+    }, state);
+  },
+
+  // SELECT_PROJECT
+  [calls.selectProject]: (state, payload) => {
+    return deepAssign({
+      view: {
+        selected: findById(state._data.collection, payload.id)
+      },
+      _data: {
+        selectedId: payload.id
       }
     }, state);
   }

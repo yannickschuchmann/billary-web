@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions';
 import ProjectListing from '../components/ProjectListing';
 import ProjectForm from '../components/ProjectForm';
+import TrackingBar from '../components/TrackingBar';
 
 class TrackingPage extends Component {
   static propTypes = {
@@ -16,11 +17,15 @@ class TrackingPage extends Component {
   };
 
   render() {
+    console.log(this.props.projectsState);
     return (
       <div>
         <ProjectListing
           tree={this.props.projectsState.tree}
           isFetching={this.props.projectsState.isFetching}
+          onSelect={(id) => {
+            this.props.actions.selectProject(id);
+          }}
           onUnfold={(id) => {
             this.props.actions.openProject(id);
           }}
@@ -37,6 +42,8 @@ class TrackingPage extends Component {
               this.props.actions.getProjects();
             });
           }} />
+
+        <TrackingBar project={this.props.projectsState.selected} />
       </div>
     );
   }
