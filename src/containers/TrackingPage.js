@@ -21,14 +21,21 @@ class TrackingPage extends Component {
         <ProjectListing
           items={this.props.projectsState.items}
           isLoading={this.props.projectsState.isLoading}
-          onClick={(id) => {
+          onUnfold={(id) => {
             this.props.actions.openProject(id);
+          }}
+          onDelete={(id) => {
+            this.props.actions
+              .deleteProject(id)
+              .then(() => {this.props.actions.getProjects()});
           }} />
         <ProjectForm
           projectsAppState={this.props.projectsState}
           submitNewProject={(name) => {
             const parent_id = this.props.projectsState.selectedId;
-            this.props.actions.postProject({name, parent_id});
+            this.props.actions.postProject({name, parent_id}).then(() => {
+              this.props.actions.getProjects();
+            });
           }} />
       </div>
     );

@@ -1,19 +1,10 @@
 import React, {PropTypes} from 'react';
+import ProjectItem from './_item';
 
-//This is a stateless functional component. (Also known as pure or dumb component)
-//More info: https://facebook.github.io/react/blog/2015/10/07/react-v0.14.html#stateless-functional-components
-//And https://medium.com/@joshblack/stateless-components-in-react-0-14-f9798f8b992d
-//Props are being destructured below to extract the savings object to shorten calls within component.
-
-const ProjectListing = ({items, isLoading, onClick}) => {
+const ProjectListing = ({items, isLoading, onUnfold, onDelete}) => {
 
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
-
-    const name = (<span>
-                    <strong>{project.children.length ? project.opened ? "-" : "+" : "."}</strong>
-                    {project.name}
-                  </span>);
 
     let children = "";
     if (project.opened && project.children.length > 0) {
@@ -23,12 +14,15 @@ const ProjectListing = ({items, isLoading, onClick}) => {
         })}
       </ul>);
     }
+
     return (
-      <li
-        onClick={(e) => {e.stopPropagation(); if (project.children.length) onClick(project.id)}}
-        key={depth + "|" + index}>
-          {name}{children}
-      </li>
+      <ProjectItem
+        onUnfold={() => {if (project.children.length) onUnfold(project.id)}}
+        onDelete={() => onDelete(project.id)}
+        key={depth + "|" + index}
+        item={project}>
+          {children}
+      </ProjectItem>
     );
   };
 
@@ -46,7 +40,8 @@ const ProjectListing = ({items, isLoading, onClick}) => {
 ProjectListing.propTypes = {
   items: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired
+  onUnfold: PropTypes.func,
+  onDelete: PropTypes.func
 };
 
 export default ProjectListing;
