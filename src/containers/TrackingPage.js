@@ -23,6 +23,7 @@ class TrackingPage extends Component {
         <ProjectListing
           tree={this.props.projectsState.tree}
           isFetching={this.props.projectsState.isFetching}
+          selected={this.props.projectsState.selected}
           onSelect={(id) => {
             this.props.actions.selectProject(id);
           }}
@@ -37,7 +38,7 @@ class TrackingPage extends Component {
         <ProjectForm
           projectsAppState={this.props.projectsState}
           submitNewProject={(name) => {
-            const parent_id = this.props.projectsState.selectedId;
+            const parent_id = this.props.projectsState.selected.id;
             this.props.actions.postProject({name, parent_id}).then(() => {
               this.props.actions.getProjects();
             });

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import ProjectItem from './_item';
 
-const ProjectListing = ({tree, isFetching, onSelect, onUnfold, onDelete}) => {
+const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onDelete}) => {
 
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
@@ -16,6 +16,7 @@ const ProjectListing = ({tree, isFetching, onSelect, onUnfold, onDelete}) => {
 
     return (
       <ProjectItem
+        isSelected={selected.id == project.id}
         onSelect={() => onSelect(project.id)}
         onUnfold={() => {if (project.children.length) onUnfold(project.id)}}
         onDelete={() => onDelete(project.id)}
@@ -40,6 +41,7 @@ const ProjectListing = ({tree, isFetching, onSelect, onUnfold, onDelete}) => {
 ProjectListing.propTypes = {
   tree: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
+  selected: PropTypes.object,
   onSelect: PropTypes.func,
   onUnfold: PropTypes.func,
   onDelete: PropTypes.func
