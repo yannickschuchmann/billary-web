@@ -3,6 +3,7 @@ import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {createReducer} from 'redux-act';
 import _ from 'lodash';
+import {unflattenEntities} from '../businessLogic/treeHelper';
 
 import * as calls from '../actions';
 
@@ -12,6 +13,7 @@ const initialState = {
   selectedId: 15,
   isLoading: false,
   items: [],
+  tree: [],
   openedItems: [1]
 };
 
@@ -38,12 +40,14 @@ let reducer = createReducer({
     });
   },
   [calls.getProjects.ok]: (state, payload) => {
-    const items = payload.body.projects.map((item, i) => {
+    const tree = unflattenEntities(payload.body.projects).map((item, i) => {
       return setOpenedToChildren(item, state.openedItems);
     });
+
     return objectAssign({}, state, {
+      tree,
       isLoading: false,
-      items: items
+      items: payload.body.projects,
     });
   },
   [calls.getProjects.error]: (state, payload) => {
@@ -87,13 +91,13 @@ let reducer = createReducer({
       openedItems = _.without(openedItems, payload.id);
     }
 
-    const items = state.items.map((item, i) => {
+    const tree = state.tree.map((item, i) => {
       return setOpenedToChildren(item, openedItems);
     });
 
     return objectAssign({}, state, {
-      openedItems: openedItems,
-      items: items
+      openedItems,
+      tree
     });
   }
 

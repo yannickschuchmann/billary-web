@@ -1,11 +1,10 @@
 import React, {PropTypes} from 'react';
 import ProjectItem from './_item';
 
-const ProjectListing = ({items, isLoading, onUnfold, onDelete}) => {
+const ProjectListing = ({tree, isLoading, onUnfold, onDelete}) => {
 
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
-
     let children = "";
     if (project.opened && project.children.length > 0) {
       children = (<ul>
@@ -26,7 +25,7 @@ const ProjectListing = ({items, isLoading, onUnfold, onDelete}) => {
     );
   };
 
-  const list = items.map((item, i) => {return getProjectChildren(item, i)});
+  const list = tree.map((item, i) => {return getProjectChildren(item, i)});
   return (
     <div>
       <ul>{list}</ul>
@@ -38,7 +37,7 @@ const ProjectListing = ({items, isLoading, onUnfold, onDelete}) => {
 //Note that this odd style is utilized for propType validation for now. Must be defined *after*
 //the component is defined, which is why it's separate and down here.
 ProjectListing.propTypes = {
-  items: PropTypes.array.isRequired,
+  tree: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
   onUnfold: PropTypes.func,
   onDelete: PropTypes.func

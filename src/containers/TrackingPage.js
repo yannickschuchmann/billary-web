@@ -16,10 +16,11 @@ class TrackingPage extends Component {
   };
 
   render() {
+    console.log(this.props.projectsState)
     return (
       <div>
         <ProjectListing
-          items={this.props.projectsState.items}
+          tree={this.props.projectsState.tree}
           isLoading={this.props.projectsState.isLoading}
           onUnfold={(id) => {
             this.props.actions.openProject(id);
