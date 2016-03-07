@@ -5,40 +5,48 @@ import React, {PropTypes} from 'react';
 //And https://medium.com/@joshblack/stateless-components-in-react-0-14-f9798f8b992d
 //Props are being destructured below to extract the savings object to shorten calls within component.
 
-const ProjectListing = ({projects, onClick}) => {
+const ProjectListing = ({items, isLoading, onClick}) => {
 
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
 
-    const name = (<span onClick={(e) => {onClick(project.id)}}>
-                    <strong>{project.id}</strong>
+    const name = (<span>
+                    <strong>{project.children.length ? project.opened ? "-" : "+" : "."}</strong>
                     {project.name}
                   </span>);
 
-    if (project.children.length == 0) {
-      return (<li key={depth + "|" + index}>{name}</li>);
-    } else {
-      return (<li key={depth + "|" + index}>{name}
-        <ul>
-          {project.children.map((item, i) => {
-            return getProjectChildren(item, i + 1, depth + 1);
-          })}
-        </ul>
-      </li>);
+    let children = "";
+    if (project.opened && project.children.length > 0) {
+      children = (<ul>
+        {project.children.map((item, i) => {
+          return getProjectChildren(item, i + 1, depth + 1);
+        })}
+      </ul>);
     }
+    return (
+      <li
+        onClick={(e) => {e.stopPropagation(); if (project.children.length) onClick(project.id)}}
+        key={depth + "|" + index}>
+          {name}{children}
+      </li>
+    );
   };
 
-  const list = projects.map((item, i) => {return getProjectChildren(item, i)});
+  const list = items.map((item, i) => {return getProjectChildren(item, i)});
   return (
-    <ul>{list}</ul>
+    <div>
+      <ul>{list}</ul>
+      <span>{isLoading ? "Loading" : ""}</span>
+    </div>
   );
 };
 
 //Note that this odd style is utilized for propType validation for now. Must be defined *after*
 //the component is defined, which is why it's separate and down here.
 ProjectListing.propTypes = {
-    projects: PropTypes.array.isRequired,
-    onClick: PropTypes.func.isRequired
+  items: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
 export default ProjectListing;

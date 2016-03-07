@@ -19,14 +19,15 @@ class TrackingPage extends Component {
     return (
       <div>
         <ProjectListing
-          projects={this.props.projectsState.projects}
+          items={this.props.projectsState.items}
+          isLoading={this.props.projectsState.isLoading}
           onClick={(id) => {
-            this.props.actions.deleteProject(id);
+            this.props.actions.openProject(id);
           }} />
         <ProjectForm
           projectsAppState={this.props.projectsState}
           submitNewProject={(name) => {
-            const parent_id = this.props.projectsState.selectedProject;
+            const parent_id = this.props.projectsState.selectedId;
             this.props.actions.postProject({name, parent_id});
           }} />
       </div>
