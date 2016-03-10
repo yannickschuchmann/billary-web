@@ -31,6 +31,7 @@
     "redux-act": "0.4.0",
     "redux-act-async": "0.2.0",
     "redux-thunk": "2.0.1",
+    "redux-ui": "0.0.11",
     "superagent": "1.8.0-beta.2",
     "superagent-promise-plugin": "2.1.0",
     "updeep": "0.13.0"

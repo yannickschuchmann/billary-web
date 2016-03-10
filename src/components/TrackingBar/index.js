@@ -1,15 +1,25 @@
-import React, {PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
+import ui from 'redux-ui';
 
-const TrackingBar = ({project}) => {
-  return (
-    <div className="tracking-bar">
-      {(project) ? project.name : ""}
-    </div>
-  )
+class TrackingBar extends Component {
+  static propTypes = {
+    ui: PropTypes.object,
+    updateUi: PropTypes.func,
+    project: PropTypes.object
+  };
+
+  render () {
+    return (
+      <div className="tracking-bar">
+        {this.props.ui.isSelecting + ""}
+        {(this.props.project) ? this.props.project.name : ""}
+      </div>
+    )
+  }
 }
 
-TrackingBar.propTypes = {
-  project: PropTypes.object
-}
-
-export default TrackingBar;
+export default ui({
+  state: {
+    isSelecting: false
+  }
+})(TrackingBar);
