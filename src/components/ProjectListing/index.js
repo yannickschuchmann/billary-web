@@ -29,7 +29,7 @@ const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onDelet
 
   const list = tree.map((item, i) => {return getProjectChildren(item, i)});
   return (
-    <div>
+    <div className="project-listing">
       <ul>{list}</ul>
       <span>{isFetching ? "Loading" : ""}</span>
     </div>

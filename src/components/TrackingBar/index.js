@@ -40,6 +40,9 @@ class TrackingBar extends Component {
           className="modal-select-project"
           isOpen={this.props.ui.isSelecting}
           onClose={this.closeModal.bind(this)}>
+          <input type="text" placeholder="Search project ... "/>
+
+          <div>Search results</div>
           <ProjectListing
             tree={this.props.projectsState.tree}
             selected={this.props.projectsState.selected}

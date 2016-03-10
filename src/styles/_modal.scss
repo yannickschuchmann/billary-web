@@ -7,13 +7,21 @@
   align-items: center;
   justify-content: center;
   .modal-content {
-    background: rgba(255,255,255,0.7);
-
+    background: #EFF1ED;
+    box-shadow: 0 0 10px #E4E7E2;
+    border: 1px solid #E4E7E2;
+    color: #000;
   }
   &.modal-open {
     display: flex;
   }
   &.modal-closed {
     display: none;
+  }
+}
+
+.modal-select-project {
+  .modal-content {
+    padding: 20px 50px;
   }
 }
