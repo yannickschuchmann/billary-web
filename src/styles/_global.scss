@@ -1,0 +1,37 @@
+body, #app-container, .app {
+  margin: 0;
+  height: 100vh;
+}
+
+.app {
+  display: flex;
+}
+.sidebar {
+  flex: 0 0 200px;
+  background: gray;
+}
+.container {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+}
+.topbar {
+  background: gray;
+}
+main {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  position: relative;
+}
+#tracking-container {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+}
+
+li.selected {
+  > span {
+    background: #eee;
+  }
+}

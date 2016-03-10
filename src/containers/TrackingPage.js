@@ -2,12 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions';
-import ProjectListing from '../components/ProjectListing';
-import ProjectForm from '../components/ProjectForm';
 import TrackingBar from '../components/TrackingBar';
+import ui from 'redux-ui';
 
 class TrackingPage extends Component {
   static propTypes = {
+    ui: PropTypes.object,
+    updateUI: PropTypes.func,
     actions: PropTypes.object.isRequired,
     projectsState: PropTypes.object.isRequired
   };
@@ -17,37 +18,18 @@ class TrackingPage extends Component {
   };
 
   render() {
-    console.log(this.props.projectsState);
     return (
-      <div>
-        <ProjectListing
-          tree={this.props.projectsState.tree}
-          isFetching={this.props.projectsState.isFetching}
-          selected={this.props.projectsState.selected}
-          onSelect={(id) => {
-            this.props.actions.selectProject(id);
-          }}
-          onUnfold={(id) => {
-            this.props.actions.openProject(id);
-          }}
-          onDelete={(id) => {
-            this.props.actions
-              .deleteProject(id)
-              .then(() => {this.props.actions.getProjects()});
-          }} />
-        <ProjectForm
-          projectsAppState={this.props.projectsState}
-          submitNewProject={(name) => {
-            const parent_id = this.props.projectsState.selected.id;
-            this.props.actions.postProject({name, parent_id}).then(() => {
-              this.props.actions.getProjects();
-            });
-          }} />
-
-        <TrackingBar project={this.props.projectsState.selected} />
+      <div id="tracking-container">
+        <TrackingBar
+          projectsState={this.props.projectsState}
+          project={this.props.projectsState.selected}
+          onSelect={this.props.actions.selectProject}
+          onDelete={(id) => this.props.actions.deleteProject(id).then(this.actions.props.getProjects)}
+          onUnfold={this.props.actions.openProject}
+          postProject={this.props.actions.postProject}/>
       </div>
     );
-  }
+  };
 }
 
 function mapStateToProps(state) {
@@ -65,4 +47,8 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TrackingPage);
+)(ui({
+  key: "tracking-container",
+  state: {
+  }
+})(TrackingPage));
