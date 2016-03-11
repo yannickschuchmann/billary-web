@@ -6,9 +6,26 @@
     margin: 0;
     padding: 0;
   }
-  .project-listing-item, .project-listing-item-new {
+  li {
     padding: 0;
     margin: 0;
     list-style-type: none;
+    .item-button {
+      flex: 1;
+      text-align: left;
+      min-width: 256px!important;
+    }
+    > .actions {
+      display: flex;
+      > .action-button {
+        opacity: 0;
+        transition: none!important;
+      }
+    }
+    > .actions:hover {
+      > .action-button {
+        opacity: 1;
+      }
+    }
   }
 }

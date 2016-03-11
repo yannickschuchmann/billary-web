@@ -17,9 +17,9 @@ const initialState = {
     tree: []
   },
   _data: {
-    selectedId: 1,
+    selectedId: null,
     collection: [],
-    unfoldedItems: [1]
+    unfoldedItems: []
   }
 };
 

@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {TextField, RaisedButton} from 'material-ui/lib';
+import {TextField, IconButton} from 'material-ui/lib';
 import CheckCircle from 'material-ui/lib/svg-icons/action/done';
 import ui from 'redux-ui';
 
@@ -12,9 +12,14 @@ class ProjectForm extends Component {
 
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
+    onBlur: PropTypes.func,
     ui: PropTypes.object,
     updateUI: PropTypes.func
   }
+
+  componentDidMount() {
+    this.refs.nameField.focus();
+  };
 
   handleSubmit(e) {
     e.preventDefault();
@@ -25,19 +30,14 @@ class ProjectForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
+      <form onSubmit={this.handleSubmit.bind(this)} className="project-form">
         <TextField
-          floatingLabelText="New project"
+          ref="nameField"
+          fullWidth={true}
           hintText="Project name"
           value={this.props.ui.name}
+          onBlur={this.props.onBlur}
           onChange={(e) => {this.props.updateUI("name", e.target.value)}}
-        />
-        <RaisedButton
-          label="save"
-          labelPosition="after"
-          primary={true}
-          icon={<CheckCircle/>}
-          onClick={this.handleSubmit.bind(this)}
         />
       </form>
     );

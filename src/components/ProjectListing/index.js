@@ -1,23 +1,22 @@
 import React, {PropTypes} from 'react';
-import ProjectForm from '../ProjectForm';
 import ProjectItem from './_item';
+import ProjectForm from '../ProjectForm';
+import ButtonFormSwitch from '../ProjectForm/buttonFormSwitch';
+import {RefreshIndicator} from 'material-ui/lib'
+
 
 const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onDelete, onNew}) => {
 
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
-    let children = (<ul>
-        {project.children.map((item, i) => {
-          return getProjectChildren(item, i + 1, depth + 1);
-        })}
-        <li className="project-listing-item-new">
-          <ProjectForm onSubmit={(name) => onNew(name, project.id)}/>
-        </li>
-      </ul>);
+    let children = project.children.map((item, i) => {
+      return getProjectChildren(item, i + 1, depth + 1);
+    });
 
     return (
       <ProjectItem
-        isSelected={selected.id == project.id}
+        isSelected={selected && selected.id == project.id}
+        onNew={(name) => onNew(name, project.id)}
         onSelect={() => onSelect(project.id)}
         onUnfold={() => onUnfold(project.id)}
         onDelete={() => onDelete(project.id)}
@@ -33,11 +32,14 @@ const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onDelet
     <div className="project-listing">
       <ul>
         {list}
-        <li className="project-listing-item-new">
-          <ProjectForm onSubmit={(name) => onNew(name)}/>
-        </li>
+        <ButtonFormSwitch onNew={onNew} />
       </ul>
-      <span>{isFetching ? "Loading" : ""}</span>
+      <RefreshIndicator
+        size={20}
+        left={10}
+        top={10}
+        status={isFetching ? "loading" : "hide"}
+      />
     </div>
   );
 };

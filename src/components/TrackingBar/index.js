@@ -29,6 +29,11 @@ class TrackingBar extends Component {
     this.props.updateUI("isSelecting", true);
   };
 
+  onSelected(id) {
+    this.closeModal();
+    this.props.onSelect(id);
+  };
+
   closeModal() {
     this.props.updateUI("isSelecting", false);
   };
@@ -43,14 +48,11 @@ class TrackingBar extends Component {
           className="modal-select-project"
           isOpen={this.props.ui.isSelecting}
           onClose={this.closeModal.bind(this)}>
-          <input type="text" placeholder="Search project ... "/>
-
-          <div>Search results</div>
           <ProjectListing
             tree={this.props.projectsState.tree}
             selected={this.props.projectsState.selected}
             isFetching={this.props.projectsState.isFetching}
-            onSelect={this.props.onSelect}
+            onSelect={this.onSelected.bind(this)}
             onUnfold={this.props.onUnfold}
             onDelete={this.props.onDelete}
             onNew={this.props.onNew} />
