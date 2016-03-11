@@ -1,24 +1,25 @@
 import React, {PropTypes} from 'react';
+import ProjectForm from '../ProjectForm';
 import ProjectItem from './_item';
 
-const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onDelete}) => {
+const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onDelete, onNew}) => {
 
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
-    let children = "";
-    if (project.unfolded && project.children.length > 0) {
-      children = (<ul>
+    let children = (<ul>
         {project.children.map((item, i) => {
           return getProjectChildren(item, i + 1, depth + 1);
         })}
+        <li className="project-listing-item-new">
+          <ProjectForm onSubmit={(name) => onNew(name, project.id)}/>
+        </li>
       </ul>);
-    }
 
     return (
       <ProjectItem
         isSelected={selected.id == project.id}
         onSelect={() => onSelect(project.id)}
-        onUnfold={() => {if (project.children.length) onUnfold(project.id)}}
+        onUnfold={() => onUnfold(project.id)}
         onDelete={() => onDelete(project.id)}
         key={depth + "|" + index}
         item={project}>
@@ -30,7 +31,12 @@ const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onDelet
   const list = tree.map((item, i) => {return getProjectChildren(item, i)});
   return (
     <div className="project-listing">
-      <ul>{list}</ul>
+      <ul>
+        {list}
+        <li className="project-listing-item-new">
+          <ProjectForm onSubmit={(name) => onNew(name)}/>
+        </li>
+      </ul>
       <span>{isFetching ? "Loading" : ""}</span>
     </div>
   );
@@ -44,7 +50,8 @@ ProjectListing.propTypes = {
   selected: PropTypes.object,
   onSelect: PropTypes.func,
   onUnfold: PropTypes.func,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  onNew: PropTypes.func
 };
 
 export default ProjectListing;

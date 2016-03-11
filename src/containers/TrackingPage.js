@@ -24,9 +24,18 @@ class TrackingPage extends Component {
           projectsState={this.props.projectsState}
           project={this.props.projectsState.selected}
           onSelect={this.props.actions.selectProject}
-          onDelete={(id) => this.props.actions.deleteProject(id).then(this.actions.props.getProjects)}
+          onDelete={(id) =>
+            this.props.actions
+              .deleteProject(id)
+              .then(this.props.actions.getProjects)
+          }
           onUnfold={this.props.actions.openProject}
-          postProject={this.props.actions.postProject}/>
+          onNew={(name, parent_id) =>
+            this.props.actions
+              .postProject({name, parent_id})
+              .then(this.props.actions.getProjects)
+          }
+        />
       </div>
     );
   };

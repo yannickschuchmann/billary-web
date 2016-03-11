@@ -1,15 +1,16 @@
 import React, {PropTypes} from 'react';
 
+
 const ProjectItem = ({item, onSelect, onUnfold, onDelete, children, isSelected}) => {
   return (
     <li className={(isSelected ? "selected" : "") + " project-listing-item"}
         onClick={(e) => {e.stopPropagation(); onSelect()}}>
-      <strong onClick={(e) => {e.stopPropagation(); onUnfold()}}>{item.children.length ? item.opened ? "-" : "+" : "."}</strong>
+      <strong onClick={(e) => {e.stopPropagation(); onUnfold()}}>{item.unfolded ? "-" : "+"}</strong>
       <span>
         {item.name}
       </span>
       <span onClick={(e) => {e.stopPropagation(); onDelete()}}>delete</span>
-      {children}
+      {item.unfolded ? children : ""}
     </li>
   );
 }

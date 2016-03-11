@@ -11,14 +11,17 @@ class TrackingBar extends Component {
     updateUI: PropTypes.func,
     project: PropTypes.object,
     projectsState: PropTypes.object,
-    modalAppElement: PropTypes.element
+    modalAppElement: PropTypes.element,
+    onNew: PropTypes.func,
+    onSelect: PropTypes.func,
+    onUnfold: PropTypes.func,
+    onDelete: PropTypes.func
   };
 
   componentDidMount() {
   };
 
-  submitNewProject(name) {
-    const parent_id = this.props.projectsState.selected.id;
+  submitNewProject(name, parent_id=null) {
     this.props.postProject({name, parent_id});
   };
 
@@ -49,10 +52,8 @@ class TrackingBar extends Component {
             isFetching={this.props.projectsState.isFetching}
             onSelect={this.props.onSelect}
             onUnfold={this.props.onUnfold}
-            onDelete={this.props.onDelete} />
-          <ProjectForm
-            projectsAppState={this.props.projectsState}
-            submitNewProject={this.submitNewProject} />
+            onDelete={this.props.onDelete}
+            onNew={this.props.onNew} />
         </Modal>
       </div>
     )
