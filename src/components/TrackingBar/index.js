@@ -4,6 +4,9 @@ import SelectedProject from './SelectedProject';
 import Modal from '../Modal';
 import ProjectListing from '../ProjectListing';
 import ProjectForm from '../ProjectForm';
+import TrackingCounter from '../TrackingCounter';
+
+import TrackingControls from '../TrackingControls';
 
 class TrackingBar extends Component {
   static propTypes = {
@@ -44,6 +47,10 @@ class TrackingBar extends Component {
         <SelectedProject
           project={this.props.project}
           onClick={this.onSelectClicked.bind(this)} />
+
+        <TrackingCounter duration={5000} />
+
+        <TrackingControls />
         <Modal
           className="modal-select-project"
           isOpen={this.props.ui.isSelecting}
