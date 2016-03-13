@@ -30,8 +30,8 @@ main {
   flex-flow: column;
 }
 
-li.selected {
-  > span {
-    background: #eee;
-  }
+
+.time-entries-container {
+  display: flex;
+  flex: 1;
 }

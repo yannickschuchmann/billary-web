@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import ui from 'redux-ui';
 import * as actions from '../actions';
 import TrackingBar from '../components/TrackingBar';
-import ui from 'redux-ui';
+import Calendar from '../components/Calendar';
 
 class TrackingPage extends Component {
   static propTypes = {
@@ -22,6 +23,11 @@ class TrackingPage extends Component {
   render() {
     return (
       <div id="tracking-container">
+        <div className="week-detail">weekview</div>
+        <div className="time-entries-container">
+          <Calendar/>
+          <div className="time-entries">Time entries</div>
+        </div>
         <TrackingBar
           projectsState={this.props.projectsState}
           project={this.props.projectsState.selected}
