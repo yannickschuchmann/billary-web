@@ -14,7 +14,9 @@ class TrackingPage extends Component {
   };
 
   componentDidMount() {
-    this.props.actions.getProjects();
+    this.props.actions
+      .getProjects()
+      .then(() => this.props.actions.getCurrentTimeEntry());
   };
 
   render() {
@@ -23,6 +25,7 @@ class TrackingPage extends Component {
         <TrackingBar
           projectsState={this.props.projectsState}
           project={this.props.projectsState.selected}
+          currentTimeEntry={this.props.projectsState.currentTimeEntry}
           onSelect={this.props.actions.selectProject}
           onDelete={(id) =>
             this.props.actions
@@ -35,6 +38,21 @@ class TrackingPage extends Component {
               .postProject({name, parent_id})
               .then(this.props.actions.getProjects)
           }
+          onStart={() => {
+              const selected = this.props.projectsState.selected;
+              if (selected && selected.id) {
+                this.props.actions
+                  .postTimeEntry(selected.id)
+                  .then(() => this.props.actions.getCurrentTimeEntry())
+              }
+            }
+          }
+          onStop={() =>
+            this.props.actions
+              .stopTimeEntry()
+              .then(() => this.props.actions.getCurrentTimeEntry())
+          }
+
         />
       </div>
     );

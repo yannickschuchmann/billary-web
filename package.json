@@ -37,6 +37,7 @@
     "redux-ui": "0.0.11",
     "superagent": "1.8.0-beta.2",
     "superagent-promise-plugin": "2.1.0",
+    "tocktimer": "1.0.9",
     "updeep": "0.13.0"
   },
   "devDependencies": {

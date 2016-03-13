@@ -14,7 +14,8 @@ const initialState = {
   view: {
     selected: null,
     isFetching: false,
-    tree: []
+    tree: [],
+    currentTimeEntry: {}
   },
   _data: {
     selectedId: null,
@@ -133,6 +134,39 @@ let reducer = createReducer({
         selectedId: payload.id
       }
     }, state);
+  },
+
+
+  // GET_CURRENT_TIME_ENTRY
+  [calls.getCurrentTimeEntry.request]: (state, payload) => {
+    return state;
+  },
+  [calls.getCurrentTimeEntry.ok]: (state, payload) => {
+    let currentTimeEntry, selectedId;
+
+    if (payload.body == null) {
+      currentTimeEntry = {
+        started_at: null
+      };
+      selectedId = state._data.selectedId;
+    } else {
+      currentTimeEntry = payload.body.time_entry;
+      selectedId = currentTimeEntry.project_id;
+    }
+
+    let newState = deepAssign({
+      view: {
+        selected: findById(state._data.collection, selectedId),
+        currentTimeEntry: currentTimeEntry
+      },
+      _data: {
+        selectedId: selectedId
+      }
+    }, state);
+    return newState;
+  },
+  [calls.getCurrentTimeEntry.error]: (state, payload) => {
+    return state;
   }
 
 }, initialState);

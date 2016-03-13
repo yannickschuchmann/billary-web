@@ -28,3 +28,29 @@ export function deleteProject(projectId) {
           .end();
 
 }
+
+export function getCurrentTimeEntry() {
+  return request
+          .get(API_PATH + "/time_entries/current")
+          .use(superagentPromisePlugin)
+          .end();
+}
+
+export function postTimeEntry(projectId) {
+  return request
+          .post(API_PATH + "/time_entries")
+          .send({
+            time_entry: {
+              project_id: projectId
+            }
+          })
+          .use(superagentPromisePlugin)
+          .end();
+}
+
+export function stopTimeEntry() {
+  return request
+          .post(API_PATH + "/time_entries/stop")
+          .use(superagentPromisePlugin)
+          .end();
+}

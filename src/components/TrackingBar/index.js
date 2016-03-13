@@ -13,12 +13,15 @@ class TrackingBar extends Component {
     ui: PropTypes.object,
     updateUI: PropTypes.func,
     project: PropTypes.object,
+    currentTimeEntry: PropTypes.object,
     projectsState: PropTypes.object,
     modalAppElement: PropTypes.element,
     onNew: PropTypes.func,
     onSelect: PropTypes.func,
     onUnfold: PropTypes.func,
-    onDelete: PropTypes.func
+    onDelete: PropTypes.func,
+    onStart: PropTypes.func,
+    onStop: PropTypes.func
   };
 
   componentDidMount() {
@@ -42,15 +45,25 @@ class TrackingBar extends Component {
   };
 
   render () {
+    const currentStartedAt = this.props.currentTimeEntry.started_at;
+    const timeSinceStartedAt = currentStartedAt ?
+      Math.floor((new Date() - new Date(currentStartedAt)) / 1000) :
+      0;
+
     return (
       <div className="tracking-bar">
         <SelectedProject
           project={this.props.project}
           onClick={this.onSelectClicked.bind(this)} />
 
-        <TrackingCounter duration={5000} />
+        <TrackingCounter
+          duration={timeSinceStartedAt}
+          running={!!currentStartedAt} />
 
-        <TrackingControls />
+        <TrackingControls
+          running={!!currentStartedAt}
+          onStart={this.props.onStart}
+          onStop={this.props.onStop} />
         <Modal
           className="modal-select-project"
           isOpen={this.props.ui.isSelecting}
