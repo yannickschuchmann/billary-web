@@ -1,3 +1,16 @@
 .calendar {
   flex: 0 0 300px;
+  display: flex;
+  flex-flow: column;;
+  .week {
+    flex-flow: row;
+    flex: 1;
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  .day {
+    flex: 1;
+    text-align: center;
+    text-transform: uppercase;
+  }
 }
