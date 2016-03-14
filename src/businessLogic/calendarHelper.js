@@ -26,7 +26,7 @@ const createCalendar = (year, month, dayOffset = 1) => {
 
     // push day to week
 		week.push({
-    	date: new Date(iterator),
+    	moment: moment(new Date(iterator)),
       before: iterator < firstDate, // add indicator if before current month
       after: iterator > lastDate // add indicator if after current month
     });

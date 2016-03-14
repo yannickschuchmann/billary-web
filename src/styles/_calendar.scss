@@ -13,4 +13,16 @@
     text-align: center;
     text-transform: uppercase;
   }
+  .date-info-bar {
+    display: flex;
+    > .date-info {
+      flex: 1;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      > div {
+        flex: 1;
+      }
+    }
+  }
 }

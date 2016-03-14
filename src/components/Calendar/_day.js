@@ -8,7 +8,7 @@ class Day extends Component {
   render() {
     return (
       <div className="day">
-        {new Date(this.props.item.date).getDate()}
+        {this.props.item.moment.dates()}
       </div>
     )
   }
