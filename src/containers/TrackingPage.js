@@ -19,9 +19,11 @@ class TrackingPage extends Component {
   componentDidMount() {
     this.props.actions
       .getProjects()
-      .then(() => this.props.actions.getCurrentTimeEntry());
-    this.props.actions
-      .getTimeEntries();
+      .then(() => {
+        this.props.actions.getCurrentTimeEntry();
+        this.props.actions.getTimeEntries();
+      });
+
   };
 
   render() {

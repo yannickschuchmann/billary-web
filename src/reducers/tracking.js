@@ -49,6 +49,13 @@ const findById = (items, id) => {
   return _.findLast(items, {id})
 }
 
+const mapProjectNamesToTimeEntries = (items, projects) => {
+  return items.map((item) => {
+    item.projectName = findById(projects, item.project_id).name;
+    return item;
+  })
+}
+
 const getTimeEntriesByDay = (items) => {
   return _.groupBy(items, (item) => moment(item.started_at).startOf('day').toDate().toString());
 }
@@ -151,14 +158,15 @@ let reducer = createReducer({
     return state;
   },
   [calls.getTimeEntries.ok]: (state, payload) => {
+    const mappedTimeEntries = mapProjectNamesToTimeEntries(payload.body.time_entries, state._data.projects);
     let newState = deepAssign({
       view: {
         calendar: {
-          timeEntriesByDay: getTimeEntriesByDay(payload.body.time_entries)
+          timeEntriesByDay: getTimeEntriesByDay(mappedTimeEntries)
         }
       },
       _data: {
-        timeEntries: payload.body.time_entries
+        timeEntries: mappedTimeEntries
       }
     }, state);
     return newState;
