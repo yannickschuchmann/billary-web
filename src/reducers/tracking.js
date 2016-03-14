@@ -18,7 +18,7 @@ const initialState = {
     tree: [],
     currentTimeEntry: {},
     calendar: {
-      selectedDay: moment().toDate(),
+      selectedDay: moment().startOf('day').toDate(),
       timeEntriesByDay: {}
     }
   },

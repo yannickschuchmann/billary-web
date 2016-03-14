@@ -5,6 +5,8 @@ import ui from 'redux-ui';
 import * as actions from '../actions';
 import TrackingBar from '../components/TrackingBar';
 import Calendar from '../components/Calendar';
+import TimeEntryListing from '../components/TimeEntryListing';
+import TimeEntry from '../components/TimeEntryListing/_item';
 
 class TrackingPage extends Component {
   static propTypes = {
@@ -23,14 +25,23 @@ class TrackingPage extends Component {
   };
 
   render() {
+    const calendarState = this.props.trackingState.calendar;
+    let timeEntries = calendarState.timeEntriesByDay[calendarState.selectedDay.toString()] || [];
+    timeEntries = timeEntries.map((entry, i) =>
+      (<TimeEntry key={i} index={i+1} item={entry} />)
+    );
+
     return (
       <div id="tracking-container">
         <div className="week-detail">weekview</div>
         <div className="time-entries-container">
           <Calendar
             onSelectDay={this.props.actions.selectDay}
-            selectedDay={this.props.trackingState.calendar.selectedDay}
-            timeEntriesByDay={this.props.trackingState.calendar.timeEntriesByDay}/>
+            selectedDay={calendarState.selectedDay}
+            timeEntriesByDay={calendarState.timeEntriesByDay}/>
+          <TimeEntryListing>
+            {timeEntries}
+          </TimeEntryListing>
           <div className="time-entries">Time entries</div>
         </div>
         <TrackingBar
