@@ -4,6 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 import {createReducer} from 'redux-act';
 import _ from 'lodash';
 import {unflattenEntities} from '../businessLogic/treeHelper';
+import {moment} from '../businessLogic/calendarHelper';
 
 import * as calls from '../actions';
 
@@ -15,11 +16,15 @@ const initialState = {
     selected: null,
     isFetching: false,
     tree: [],
-    currentTimeEntry: {}
+    currentTimeEntry: {},
+    calendar: {
+      selectedDay: moment().toDate(),
+      timeEntriesByDay: {}
+    }
   },
   _data: {
     selectedId: null,
-    collection: [],
+    projects: [],
     unfoldedItems: []
   }
 };
@@ -44,6 +49,10 @@ const findById = (items, id) => {
   return _.findLast(items, {id})
 }
 
+const getTimeEntriesByDay = (items) => {
+  return _.groupBy(items, (item) => moment(item.started_at).startOf('day').toDate().toString());
+}
+
 let reducer = createReducer({
 
   // GET_PROJECTS
@@ -65,7 +74,7 @@ let reducer = createReducer({
         selected: findById(payload.body.projects, state._data.selectedId)
       },
       _data: {
-        collection: payload.body.projects
+        projects: payload.body.projects
       }
     }, state);
   },
@@ -128,7 +137,7 @@ let reducer = createReducer({
   [calls.selectProject]: (state, payload) => {
     return deepAssign({
       view: {
-        selected: findById(state._data.collection, payload.id)
+        selected: findById(state._data.projects, payload.id)
       },
       _data: {
         selectedId: payload.id
@@ -136,6 +145,27 @@ let reducer = createReducer({
     }, state);
   },
 
+
+  // GET_TIME_ENTRIES
+  [calls.getTimeEntries.request]: (state, payload) => {
+    return state;
+  },
+  [calls.getTimeEntries.ok]: (state, payload) => {
+    let newState = deepAssign({
+      view: {
+        calendar: {
+          timeEntriesByDay: getTimeEntriesByDay(payload.body.time_entries)
+        }
+      },
+      _data: {
+        timeEntries: payload.body.time_entries
+      }
+    }, state);
+    return newState;
+  },
+  [calls.getTimeEntries.error]: (state, payload) => {
+    return state;
+  },
 
   // GET_CURRENT_TIME_ENTRY
   [calls.getCurrentTimeEntry.request]: (state, payload) => {
@@ -156,7 +186,7 @@ let reducer = createReducer({
 
     let newState = deepAssign({
       view: {
-        selected: findById(state._data.collection, selectedId),
+        selected: findById(state._data.projects, selectedId),
         currentTimeEntry: currentTimeEntry
       },
       _data: {
@@ -167,6 +197,19 @@ let reducer = createReducer({
   },
   [calls.getCurrentTimeEntry.error]: (state, payload) => {
     return state;
+  },
+
+
+  // SELECT_DAY
+  [calls.selectDay]: (state, payload) => {
+    let newState = deepAssign({
+      view: {
+        calendar: {
+          selectedDay: payload.day.moment.toDate()
+        }
+      }
+    }, state);
+    return newState;
   }
 
 }, initialState);

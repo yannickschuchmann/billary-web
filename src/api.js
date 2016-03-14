@@ -29,6 +29,13 @@ export function deleteProject(projectId) {
 
 }
 
+export function getTimeEntries() {
+  return request
+          .get(API_PATH + "/time_entries")
+          .use(superagentPromisePlugin)
+          .end();
+}
+
 export function getCurrentTimeEntry() {
   return request
           .get(API_PATH + "/time_entries/current")

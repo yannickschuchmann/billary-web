@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { reducer as uiReducer } from 'redux-ui'
 import appState from './app';
-import projectsState from './projects';
+import trackingState from './tracking';
 const rootReducer = combineReducers({
   appState,
-  projectsState,
+  trackingState,
   ui: uiReducer
 });
 

@@ -14,7 +14,7 @@ class TrackingBar extends Component {
     updateUI: PropTypes.func,
     project: PropTypes.object,
     currentTimeEntry: PropTypes.object,
-    projectsState: PropTypes.object,
+    trackingState: PropTypes.object,
     modalAppElement: PropTypes.element,
     onNew: PropTypes.func,
     onSelect: PropTypes.func,
@@ -69,9 +69,9 @@ class TrackingBar extends Component {
           isOpen={this.props.ui.isSelecting}
           onClose={this.closeModal.bind(this)}>
           <ProjectListing
-            tree={this.props.projectsState.tree}
-            selected={this.props.projectsState.selected}
-            isFetching={this.props.projectsState.isFetching}
+            tree={this.props.trackingState.tree}
+            selected={this.props.trackingState.selected}
+            isFetching={this.props.trackingState.isFetching}
             onSelect={this.onSelected.bind(this)}
             onUnfold={this.props.onUnfold}
             onDelete={this.props.onDelete}

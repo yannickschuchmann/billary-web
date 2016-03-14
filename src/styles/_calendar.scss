@@ -10,8 +10,22 @@
   }
   .day {
     flex: 1;
-    text-align: center;
     text-transform: uppercase;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    &.is-today {
+      border-color: orange;
+    }
+    &.contains-time-entries {
+      background: silver;
+    }
+    &.is-selected {
+      background: orange!important;
+    }
   }
   .date-info-bar {
     display: flex;

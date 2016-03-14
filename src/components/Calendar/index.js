@@ -9,22 +9,34 @@ import IconButton from 'material-ui/lib/icon-button';
 class Calendar extends Component {
   static propTypes = {
     ui: PropTypes.object,
-    updateUI: PropTypes.func
+    updateUI: PropTypes.func,
+    timeEntriesByDay: PropTypes.object,
+    selectedDay: PropTypes.object,
+    onSelectDay: PropTypes.func
   };
 
   previousMonth(e) {
-    this.props.updateUI("moment", this.props.ui.moment.clone().subtract(1, "months"));
+    this.props.updateUI("selectedMonth", this.props.ui.selectedMonth.clone().subtract(1, "months"));
   };
 
   nextMonth(e) {
-    this.props.updateUI("moment", this.props.ui.moment.clone().add(1, "months"));
+    this.props.updateUI("selectedMonth", this.props.ui.selectedMonth.clone().add(1, "months"));
   };
 
+  componentWillMount() {
+    this.props.updateUI("selectedMonth", moment(this.props.selectedDay));
+  };
+
+  componentReceiveProps(newProps) {
+    newProps.updateUI("selectedMonth", moment(newProps.selectedDay));
+  };
+
+
   render() {
-    const date = this.props.ui.moment;
-    const weeksData = createCalendar(date.year(), date.month());
+    const date = this.props.ui.selectedMonth;
+    const weeksData = createCalendar(date.year(), date.month(), this.props.timeEntriesByDay);
     const weeks = weeksData.map((days, i) => {
-      return (<Week key={i} days={days}/>)
+      return (<Week selectedDay={this.props.selectedDay} onSelectDay={this.props.onSelectDay} key={i} days={days}/>)
     });
     const weekHeader = (
       <div className="week">{
@@ -60,6 +72,6 @@ class Calendar extends Component {
 
 export default ui({
   state: {
-    moment: moment(new Date())
+    selectedMonth: moment()
   }
 })(Calendar)

@@ -1,7 +1,7 @@
 import moment from 'moment';
 moment.locale('de');
 
-const createCalendar = (year, month, dayOffset = 1) => {
+const createCalendar = (year, month, timeEntriesByDay, dayOffset = 1) => {
 	var results = [];
 
 	// find out first and last days of the month
@@ -24,9 +24,14 @@ const createCalendar = (year, month, dayOffset = 1) => {
 			results.push(week);
 		}
 
+		const _moment = moment(new Date(iterator));
+		const timeEntries = timeEntriesByDay[_moment.toDate().toString()] || [];
     // push day to week
 		week.push({
-    	moment: moment(new Date(iterator)),
+    	moment: _moment,
+			containsTimeEntries: !!timeEntries.length,
+			timeEntries: timeEntries,
+			today: _moment.isSame(moment(), 'day'),
       before: iterator < firstDate, // add indicator if before current month
       after: iterator > lastDate // add indicator if after current month
     });

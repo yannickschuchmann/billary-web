@@ -11,13 +11,15 @@ class TrackingPage extends Component {
     ui: PropTypes.object,
     updateUI: PropTypes.func,
     actions: PropTypes.object.isRequired,
-    projectsState: PropTypes.object.isRequired
+    trackingState: PropTypes.object.isRequired
   };
 
   componentDidMount() {
     this.props.actions
       .getProjects()
       .then(() => this.props.actions.getCurrentTimeEntry());
+    this.props.actions
+      .getTimeEntries();
   };
 
   render() {
@@ -25,13 +27,16 @@ class TrackingPage extends Component {
       <div id="tracking-container">
         <div className="week-detail">weekview</div>
         <div className="time-entries-container">
-          <Calendar/>
+          <Calendar
+            onSelectDay={this.props.actions.selectDay}
+            selectedDay={this.props.trackingState.calendar.selectedDay}
+            timeEntriesByDay={this.props.trackingState.calendar.timeEntriesByDay}/>
           <div className="time-entries">Time entries</div>
         </div>
         <TrackingBar
-          projectsState={this.props.projectsState}
-          project={this.props.projectsState.selected}
-          currentTimeEntry={this.props.projectsState.currentTimeEntry}
+          trackingState={this.props.trackingState}
+          project={this.props.trackingState.selected}
+          currentTimeEntry={this.props.trackingState.currentTimeEntry}
           onSelect={this.props.actions.selectProject}
           onDelete={(id) =>
             this.props.actions
@@ -45,7 +50,7 @@ class TrackingPage extends Component {
               .then(this.props.actions.getProjects)
           }
           onStart={() => {
-              const selected = this.props.projectsState.selected;
+              const selected = this.props.trackingState.selected;
               if (selected && selected.id) {
                 this.props.actions
                   .postTimeEntry(selected.id)
@@ -67,7 +72,7 @@ class TrackingPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    projectsState: state.projectsState.view
+    trackingState: state.trackingState.view
   };
 }
 
