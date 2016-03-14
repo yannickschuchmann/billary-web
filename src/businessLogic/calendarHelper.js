@@ -1,7 +1,8 @@
-export default function createCalendar (year, month) {
-	var results = [];
+import moment from 'moment';
+moment.locale('de');
 
-console.log(year, month);
+const createCalendar = (year, month) => {
+	var results = [];
 
 	// find out first and last days of the month
 	var firstDate = new Date(year, month, 1);
@@ -54,3 +55,5 @@ function getLastSaturday (lastDate) {
 
 	return result;
 }
+
+export {moment, createCalendar}
