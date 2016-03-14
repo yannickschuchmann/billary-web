@@ -1,7 +1,7 @@
 import moment from 'moment';
 moment.locale('de');
 
-const createCalendar = (year, month) => {
+const createCalendar = (year, month, dayOffset = 1) => {
 	var results = [];
 
 	// find out first and last days of the month
@@ -9,15 +9,15 @@ const createCalendar = (year, month) => {
 	var lastDate = new Date(year, month + 1, 0)
 
   // calculate first sunday and last saturday
-  var firstSunday = getFirstSunday(firstDate);
-  var lastSaturday = getLastSaturday(lastDate);
+  var firstDay = getFirstDay(firstDate, dayOffset);
+  var lastDay = getLastDay(lastDate, dayOffset);
 
 	// iterate days starting from first sunday
-	var iterator = new Date(firstSunday);
+	var iterator = new Date(firstDay);
   var i = 0;
 
   // ..until last saturday
-  while (iterator <= lastSaturday) {
+  while (iterator <= lastDay) {
 		if (i++ % 7 === 0) {
     	// start new week when sunday
     	var week = [];
@@ -38,8 +38,8 @@ const createCalendar = (year, month) => {
   return results;
 }
 
-function getFirstSunday (firstDate) {
-	var offset = firstDate.getDay();
+function getFirstDay (firstDate, dayOffset) {
+	var offset = firstDate.getDay() - dayOffset;
 
 	var result = new Date(firstDate);
   result.setDate(firstDate.getDate() - offset);
@@ -47,8 +47,8 @@ function getFirstSunday (firstDate) {
   return result;
 }
 
-function getLastSaturday (lastDate) {
-	var offset = 6 - lastDate.getDay();
+function getLastDay (lastDate, dayOffset) {
+	var offset = 6 - lastDate.getDay() + dayOffset;
 
   var result = new Date(lastDate);
   result.setDate(lastDate.getDate() + offset);
