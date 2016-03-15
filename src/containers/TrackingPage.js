@@ -7,7 +7,8 @@ import TrackingBar from '../components/TrackingBar';
 import Calendar from '../components/Calendar';
 import TimeEntryListing from '../components/TimeEntryListing';
 import TimeEntry from '../components/TimeEntryListing/_item';
-import {moment} from '../businessLogic/calendarHelper';
+import {moment, minutesToCounterString} from '../businessLogic/calendarHelper';
+import _ from 'lodash';
 
 
 class TrackingPage extends Component {
@@ -31,6 +32,13 @@ class TrackingPage extends Component {
   render() {
     const calendarState = this.props.trackingState.calendar;
     let timeEntries = calendarState.timeEntriesByDay[calendarState.selectedDay.toString()] || [];
+
+    const durationForSelectedDay = _.reduce(
+      _.values(timeEntries),
+      (sum, entry) => sum + entry.duration,
+      0
+    );
+
     timeEntries = timeEntries.map((entry, i) =>
       (<TimeEntry key={i} index={i+1} item={entry} />)
     );
@@ -46,6 +54,9 @@ class TrackingPage extends Component {
           <div className="time-entries-container">
             <div className="time-entry-listing-header">
               {moment(calendarState.selectedDay).format("dddd, Do MMMM YYYY")}
+              <div className="days-workload">
+                {minutesToCounterString(durationForSelectedDay)} H
+              </div>
             </div>
             <TimeEntryListing>
               {timeEntries}

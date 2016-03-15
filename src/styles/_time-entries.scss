@@ -22,8 +22,21 @@
       padding: 0 10px;
       margin-left: auto;
     }
+    .name {
+      display: flex;
+    }
+    .name-item {
+      display: flex;
+      align-items: center;
+    }
     &:last-child {
       border-bottom: none;
     }
+  }
+}
+.time-entry-listing-header {
+  display: flex;
+  .days-workload {
+    margin-left: auto;    
   }
 }
