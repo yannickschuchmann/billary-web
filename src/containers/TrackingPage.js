@@ -78,6 +78,7 @@ class TrackingPage extends Component {
             this.props.actions
               .deleteProject(id)
               .then(this.props.actions.getProjects)
+              .then(this.props.actions.getTimeEntries)
           }
           onUnfold={this.props.actions.openProject}
           onNew={(name, parent_id) =>
@@ -90,14 +91,20 @@ class TrackingPage extends Component {
               if (selected && selected.id) {
                 this.props.actions
                   .postTimeEntry(selected.id)
-                  .then(() => this.props.actions.getCurrentTimeEntry())
+                  .then(() => {
+                    this.props.actions.getCurrentTimeEntry();
+                    this.props.actions.getTimeEntries();
+                  })
               }
             }
           }
           onStop={() =>
             this.props.actions
               .stopTimeEntry()
-              .then(() => this.props.actions.getCurrentTimeEntry())
+              .then(() => {
+                this.props.actions.getCurrentTimeEntry();
+                this.props.actions.getTimeEntries();
+              })
           }
 
         />
