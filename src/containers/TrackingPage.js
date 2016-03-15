@@ -2,13 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ui from 'redux-ui';
+import _ from 'lodash';
 import * as actions from '../actions';
+import {moment, minutesToCounterString} from '../businessLogic/calendarHelper';
 import TrackingBar from '../components/TrackingBar';
 import Calendar from '../components/Calendar';
 import TimeEntryListing from '../components/TimeEntryListing';
 import TimeEntry from '../components/TimeEntryListing/_item';
-import {moment, minutesToCounterString} from '../businessLogic/calendarHelper';
-import _ from 'lodash';
+import Modal from '../components/Modal';
+import ProjectSelector from '../components/ProjectSelector';
 
 
 class TrackingPage extends Component {
@@ -29,6 +31,20 @@ class TrackingPage extends Component {
 
   };
 
+  showTimeEntryModal(entry = null) {
+    this.props.updateUI({
+      showTimeEntryModal: true,
+      editTimeEntry: entry
+    });
+  };
+
+  closeTimeEntryModal() {
+    this.props.updateUI({
+      showTimeEntryModal: false,
+      editTimeEntry: null
+    });
+  };
+
   render() {
     const calendarState = this.props.trackingState.calendar;
     let timeEntries = calendarState.timeEntriesByDay[calendarState.selectedDay.toString()] || [];
@@ -41,7 +57,7 @@ class TrackingPage extends Component {
 
     timeEntries = timeEntries.map((entry, i) =>
       (<TimeEntry
-        onEdit={() => this.props.actions.editTimeEntry(entry)}
+        onEdit={() => this.showTimeEntryModal(entry)}
         onDelete={() => this.props.actions.deleteTimeEntry(entry.id)
           .then(this.props.actions.getTimeEntries)}
         key={i}
@@ -108,6 +124,17 @@ class TrackingPage extends Component {
           }
 
         />
+        <Modal
+          className="modal-time-entry-form"
+          isOpen={this.props.ui.showTimeEntryModal}
+          onClose={this.closeTimeEntryModal.bind(this)}>
+          <ProjectSelector
+            tree={this.props.trackingState.tree}
+            selected={this.props.trackingState.selected}
+            onSelect={this.closeTimeEntryModal.bind(this)}
+            onUnfold={this.props.actions.openProject} />
+          {this.props.ui.editTimeEntry ? this.props.ui.editTimeEntry.id : "nix"}
+        </Modal>
       </div>
     );
   };
@@ -131,5 +158,7 @@ export default connect(
 )(ui({
   key: "tracking-container",
   state: {
+    showTimeEntryModal: false,
+    editTimeEntry: null
   }
 })(TrackingPage));

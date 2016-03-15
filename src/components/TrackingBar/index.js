@@ -78,6 +78,7 @@ class TrackingBar extends Component {
           isOpen={this.props.ui.isSelecting}
           onClose={this.closeModal.bind(this)}>
           <ProjectListing
+            advanced={true}
             tree={this.props.trackingState.tree}
             selected={this.props.trackingState.selected}
             isFetching={this.props.trackingState.isFetching}
