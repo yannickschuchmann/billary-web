@@ -11,13 +11,14 @@ class Day extends Component {
     const day = this.props.item;
     const classNames = "day" +
       (day.today ? " is-today" : "") +
+      (day.before || day.after ? " is-outside" : "") +
       (this.props.isSelected ? " is-selected" : "") +
       (day.containsTimeEntries ? " contains-time-entries" : "");
 
     return (
       <div
         onClick={(e) => this.props.onSelectDay(day)}
-        className={"day " + classNames}>
+        className={classNames}>
         {this.props.item.moment.date()}
       </div>
     )

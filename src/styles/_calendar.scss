@@ -27,6 +27,9 @@
     &.is-selected {
       background: orange!important;
     }
+    &.is-outside {
+      color: silver;
+    }
   }
   .date-info-bar {
     display: flex;

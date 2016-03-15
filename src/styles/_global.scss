@@ -17,6 +17,7 @@ body, #app-container, .app {
 }
 .topbar {
   background: gray;
+  flex: 0 0 70px;
 }
 main {
   flex: 1;
@@ -28,4 +29,8 @@ main {
   flex: 1;
   display: flex;
   flex-flow: column;
+}
+.time-container {
+  display: flex;
+  flex: 0 0 300px;
 }
