@@ -5,6 +5,7 @@ import Modal from '../Modal';
 import ProjectListing from '../ProjectListing';
 import ProjectForm from '../ProjectForm';
 import TrackingCounter from '../TrackingCounter';
+import {moment} from '../../businessLogic/calendarHelper';
 
 import TrackingControls from '../TrackingControls';
 
@@ -50,17 +51,25 @@ class TrackingBar extends Component {
       Math.floor((new Date() - new Date(currentStartedAt)) / 1000) :
       0;
 
+    const today = moment();
+
     return (
       <div className="tracking-bar">
+        <div className="today-icon">
+          {today.format('DD')}
+          {today.format('MMM')}
+        </div>
         <SelectedProject
           project={this.props.project}
           onClick={this.onSelectClicked.bind(this)} />
 
         <TrackingCounter
+          className="tracking-counter"
           duration={timeSinceStartedAt}
           running={!!currentStartedAt} />
 
         <TrackingControls
+          className="tracking-controls"
           running={!!currentStartedAt}
           onStart={this.props.onStart}
           onStop={this.props.onStop} />

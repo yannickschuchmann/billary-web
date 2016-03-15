@@ -5,4 +5,21 @@
   margin-top: auto;
   background: #232429;
   color: #fff;
+  justify-content: flex-end;
+}
+.selected-project {
+  margin-right: auto;
+}
+.today-icon {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  text-transform: uppercase;
+  padding: 0 20px;
+  > span:first-of-type {
+    font-size: 40px;
+  }
+  > span:last-of-type {
+    font-size: 14px;
+  }
 }

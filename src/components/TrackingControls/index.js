@@ -11,10 +11,12 @@ class TrackingControls extends Component {
   }
   render() {
     return (
-      <IconButton
-        onClick={this.props.running ? this.props.onStop : this.props.onStart}>
-        {this.props.running ? <Stop/> : <Play/>}
-      </IconButton>
+      <div className="tracking-controls">
+        <IconButton
+          onClick={this.props.running ? this.props.onStop : this.props.onStart}>
+          {this.props.running ? <Stop color="#fff" /> : <Play color="#fff" />}
+        </IconButton>
+      </div>
     )
   }
 }

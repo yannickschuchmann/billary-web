@@ -5,6 +5,7 @@ import {
   minutesToCounterString
 } from '../../businessLogic/calendarHelper';
 import ArrowForward from 'material-ui/lib/svg-icons/navigation/arrow-forward';
+import Timer from 'material-ui/lib/svg-icons/image/timer';
 
 const TimeEntry = ({item, index}) => {
   const names = item.projectNames.map((name, i) => {
@@ -19,7 +20,7 @@ const TimeEntry = ({item, index}) => {
     <div className="time-entry">
       <div className="id">{index}</div>
       <div className="name">{names}</div>
-      <div className="duration">{minutesToCounterString(item.duration)}</div>
+      <div className="duration"><Timer />{minutesToCounterString(item.duration)}</div>
     </div>
   )
 }

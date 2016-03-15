@@ -21,6 +21,8 @@
     .duration {
       padding: 0 10px;
       margin-left: auto;
+      display: flex;
+      align-items: center;
     }
     .name {
       display: flex;
@@ -37,6 +39,6 @@
 .time-entry-listing-header {
   display: flex;
   .days-workload {
-    margin-left: auto;    
+    margin-left: auto;
   }
 }
