@@ -73,4 +73,14 @@ const secondsToCounterString = (time) => {
 	return `${hours_s}:${minutes_s}:${seconds_s}`;
 }
 
-export {moment, createCalendar, secondsToCounterString}
+const minutesToCounterString = (time) => {
+	const hours   = Math.floor(time / 60);
+	const minutes = Math.floor(time - hours * 60);
+
+	const prefix = "0";
+	const hours_s = hours + "";
+	const minutes_s = minutes < 10 ? prefix + minutes : "" + minutes;
+	return `${hours_s}:${minutes_s}`;
+}
+
+export {moment, createCalendar, secondsToCounterString, minutesToCounterString}

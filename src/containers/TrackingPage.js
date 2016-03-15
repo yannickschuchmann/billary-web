@@ -7,6 +7,8 @@ import TrackingBar from '../components/TrackingBar';
 import Calendar from '../components/Calendar';
 import TimeEntryListing from '../components/TimeEntryListing';
 import TimeEntry from '../components/TimeEntryListing/_item';
+import {moment} from '../businessLogic/calendarHelper';
+
 
 class TrackingPage extends Component {
   static propTypes = {
@@ -36,15 +38,19 @@ class TrackingPage extends Component {
     return (
       <div id="tracking-container">
         <div className="week-detail">weekview</div>
-        <div className="time-entries-container">
+        <div className="time-container">
           <Calendar
             onSelectDay={this.props.actions.selectDay}
             selectedDay={calendarState.selectedDay}
             timeEntriesByDay={calendarState.timeEntriesByDay}/>
-          <TimeEntryListing>
-            {timeEntries}
-          </TimeEntryListing>
-          <div className="time-entries">Time entries</div>
+          <div className="time-entries-container">
+            <div className="time-entry-listing-header">
+              {moment(calendarState.selectedDay).format("dddd, Do MMMM YYYY")}
+            </div>
+            <TimeEntryListing>
+              {timeEntries}
+            </TimeEntryListing>
+          </div>
         </div>
         <TrackingBar
           trackingState={this.props.trackingState}

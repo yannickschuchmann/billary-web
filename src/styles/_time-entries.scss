@@ -1,0 +1,29 @@
+.time-container {
+  display: flex;
+  flex: 0 0 300px;
+}
+.time-entries-container {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+}
+.time-entry-listing {
+  flex: 1;
+  overflow-y: auto;
+  .time-entry {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    .id {
+      padding: 0 10px;
+    }
+    .duration {
+      padding: 0 10px;
+      margin-left: auto;
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
