@@ -40,7 +40,13 @@ class TrackingPage extends Component {
     );
 
     timeEntries = timeEntries.map((entry, i) =>
-      (<TimeEntry key={i} index={i+1} item={entry} />)
+      (<TimeEntry
+        onEdit={() => this.props.actions.editTimeEntry(entry)}
+        onDelete={() => this.props.actions.deleteTimeEntry(entry.id)
+          .then(this.props.actions.getTimeEntries)}
+        key={i}
+        index={i+1}
+        item={entry} />)
     );
 
     return (

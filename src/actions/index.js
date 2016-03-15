@@ -10,6 +10,7 @@ export let selectProject = createAction('SELECT_PROJECT', (id) => ({id}));
 
 export let getTimeEntries = createActionAsync('GET_TIME_ENTRIES', calls.getTimeEntries);
 export let getCurrentTimeEntry = createActionAsync('GET_CURRENT_TIME_ENTRY', calls.getCurrentTimeEntry);
+export let deleteTimeEntry = createActionAsync('DELETE_TIME_ENTRY', calls.deleteTimeEntry);
 export let postTimeEntry = createActionAsync('POST_TIME_ENTRY', calls.postTimeEntry);
 export let stopTimeEntry = createActionAsync('STOP_TIME_ENTRY', calls.stopTimeEntry);
 

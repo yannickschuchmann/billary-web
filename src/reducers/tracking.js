@@ -184,6 +184,19 @@ let reducer = createReducer({
     return state;
   },
 
+  // DELETE_TIME_ENTRY
+  [calls.deleteTimeEntry.request]: (state, payload) => {
+    return state;
+  },
+  [calls.deleteTimeEntry.ok]: (state, payload) => {
+    let newState = objectAssign({}, state);
+    calls.getTimeEntries();
+    return newState;
+  },
+  [calls.deleteTimeEntry.error]: (state, payload) => {
+    return state;
+  },
+
   // GET_CURRENT_TIME_ENTRY
   [calls.getCurrentTimeEntry.request]: (state, payload) => {
     return state;
