@@ -11,7 +11,7 @@ import TimeEntryListing from '../components/TimeEntryListing';
 import TimeEntry from '../components/TimeEntryListing/_item';
 import Modal from '../components/Modal';
 import ProjectSelector from '../components/ProjectSelector';
-
+import TimeEntryForm from '../components/TimeEntryForm';
 
 class TrackingPage extends Component {
   static propTypes = {
@@ -128,12 +128,7 @@ class TrackingPage extends Component {
           className="modal-time-entry-form"
           isOpen={this.props.ui.showTimeEntryModal}
           onClose={this.closeTimeEntryModal.bind(this)}>
-          <ProjectSelector
-            tree={this.props.trackingState.tree}
-            selected={this.props.trackingState.selected}
-            onSelect={this.closeTimeEntryModal.bind(this)}
-            onUnfold={this.props.actions.openProject} />
-          {this.props.ui.editTimeEntry ? this.props.ui.editTimeEntry.id : "nix"}
+          <TimeEntryForm entry={this.props.ui.editTimeEntry}/>
         </Modal>
       </div>
     );
