@@ -45,6 +45,14 @@ class TrackingPage extends Component {
     });
   };
 
+  submitTimeEntry(entry) {
+    const actions = this.props.actions;
+    const promise =
+      (entry.id) ? actions.patchTimeEntry(entry) : actions.postTimeEntry(entry);
+    promise.then(actions.getTimeEntries);
+    this.closeTimeEntryModal();
+  }
+
   render() {
     const calendarState = this.props.trackingState.calendar;
     let timeEntries = calendarState.timeEntriesByDay[calendarState.selectedDay.toString()] || [];
@@ -128,7 +136,9 @@ class TrackingPage extends Component {
           className="modal-time-entry-form"
           isOpen={this.props.ui.showTimeEntryModal}
           onClose={this.closeTimeEntryModal.bind(this)}>
-          <TimeEntryForm entry={this.props.ui.editTimeEntry}/>
+          <TimeEntryForm
+            onSubmit={this.submitTimeEntry.bind(this)}
+            entry={this.props.ui.editTimeEntry} />
         </Modal>
       </div>
     );
@@ -153,7 +163,7 @@ export default connect(
 )(ui({
   key: "tracking-container",
   state: {
-    showTimeEntryModal: false,
+    showTimeEntryModal: true,
     editTimeEntry: null
   }
 })(TrackingPage));

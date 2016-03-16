@@ -55,6 +55,16 @@ export function postTimeEntry(projectId) {
           .end();
 }
 
+export function patchTimeEntry(entry) {
+  return request
+          .patch(API_PATH + "/time_entries/" + entry.id)
+          .send({
+            time_entry: entry
+          })
+          .use(superagentPromisePlugin)
+          .end();
+}
+
 export function deleteTimeEntry(entryId) {
   return request
           .delete(API_PATH + "/time_entries/" + entryId)
