@@ -5,6 +5,7 @@ import {createReducer} from 'redux-act';
 import _ from 'lodash';
 import {unflattenEntities} from '../businessLogic/treeHelper';
 import {moment} from '../businessLogic/calendarHelper';
+import {findById, mapProjectNames} from '../businessLogic/projectHelper';
 
 import * as calls from '../actions';
 
@@ -20,11 +21,11 @@ const initialState = {
     calendar: {
       selectedDay: moment().startOf('day').toDate(),
       timeEntriesByDay: {}
-    }
+    },
+    projects: []
   },
   _data: {
     selectedProject: null,
-    projects: [],
     unfoldedItems: []
   }
 };
@@ -43,26 +44,6 @@ const setUnfoldedToChildren = (item, unfoldedItems) => {
     })
   });
   return newItem;
-}
-
-const findById = (items, id) => {
-  return _.findLast(items, {id})
-}
-
-const mapProjectNamesToTimeEntries = (items, projects) => {
-  return items.map((item) => {
-    item.projectNames = getParentNamesRecursively(projects, item.project_id);
-    return item;
-  })
-}
-
-const getParentNamesRecursively = (projects, project_id, names = []) => {
-  const project = findById(projects, project_id);
-  if (project.parent_id) {
-    _.concat(names, getParentNamesRecursively(projects, project.parent_id, names));
-  }
-  names.push(project.name)
-  return names;
 }
 
 const getTimeEntriesByDay = (items) => {
@@ -87,9 +68,7 @@ let reducer = createReducer({
       view: {
         tree: tree,
         isFetching: false,
-        selected: findById(payload.body.projects, state._data.selectedProject)
-      },
-      _data: {
+        selected: findById(payload.body.projects, state._data.selectedProject),
         projects: payload.body.projects
       }
     }, state);
@@ -167,7 +146,7 @@ let reducer = createReducer({
     return state;
   },
   [calls.getTimeEntries.ok]: (state, payload) => {
-    const mappedTimeEntries = mapProjectNamesToTimeEntries(payload.body.time_entries, state._data.projects);
+    const mappedTimeEntries = mapProjectNames(payload.body.time_entries, state.view.projects);
     let newState = deepAssign({
       view: {
         calendar: {
@@ -216,7 +195,7 @@ let reducer = createReducer({
 
     let newState = deepAssign({
       view: {
-        selected: findById(state._data.projects, selectedProject),
+        selected: findById(state.view.projects, selectedProject),
         currentTimeEntry: currentTimeEntry
       },
       _data: {

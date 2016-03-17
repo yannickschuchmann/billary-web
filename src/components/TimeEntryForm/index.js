@@ -9,11 +9,14 @@ import TimePicker from 'material-ui/lib/time-picker/time-picker';
 import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
 import TextFieldLabel from 'material-ui/lib/TextField/TextFieldLabel';
 import Divider from 'material-ui/lib/divider';
+import SelectField from 'material-ui/lib/select-field';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 
 class TimeEntryForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     entry: PropTypes.object,
+    projects: PropTypes.array.isRequired,
     ui: PropTypes.object,
     updateUI: PropTypes.func
   };
@@ -26,7 +29,7 @@ class TimeEntryForm extends Component {
         stopped_at: moment(this.props.entry.stopped_at).seconds(0).format()
       });
     }
-    this.props.updateUI("entry", entry);
+    this.props.updateUI({entry});
   };
 
   changeDate(date, _time) {
@@ -79,6 +82,12 @@ class TimeEntryForm extends Component {
     return false;
   }
 
+  onProjectChange(e, index, value) {
+    this.props.updateUI("entry", objectAssign({}, this.props.ui.entry, {
+      project_id: value
+    }));
+  };
+
   render() {
     const entry = this.props.ui.entry || {};
     const startedAt = entry.started_at ? new Date(entry.started_at) : null;
@@ -86,9 +95,26 @@ class TimeEntryForm extends Component {
     const diff = moment(entry.stopped_at).diff(moment(entry.started_at), 'minutes');
     const dateError = diff <= 0 ? "From date must be before Till date" : "";
 
+    const projectOptions = this.props.projects.map((project, i) => (
+      <MenuItem
+        key={i}
+        value={project.id}
+        label={project.name}
+        primaryText={project.name} />
+    ));
+
     return (
       <div className="time-entry-form">
         <form onSubmit={this.submit}>
+          <SelectField
+            fullWidth={true}
+            value={entry.project_id}
+            onChange={this.onProjectChange.bind(this)}
+            floatingLabelText="Choose Project"
+            >
+            {projectOptions}
+          </SelectField>
+
           <div className="duration">
             {minutesToCounterString(diff)}
           </div>

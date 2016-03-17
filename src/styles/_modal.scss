@@ -29,21 +29,3 @@
   .modal-content {
   }
 }
-.time-entry-form {
-  display: flex;
-  flex-flow: column;
-  button {
-    align-self: flex-end;
-  }
-  .duration {
-    font-size: 30px;
-    text-align: center;
-  }
-  .dates {
-    display: flex;
-    margin: 10px;
-    > div {
-      padding: 10px;
-    }
-  }
-}

@@ -1,0 +1,23 @@
+.time-entry-form {
+  display: flex;
+  flex-flow: column;
+  button {
+    align-self: flex-end;
+  }
+  .duration {
+    margin:  20px 0;
+    font-size: 30px;
+    text-align: center;
+  }
+  .dates {
+    display: flex;
+    > div:first-child {
+      padding: 10px;
+      padding-left: 0;
+    }
+    > div:last-child {
+      padding: 10px;
+      padding-right: 0;
+    }
+  }
+}
