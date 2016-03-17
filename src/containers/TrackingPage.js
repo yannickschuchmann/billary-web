@@ -12,6 +12,8 @@ import TimeEntry from '../components/TimeEntryListing/_item';
 import Modal from '../components/Modal';
 import ProjectSelector from '../components/ProjectSelector';
 import TimeEntryForm from '../components/TimeEntryForm';
+import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 
 class TrackingPage extends Component {
   static propTypes = {
@@ -75,7 +77,19 @@ class TrackingPage extends Component {
 
     return (
       <div id="tracking-container">
-        <div className="week-detail">weekview</div>
+        <div className="week-detail">
+          <FloatingActionButton
+            mini={true}
+            style={{
+              position: "absolute",
+              right: 20,
+              bottom: 20
+            }}
+            onMouseUp={() => this.showTimeEntryModal()}
+          >
+            <ContentAdd />
+          </FloatingActionButton>
+        </div>
         <div className="time-container">
           <Calendar
             onSelectDay={this.props.actions.selectDay}
