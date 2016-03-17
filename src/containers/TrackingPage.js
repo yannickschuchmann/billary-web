@@ -163,7 +163,7 @@ export default connect(
 )(ui({
   key: "tracking-container",
   state: {
-    showTimeEntryModal: true,
+    showTimeEntryModal: false,
     editTimeEntry: null
   }
 })(TrackingPage));

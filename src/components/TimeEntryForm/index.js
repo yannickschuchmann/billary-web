@@ -83,12 +83,8 @@ class TimeEntryForm extends Component {
     const entry = this.props.ui.entry || {};
     const startedAt = entry.started_at ? new Date(entry.started_at) : null;
     const stoppedAt = entry.stopped_at ? new Date(entry.stopped_at) : null;
-
-    const diff = moment(entry.started_at).diff(moment(entry.stopped_at), 'minutes');
-    let dateError = "";
-    if (diff >= 0) {
-      dateError = "From date must be before Till date";
-    }
+    const diff = moment(entry.stopped_at).diff(moment(entry.started_at), 'minutes');
+    const dateError = diff <= 0 ? "From date must be before Till date" : "";
 
     return (
       <div className="time-entry-form">

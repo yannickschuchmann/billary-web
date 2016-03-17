@@ -23,7 +23,7 @@ const initialState = {
     }
   },
   _data: {
-    selectedId: null,
+    selectedProject: null,
     projects: [],
     unfoldedItems: []
   }
@@ -87,7 +87,7 @@ let reducer = createReducer({
       view: {
         tree: tree,
         isFetching: false,
-        selected: findById(payload.body.projects, state._data.selectedId)
+        selected: findById(payload.body.projects, state._data.selectedProject)
       },
       _data: {
         projects: payload.body.projects
@@ -156,7 +156,7 @@ let reducer = createReducer({
         selected: findById(state._data.projects, payload.id)
       },
       _data: {
-        selectedId: payload.id
+        selectedProject: payload.id
       }
     }, state);
   },
@@ -202,25 +202,25 @@ let reducer = createReducer({
     return state;
   },
   [calls.getCurrentTimeEntry.ok]: (state, payload) => {
-    let currentTimeEntry, selectedId;
+    let currentTimeEntry, selectedProject;
 
     if (payload.body == null) {
       currentTimeEntry = {
         started_at: null
       };
-      selectedId = state._data.selectedId;
+      selectedProject = state._data.selectedProject;
     } else {
       currentTimeEntry = payload.body.time_entry;
-      selectedId = currentTimeEntry.project_id;
+      selectedProject = currentTimeEntry.project_id;
     }
 
     let newState = deepAssign({
       view: {
-        selected: findById(state._data.projects, selectedId),
+        selected: findById(state._data.projects, selectedProject),
         currentTimeEntry: currentTimeEntry
       },
       _data: {
-        selectedId: selectedId
+        selectedProject: selectedProject
       }
     }, state);
     return newState;
