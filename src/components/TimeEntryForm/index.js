@@ -85,10 +85,9 @@ class TimeEntryForm extends Component {
 
     const startedAt = this.props.ui.entry.started_at;
     const stoppedAt = this.props.ui.entry.stopped_at;
-
     let entry = objectAssign({}, this.props.ui.entry, {
-      started_at: startedAt ? moment.utc(startedAt).toISOString() : null,
-      stopped_at: stoppedAt ? moment.utc(stoppedAt).toISOString() : null
+      started_at: startedAt ? moment.utc(new Date(startedAt)).toISOString() : null,
+      stopped_at: stoppedAt ? moment.utc(new Date(stoppedAt)).toISOString() : null
     });
 
     const errors = this.validate(entry);
