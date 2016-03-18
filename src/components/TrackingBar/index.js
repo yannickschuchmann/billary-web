@@ -20,6 +20,7 @@ class TrackingBar extends Component {
     onNew: PropTypes.func,
     onSelect: PropTypes.func,
     onUnfold: PropTypes.func,
+    onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     onStart: PropTypes.func,
     onStop: PropTypes.func
@@ -32,6 +33,11 @@ class TrackingBar extends Component {
     this.props.postProject({name, parent_id});
   };
 
+  submitEditProject(project) {
+    this.props.onEdit(project);
+    this.props.updateUI("editProjectId", null);
+  };
+
   onSelectClicked(e) {
     this.props.updateUI("isSelecting", true);
   };
@@ -40,6 +46,10 @@ class TrackingBar extends Component {
     this.closeModal();
     this.props.onSelect(id);
   };
+
+  onEdit(id) {
+    this.props.updateUI("editProjectId", id);
+  }
 
   closeModal() {
     this.props.updateUI("isSelecting", false);
@@ -50,8 +60,28 @@ class TrackingBar extends Component {
     const timeSinceStartedAt = currentStartedAt ?
       Math.floor((new Date() - new Date(currentStartedAt)) / 1000) :
       0;
-
     const today = moment();
+
+    let modalContent = "";
+    if (this.props.ui.editProjectId) {
+      modalContent = (
+        <ProjectForm
+          onSubmit={this.submitEditProject.bind(this)}
+          projects={this.props.trackingState.projects}
+          project={this.props.trackingState.projectsById[this.props.ui.editProjectId]} />
+      );
+    } else {
+      modalContent = (<ProjectListing
+        advanced={true}
+        tree={this.props.trackingState.tree}
+        selected={this.props.trackingState.selected}
+        isFetching={this.props.trackingState.isFetching}
+        onSelect={this.onSelected.bind(this)}
+        onUnfold={this.props.onUnfold}
+        onEdit={this.onEdit.bind(this)}
+        onDelete={this.props.onDelete}
+        onNew={this.props.onNew} />)
+    }
 
     return (
       <div className="tracking-bar">
@@ -77,15 +107,7 @@ class TrackingBar extends Component {
           className="modal-select-project"
           isOpen={this.props.ui.isSelecting}
           onClose={this.closeModal.bind(this)}>
-          <ProjectListing
-            advanced={true}
-            tree={this.props.trackingState.tree}
-            selected={this.props.trackingState.selected}
-            isFetching={this.props.trackingState.isFetching}
-            onSelect={this.onSelected.bind(this)}
-            onUnfold={this.props.onUnfold}
-            onDelete={this.props.onDelete}
-            onNew={this.props.onNew} />
+          {modalContent}
         </Modal>
       </div>
     )
@@ -94,6 +116,7 @@ class TrackingBar extends Component {
 
 export default ui({
   state: {
-    isSelecting: false
+    isSelecting: false,
+    editProjectId: null
   }
 })(TrackingBar);

@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react';
 import ProjectItem from './_item';
-import ProjectForm from '../ProjectForm';
+import ProjectForm from '../ProjectForm/nameForm';
 import ButtonFormSwitch from '../ProjectForm/buttonFormSwitch';
 import {RefreshIndicator} from 'material-ui/lib'
 
 
-const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onDelete, onNew}) => {
+const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onEdit, onDelete, onNew}) => {
 
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
@@ -19,6 +19,7 @@ const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onDelet
         onNew={(name) => onNew(name, project.id)}
         onSelect={() => onSelect(project.id)}
         onUnfold={() => onUnfold(project.id)}
+        onEdit={() => onEdit(project.id)}
         onDelete={() => onDelete(project.id)}
         key={depth + "|" + index}
         item={project}>
@@ -51,6 +52,7 @@ ProjectListing.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   selected: PropTypes.object,
   onSelect: PropTypes.func,
+  onEdit: PropTypes.func,
   onUnfold: PropTypes.func,
   onDelete: PropTypes.func,
   onNew: PropTypes.func

@@ -137,6 +137,11 @@ class TrackingPage extends Component {
               .then(this.props.actions.getProjects)
               .then(this.props.actions.getTimeEntries)
           }
+          onEdit={(project) =>
+            this.props.actions
+              .patchProject(project)
+              .then(this.props.actions.getProjects)
+          }
           onUnfold={this.props.actions.openProject}
           onNew={(name, parent_id) =>
             this.props.actions

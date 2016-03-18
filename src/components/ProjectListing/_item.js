@@ -16,6 +16,7 @@ class ProjectItem extends Component {
     onNew: PropTypes.func,
     onSelect: PropTypes.func,
     onUnfold: PropTypes.func,
+    onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     isSelected: PropTypes.bool,
     item: PropTypes.object.isRequired,
@@ -64,7 +65,9 @@ class ProjectItem extends Component {
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
             useLayerForClickAway={true}
           >
-            <MenuItem primaryText="Edit" />
+            <MenuItem
+              primaryText="Edit"
+              onClick={(e) => this.handleClick(this.props.onEdit, e)} />
             <MenuItem
               primaryText="Delete"
               onClick={(e) => this.handleClick(this.props.onDelete, e)} />

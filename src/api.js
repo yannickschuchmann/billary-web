@@ -12,6 +12,15 @@ export function getProjects() {
 
 }
 
+export function patchProject(project) {
+  return request
+          .patch(API_PATH + "/projects/" + project.id)
+          .send({project})
+          .use(superagentPromisePlugin)
+          .end();
+
+}
+
 export function postProject(project) {
   return request
           .post(API_PATH + "/projects")
