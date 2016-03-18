@@ -43,13 +43,11 @@ export function getCurrentTimeEntry() {
           .end();
 }
 
-export function postTimeEntry(projectId) {
+export function postTimeEntry(entry) {
   return request
           .post(API_PATH + "/time_entries")
           .send({
-            time_entry: {
-              project_id: projectId
-            }
+            time_entry: entry
           })
           .use(superagentPromisePlugin)
           .end();

@@ -132,7 +132,7 @@ let reducer = createReducer({
   [calls.selectProject]: (state, payload) => {
     return deepAssign({
       view: {
-        selected: findById(state._data.projects, payload.id)
+        selected: findById(state.view.projects, payload.id)
       },
       _data: {
         selectedProject: payload.id

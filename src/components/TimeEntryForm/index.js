@@ -32,7 +32,7 @@ class TimeEntryForm extends Component {
     this.props.updateUI({entry});
   };
 
-  changeDate(date, _time) {
+  changeOnlyDate(date, _time) {
     const time = moment(_time);
     return moment(date).set({
       hour: time.hour(),
@@ -42,58 +42,99 @@ class TimeEntryForm extends Component {
   };
 
   handleChangeStartedAtDate(err, _date) {
-    this.handleChangeStartedAt(this.changeDate(_date, this.props.ui.entry.started_at));
+    this.handleChangeStartedAt(this.changeOnlyDate(_date, this.props.ui.entry.started_at));
   };
 
   handleChangeStoppedAtDate(err, _date) {
-    this.handleChangeStoppedAt(this.changeDate(_date, this.props.ui.entry.stopped_at));
+    this.handleChangeStoppedAt(this.changeOnlyDate(_date, this.props.ui.entry.stopped_at));
   };
 
   handleChangeStartedAtTime(err, time) {
-    this.handleChangeStartedAt(time);
+    this.handleChangeStartedAt(moment(time).set({second: 0}).toDate().toString());
   };
 
   handleChangeStoppedAtTime(err, time) {
-    this.handleChangeStoppedAt(time);
+    this.handleChangeStoppedAt(moment(time).set({second: 0}).toDate().toString());
   };
 
   handleChangeStartedAt(date) {
-    this.props.updateUI("entry", objectAssign({}, this.props.ui.entry, {
-      started_at: date
-    }));
+    this.props.updateUI({
+      entry: objectAssign({}, this.props.ui.entry, {
+        started_at: date
+      }),
+      errors: objectAssign({}, this.props.ui.errors, {
+        date: this.validateDate(date, this.props.ui.entry.stopped_at)
+      })
+    });
   };
 
+
   handleChangeStoppedAt(date) {
-    this.props.updateUI("entry", objectAssign({}, this.props.ui.entry, {
-      stopped_at: date
-    }));
+    this.props.updateUI({
+      entry: objectAssign({}, this.props.ui.entry, {
+        stopped_at: date
+      }),
+      errors: objectAssign({}, this.props.ui.errors, {
+        date: this.validateDate(this.props.ui.entry.started_at, date)
+      })
+    });
   };
 
   submit(e) {
     e.preventDefault();
+
+    const startedAt = this.props.ui.entry.started_at;
+    const stoppedAt = this.props.ui.entry.stopped_at;
+
     let entry = objectAssign({}, this.props.ui.entry, {
-      started_at: moment.utc(this.props.ui.entry.started_at).toISOString(),
-      stopped_at: moment.utc(this.props.ui.entry.stopped_at).toISOString()
+      started_at: startedAt ? moment.utc(startedAt).toISOString() : null,
+      stopped_at: stoppedAt ? moment.utc(stoppedAt).toISOString() : null
     });
 
+    const errors = this.validate(entry);
 
-    entry = _.omit(entry, ["duration", "projectNames"]);
-    this.props.onSubmit(entry);
+    this.props.updateUI({errors});
+
+    if (errors.date == "" && errors.project == "") {
+      entry = _.omit(entry, ["duration", "projectNames"]);
+      this.props.onSubmit(entry);
+    }
+
     return false;
-  }
+  };
+
+  validate(entry) {
+    return objectAssign({}, this.props.ui.errors, {
+      project: !entry.project_id ? "Project must be set" : "",
+      date: this.validateDate(entry.started_at, entry.stopped_at)
+    });
+  };
+
+  validateDate(started_at, stopped_at) {
+    if (!started_at || !stopped_at) return "Both dates must be set";
+
+    const diff = moment(stopped_at).diff(moment(started_at), 'minutes');
+    return diff <= 0 ? "From date must be before Till date" : "";
+  };
 
   onProjectChange(e, index, value) {
-    this.props.updateUI("entry", objectAssign({}, this.props.ui.entry, {
+    const entry = objectAssign({}, this.props.ui.entry, {
       project_id: value
-    }));
+    });
+
+    this.props.updateUI({
+      entry,
+      errors: this.validate(entry)
+    });
   };
 
   render() {
     const entry = this.props.ui.entry || {};
     const startedAt = entry.started_at ? new Date(entry.started_at) : null;
     const stoppedAt = entry.stopped_at ? new Date(entry.stopped_at) : null;
-    const diff = moment(entry.stopped_at).diff(moment(entry.started_at), 'minutes');
-    const dateError = diff <= 0 ? "From date must be before Till date" : "";
+    const diff = (this.props.ui.errors.date == "") ?
+      moment(entry.stopped_at).diff(moment(entry.started_at), 'minutes') :
+      0;
 
     const projectOptions = this.props.projects.map((project, i) => (
       <MenuItem
@@ -108,9 +149,15 @@ class TimeEntryForm extends Component {
         <form onSubmit={this.submit}>
           <SelectField
             fullWidth={true}
+            errorText={this.props.ui.errors.project}
             value={entry.project_id}
             onChange={this.onProjectChange.bind(this)}
             floatingLabelText="Choose Project"
+            errorStyle={{
+              top: "100%",
+              bottom: "auto",
+              position: "absolute"
+            }}
             >
             {projectOptions}
           </SelectField>
@@ -131,7 +178,7 @@ class TimeEntryForm extends Component {
               <TimePicker
                 format="24hr"
                 hintText="Time"
-                errorText={dateError}
+                errorText={this.props.ui.errors.date}
                 value={startedAt}
                 onChange={this.handleChangeStartedAtTime.bind(this)}
                 />
@@ -148,7 +195,7 @@ class TimeEntryForm extends Component {
               <TimePicker
                 format="24hr"
                 hintText="Stopped at"
-                errorText={dateError}
+                errorText={this.props.ui.errors.date}
                 value={stoppedAt}
                 onChange={this.handleChangeStoppedAtTime.bind(this)}
                 />
@@ -165,10 +212,12 @@ class TimeEntryForm extends Component {
     );
   };
 }
-
-
 export default ui({
   state: {
+    errors: {
+      date: "",
+      project: ""
+    },
     entry: {}
   }
 })(TimeEntryForm);

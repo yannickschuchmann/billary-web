@@ -128,7 +128,7 @@ class TrackingPage extends Component {
               const selected = this.props.trackingState.selected;
               if (selected && selected.id) {
                 this.props.actions
-                  .postTimeEntry(selected.id)
+                  .postTimeEntry({project_id: selected.id})
                   .then(() => {
                     this.props.actions.getCurrentTimeEntry();
                     this.props.actions.getTimeEntries();
