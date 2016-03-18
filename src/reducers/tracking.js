@@ -22,7 +22,9 @@ const initialState = {
       selectedDay: moment().startOf('day').toDate(),
       timeEntriesByDay: {}
     },
-    projects: []
+    projectWrappedTimeEntries: {},
+    projects: [],
+    projectsById: {}
   },
   _data: {
     selectedProject: null,
@@ -50,6 +52,19 @@ const getTimeEntriesByDay = (items) => {
   return _.groupBy(items, (item) => moment(item.started_at).startOf('day').toDate().toString());
 }
 
+const getTimeEntriesByDayAndProject = (items) => {
+  /*
+  {
+    day: [
+      project_id: [timeEntries]
+    ]
+  }
+  */
+  return _.mapValues(getTimeEntriesByDay(items), (items) =>
+    _.groupBy(items, (item) => item.project_id)
+  );
+}
+
 let reducer = createReducer({
 
   // GET_PROJECTS
@@ -61,6 +76,7 @@ let reducer = createReducer({
     }, state);
   },
   [calls.getProjects.ok]: (state, payload) => {
+    const mappedProjects = mapProjectNames(payload.body.projects, payload.body.projects, 'id');
     const tree = unflattenEntities(payload.body.projects).map((item, i) => {
       return setUnfoldedToChildren(item, state._data.unfoldedItems);
     });
@@ -68,8 +84,9 @@ let reducer = createReducer({
       view: {
         tree: tree,
         isFetching: false,
-        selected: findById(payload.body.projects, state._data.selectedProject),
-        projects: payload.body.projects
+        selected: state.view.projectsById[state._data.selectedProject],
+        projects: mappedProjects,
+        projectsById: _.keyBy(payload.body.projects, "id")
       }
     }, state);
   },
@@ -132,7 +149,7 @@ let reducer = createReducer({
   [calls.selectProject]: (state, payload) => {
     return deepAssign({
       view: {
-        selected: findById(state.view.projects, payload.id)
+        selected: state.view.projectsById[payload.id]
       },
       _data: {
         selectedProject: payload.id
@@ -151,7 +168,8 @@ let reducer = createReducer({
       view: {
         calendar: {
           timeEntriesByDay: getTimeEntriesByDay(mappedTimeEntries)
-        }
+        },
+        projectWrappedTimeEntries: getTimeEntriesByDayAndProject(mappedTimeEntries)
       },
       _data: {
         timeEntries: mappedTimeEntries
@@ -169,7 +187,6 @@ let reducer = createReducer({
   },
   [calls.deleteTimeEntry.ok]: (state, payload) => {
     let newState = objectAssign({}, state);
-    calls.getTimeEntries();
     return newState;
   },
   [calls.deleteTimeEntry.error]: (state, payload) => {
@@ -195,7 +212,7 @@ let reducer = createReducer({
 
     let newState = deepAssign({
       view: {
-        selected: findById(state.view.projects, selectedProject),
+        selected: state.view.projectsById[selectedProject],
         currentTimeEntry: currentTimeEntry
       },
       _data: {

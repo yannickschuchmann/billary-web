@@ -9,6 +9,7 @@ import TrackingBar from '../components/TrackingBar';
 import Calendar from '../components/Calendar';
 import TimeEntryListing from '../components/TimeEntryListing';
 import TimeEntry from '../components/TimeEntryListing/_item';
+import ProjectWrap from '../components/TimeEntryListing/_project';
 import Modal from '../components/Modal';
 import ProjectSelector from '../components/ProjectSelector';
 import TimeEntryForm from '../components/TimeEntryForm';
@@ -53,28 +54,46 @@ class TrackingPage extends Component {
       (entry.id) ? actions.patchTimeEntry(entry) : actions.postTimeEntry(entry);
     promise.then(actions.getTimeEntries);
     this.closeTimeEntryModal();
-  }
+  };
+
+  toggleTimeEntriesForProject(projectId) {
+    const current = this.props.ui.openTimeEntriesForProject;
+    this.props.updateUI("openTimeEntriesForProject",
+      current == projectId ? null : projectId);
+  };
 
   render() {
     const calendarState = this.props.trackingState.calendar;
-    let timeEntries = calendarState.timeEntriesByDay[calendarState.selectedDay.toString()] || [];
+    const projectWrapsForDay = this.props.trackingState
+      .projectWrappedTimeEntries[calendarState.selectedDay.toString()] || [];
 
-    const durationForSelectedDay = _.reduce(
-      _.values(timeEntries),
-      (sum, entry) => sum + entry.duration,
-      0
-    );
+    let durationForSelectedDay = 0;
+    let projectWraps = [];
 
-    timeEntries = timeEntries.map((entry, i) =>
-      (<TimeEntry
+    let i = 0;
+    _.forOwn(projectWrapsForDay, (items, key) => {
+      const entries = items.map((entry, i) => (<TimeEntry
         onEdit={() => this.showTimeEntryModal(entry)}
         onDelete={() => this.props.actions.deleteTimeEntry(entry.id)
           .then(this.props.actions.getTimeEntries)}
         key={i}
         index={i+1}
         item={entry} />)
-    );
+      );
 
+      const duration = _.reduce(items,(sum, entry) => sum + entry.duration,0);
+      durationForSelectedDay += duration;
+      projectWraps.push(<ProjectWrap
+                          key={key}
+                          index={i + 1}
+                          open={this.props.ui.openTimeEntriesForProject == key}
+                          project={this.props.trackingState.projectsById[key]}
+                          duration={duration}
+                          onToggle={(e) => this.toggleTimeEntriesForProject(key)}>
+                          {entries}
+                        </ProjectWrap>);
+      i++;
+    });
     return (
       <div id="tracking-container">
         <div className="week-detail">
@@ -103,7 +122,7 @@ class TrackingPage extends Component {
               </div>
             </div>
             <TimeEntryListing>
-              {timeEntries}
+              {projectWraps}
             </TimeEntryListing>
           </div>
         </div>
@@ -179,6 +198,7 @@ export default connect(
   key: "tracking-container",
   state: {
     showTimeEntryModal: false,
-    editTimeEntry: null
+    editTimeEntry: null,
+    openTimeEntriesForProject: null
   }
 })(TrackingPage));

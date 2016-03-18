@@ -14,9 +14,9 @@ const findById = (items, id) => {
   return _.findLast(items, {id})
 }
 
-const mapProjectNames = (items, projects) => {
+const mapProjectNames = (items, projects, id_selector = "project_id") => {
   return items.map((item) => {
-    item.projectNames = getParentNamesRecursively(projects, item.project_id);
+    item.projectNames = getParentNamesRecursively(projects, item[id_selector]);
     return item;
   })
 }

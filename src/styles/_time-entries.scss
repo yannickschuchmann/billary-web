@@ -6,24 +6,53 @@
 .time-entry-listing {
   flex: 1;
   overflow-y: auto;
+  .project-wrap-item {
+    > div {
+      display: flex;
+      .index {
+        padding: 0 10px;
+      }
+      .duration {
+        padding: 0 10px;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+      .name {
+        display: flex;
+      }
+      .name-item {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+  .project-wrap-children {
+    padding-left: 30px;
+  }
   .time-entry {
     display: flex;
     height: 40px;
     align-items: center;
-    border-bottom: 1px solid gray;
-    .id {
+    background: #f3f3f3;
+    .index {
       padding: 0 10px;
+    }
+    .dates-wrap {
+      flex: 1;
+      justify-content: space-around;
+      display: flex;
+      .date {
+        display: flex;
+        align-items: center;
+        > * {
+          padding: 0 5px;
+        }
+      }
     }
     .duration {
       padding: 0 10px;
       margin-left: auto;
-      display: flex;
-      align-items: center;
-    }
-    .name {
-      display: flex;
-    }
-    .name-item {
       display: flex;
       align-items: center;
     }
