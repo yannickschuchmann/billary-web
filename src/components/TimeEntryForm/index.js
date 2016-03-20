@@ -34,7 +34,7 @@ class TimeEntryForm extends Component {
 
   changeOnlyDate(date, _time) {
     const time = moment(_time);
-    return moment(date).set({
+    return moment(new Date(date)).set({
       hour: time.hour(),
       minute: time.minute(),
       second: time.second()
