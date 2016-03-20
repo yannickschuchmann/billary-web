@@ -52,7 +52,9 @@ class TrackingPage extends Component {
     const actions = this.props.actions;
     const promise =
       (entry.id) ? actions.patchTimeEntry(entry) : actions.postTimeEntry(entry);
-    promise.then(actions.getTimeEntries);
+    promise.then(() => {
+      actions.getTimeEntries()
+    });
     this.closeTimeEntryModal();
   };
 
@@ -81,7 +83,7 @@ class TrackingPage extends Component {
         item={entry} />)
       );
 
-      const duration = _.reduce(items,(sum, entry) => sum + entry.duration,0);
+      const duration = _.reduce(items,(sum, entry) => sum + entry.duration_overhang,0);
       durationForSelectedDay += duration;
       projectWraps.push(<ProjectWrap
                           key={key}

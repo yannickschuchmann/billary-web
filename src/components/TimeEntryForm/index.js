@@ -89,13 +89,18 @@ class TimeEntryForm extends Component {
       started_at: startedAt ? moment.utc(new Date(startedAt)).toISOString() : null,
       stopped_at: stoppedAt ? moment.utc(new Date(stoppedAt)).toISOString() : null
     });
-
     const errors = this.validate(entry);
 
     this.props.updateUI({errors});
 
     if (errors.date == "" && errors.project == "") {
-      entry = _.omit(entry, ["duration", "projectNames"]);
+      entry = _.omit(entry, [
+        "duration",
+        "duration_overhang",
+        "started_at_overhang",
+        "stopped_at_overhang",
+        "projectNames"
+      ]);
       this.props.onSubmit(entry);
     }
 

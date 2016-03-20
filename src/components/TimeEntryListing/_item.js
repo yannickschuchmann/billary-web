@@ -4,10 +4,6 @@ import {
   secondsToCounterString,
   minutesToCounterString
 } from '../../businessLogic/calendarHelper';
-import {
-  getStartedAtWithOverhang,
-  getStoppedAtWithOverhang
-} from '../../businessLogic/timeEntryHelper';
 import Timer from 'material-ui/lib/svg-icons/image/timer';
 import TimerOff from 'material-ui/lib/svg-icons/image/timer-off';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
@@ -23,14 +19,17 @@ const TimeEntry = ({item, index, onEdit, onDelete}) => {
 
   let startedAt = "", startedAtIcon = "";
   if (item.started_at) {
-    startedAt = getStartedAtWithOverhang(item).format("HH:mm");
+    startedAt = item.started_at_overhang.clone().format("HH:mm");
     startedAtIcon = <Timer/>
   }
 
   let stoppedAt = "", stoppedAtIcon = "";
+  let duration = "running";
   if (item.stopped_at) {
-    stoppedAt = getStoppedAtWithOverhang(item).format("HH:mm");
+    stoppedAt = item.stopped_at_overhang.clone().format("HH:mm");
     stoppedAtIcon = <TimerOff/>
+
+    duration = item.duration_overhang;
   }
 
   return (
@@ -42,7 +41,7 @@ const TimeEntry = ({item, index, onEdit, onDelete}) => {
       </div>
       <div className="duration">
         {(item.stopped_at) ?
-          minutesToCounterString(item.duration) :
+          minutesToCounterString(duration) :
           "running"
         }
       </div>

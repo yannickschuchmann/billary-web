@@ -6,6 +6,11 @@ import _ from 'lodash';
 import {unflattenEntities} from '../businessLogic/treeHelper';
 import {moment} from '../businessLogic/calendarHelper';
 import {findById, mapProjectNames} from '../businessLogic/projectHelper';
+import {
+  getStartedAtWithOverhang,
+  getStoppedAtWithOverhang,
+  getDurationWithOverhang
+} from '../businessLogic/timeEntryHelper';
 
 import * as calls from '../actions';
 
@@ -62,10 +67,15 @@ const extendItemsDueOverhang = (items) => {
                         .diff(stoppedAt.startOf('day'), 'days'));
 
     for (let i = 0; i <= daysDiff; i++) {
-      newItems.push(objectAssign({}, item, {
+      const tmp = objectAssign({}, item, {
         groupDate: startedAt.add(i > 0 ? 1 : 0, 'day').startOf('day').toDate().toString(),
         currentDayOverhang: i,
         daysOverhang: daysDiff
+      });
+      newItems.push(objectAssign({}, tmp, {
+        started_at_overhang: getStartedAtWithOverhang(tmp),
+        stopped_at_overhang: getStoppedAtWithOverhang(tmp),
+        duration_overhang: getDurationWithOverhang(tmp)
       }));
     }
   });
