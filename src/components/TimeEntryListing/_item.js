@@ -4,6 +4,10 @@ import {
   secondsToCounterString,
   minutesToCounterString
 } from '../../businessLogic/calendarHelper';
+import {
+  getStartedAtWithOverhang,
+  getStoppedAtWithOverhang
+} from '../../businessLogic/timeEntryHelper';
 import Timer from 'material-ui/lib/svg-icons/image/timer';
 import TimerOff from 'material-ui/lib/svg-icons/image/timer-off';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
@@ -17,24 +21,24 @@ const TimeEntry = ({item, index, onEdit, onDelete}) => {
     fn();
   };
 
-  let startedAt = [];
+  let startedAt = "", startedAtIcon = "";
   if (item.started_at) {
-    startedAt.push(moment(item.started_at).format("HH:mm"))
-    startedAt.push(<Timer/>)
+    startedAt = getStartedAtWithOverhang(item).format("HH:mm");
+    startedAtIcon = <Timer/>
   }
 
-  let stoppedAt = [];
+  let stoppedAt = "", stoppedAtIcon = "";
   if (item.stopped_at) {
-    stoppedAt.push(moment(item.stopped_at).format("HH:mm"))
-    stoppedAt.push(<TimerOff/>)
+    stoppedAt = getStoppedAtWithOverhang(item).format("HH:mm");
+    stoppedAtIcon = <TimerOff/>
   }
 
   return (
     <div className="time-entry">
       <div className="index">{index}</div>
       <div className="dates-wrap">
-        <div className="date">{startedAt}</div>
-        <div className="date">{stoppedAt}</div>
+        <div className="date">{startedAt}{startedAtIcon}</div>
+        <div className="date">{stoppedAt}{stoppedAtIcon}</div>
       </div>
       <div className="duration">
         {(item.stopped_at) ?

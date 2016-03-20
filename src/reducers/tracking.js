@@ -49,7 +49,27 @@ const setUnfoldedToChildren = (item, unfoldedItems) => {
 }
 
 const getTimeEntriesByDay = (items) => {
-  return _.groupBy(items, (item) => moment(item.started_at).startOf('day').toDate().toString());
+  return _.groupBy(extendItemsDueOverhang(items), 'groupDate');
+}
+
+const extendItemsDueOverhang = (items) => {
+  let newItems = [];
+  _.forEach(items, (item, i) => {
+    const startedAt = moment(item.started_at);
+    const stoppedAt = moment(item.stopped_at);
+    const daysDiff = Math.abs(startedAt
+                        .startOf('day')
+                        .diff(stoppedAt.startOf('day'), 'days'));
+
+    for (let i = 0; i <= daysDiff; i++) {
+      newItems.push(objectAssign({}, item, {
+        groupDate: startedAt.add(i > 0 ? 1 : 0, 'day').startOf('day').toDate().toString(),
+        currentDayOverhang: i,
+        daysOverhang: daysDiff
+      }));
+    }
+  });
+  return newItems;
 }
 
 const getTimeEntriesByDayAndProject = (items) => {
