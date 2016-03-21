@@ -1,7 +1,7 @@
 .visual-day-container {
   flex: 1;
   position: relative;
-  background: #fff;
+  background: #474B4E;
   display: flex;
   border-bottom: 1px solid #000;
 }
@@ -33,21 +33,87 @@
   justify-content: space-around;
   .grid {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 10px;
+    bottom: 10px;
     display: flex;
   }
   .grid-line {
     flex: 1;
+    color: #fff;
     height: 100%;
-    border-left: 1px solid #000;
+    position: relative;
+    &:after {
+      content: "";
+      border-left: 1px solid rgba(255,255,255,.1);
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+    .label {
+      position: absolute;
+      left: 0;
+      top: -10px;
+      font-size: 12px;
+      transform: translate(-50%, 0);
+    }
+    &.last {
+      width: 0;
+      flex: 0;
+    }
   }
 }
+.visual-day-rows {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+  padding: 10px 0;
+}
+
 .visual-day-row {
   flex: 1;
   margin: 10px 0;
-  background: #ccc;
+  display: flex;
+  flex-flow: column;
+  position: relative;
+}
+$colors: $visual-day-colors;
+@for $i from 1 through length($colors) {
+    $c: nth($visual-day-colors, $i);
+    .visual-day-row:nth-child(#{length($colors)}n+#{$i}) {
+      .visual-day-item {
+        background: nth($colors, $i);
+      }
+    }
 }
 .visual-day-item {
-  background: yellow;
+  flex: 1;
+  border-radius: 4px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  font-family: RoladeFree;
+  font-size: 16px;
+  color: #FFFFFF;
+  line-height: 35px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+.visual-day-scrollbar {
+  height: 13px;
+  background: #36393E;
+  position: relative;
+}
+.visual-day-thumb {
+  height: 100%;
+  background: #232429;
+  min-width: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: drag;
 }
