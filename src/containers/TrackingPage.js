@@ -15,6 +15,9 @@ import ProjectSelector from '../components/ProjectSelector';
 import TimeEntryForm from '../components/TimeEntryForm';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
+import VisualDay from '../components/VisualDay';
+import VisualDayRow from '../components/VisualDay/_row';
+import VisualDayItem from '../components/VisualDay/_item';
 
 class TrackingPage extends Component {
   static propTypes = {
@@ -71,6 +74,7 @@ class TrackingPage extends Component {
 
     let durationForSelectedDay = 0;
     let projectWraps = [];
+    let visualProjectWraps = [];
 
     let i = 0;
     _.forOwn(projectWrapsForDay, (items, key) => {
@@ -82,23 +86,44 @@ class TrackingPage extends Component {
         index={i+1}
         item={entry} />)
       );
+      const visualItems = items.map((entry, i) => (
+        <VisualDayItem
+          item={entry}
+          index={i}
+          key={i}
+          />
+      ));
 
       const duration = _.reduce(items,(sum, entry) => sum + entry.duration_overhang,0);
+      projectWraps.push(
+        <ProjectWrap
+          key={key}
+          index={i + 1}
+          open={this.props.ui.openTimeEntriesForProject == key}
+          project={this.props.trackingState.projectsById[key]}
+          duration={duration}
+          onToggle={(e) => this.toggleTimeEntriesForProject(key)}>
+          {entries}
+        </ProjectWrap>
+      );
+      visualProjectWraps.push(
+        <VisualDayRow
+          key={key}
+          index={i}>
+          {visualItems}
+        </VisualDayRow>
+      );
+
       durationForSelectedDay += duration;
-      projectWraps.push(<ProjectWrap
-                          key={key}
-                          index={i + 1}
-                          open={this.props.ui.openTimeEntriesForProject == key}
-                          project={this.props.trackingState.projectsById[key]}
-                          duration={duration}
-                          onToggle={(e) => this.toggleTimeEntriesForProject(key)}>
-                          {entries}
-                        </ProjectWrap>);
       i++;
     });
     return (
       <div id="tracking-container">
-        <div className="week-detail">
+        <div className="visual-day-container">
+          <VisualDay
+            selectedDay={calendarState.selectedDay}>
+            {visualProjectWraps}
+          </VisualDay>
           <FloatingActionButton
             mini={true}
             style={{
