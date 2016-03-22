@@ -39,7 +39,8 @@ class VisualDay extends Component {
 
   componentWillUnmount() {
     window.cancelAnimationFrame(this.tick);
-    window.removeEventListener(this.onResizeEvent);
+    window.removeEventListener('resize', this.onResizeEvent);
+    this.refs.scrollContainer.removeEventListener('wheel', this.onWheel);
   };
 
   setDefaultScroll() {
