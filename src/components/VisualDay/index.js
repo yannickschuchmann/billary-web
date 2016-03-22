@@ -10,13 +10,28 @@ const spacingAround = 40; //px
 class VisualDay extends Component {
   static propTypes = {
     children: PropTypes.node,
-    selectedDay: PropTypes.object
+    selectedDay: PropTypes.object,
+    dragging: PropTypes.bool,
+    rel: PropTypes.object
   };
+
+  static defaultProps = {
+    dragging: false,
+    rel: null
+  };
+  state = { dragging: this.props.dragging, rel: this.props.rel };
+
+  constructor(props){
+      super(props);
+      this.onMouseMove = this.onMouseMove.bind(this);
+      this.onMouseUp = this.onMouseUp.bind(this);
+    }
 
   componentDidMount() {
     this.lastScrollPosition = -1;
     this.tick = window.requestAnimationFrame(this.renderScrollbar.bind(window, this));
     this.onResizeEvent = window.addEventListener('resize', () => {this.scrollContainerChanged = true});
+    setTimeout(this.setDefaultScroll.bind(this), 0);
   };
 
   componentWillUnmount() {
@@ -24,13 +39,29 @@ class VisualDay extends Component {
     window.removeEventListener(this.onResizeEvent);
   };
 
+  setDefaultScroll() {
+    const hour = 8;
+    const scrollToHour = hour * hourScale;
+    this.refs.scrollContainer.scrollLeft = scrollToHour;
+  };
+
   renderScrollbar(comp, timestamp) {
+    let elWidth;
     const el = comp.refs.scrollContainer;
-    if (!comp.scrollContainerChanged && comp.lastScrollPosition == el.scrollLeft) {
+    if (comp.props.ui.dragging && comp._dragX) {
+      elWidth = el.getBoundingClientRect().width;
+      const scrollDelta = comp._dragX - comp._dragStartX;
+      const scrollDeltaInRelation = (scrollDelta / elWidth) * 2480;
+      el.scrollLeft = comp._dragStartScroll + scrollDeltaInRelation;
+    }
+
+    if (comp.props.ui.dragging &&
+        !comp.scrollContainerChanged &&
+        comp.lastScrollPosition == el.scrollLeft) {
       comp.tick = window.requestAnimationFrame(comp.renderScrollbar.bind(window, comp));
       return false;
     } else {
-      const elWidth = el.getBoundingClientRect().width;
+      elWidth = el.getBoundingClientRect().width;
       const contentWidth = comp.refs.container.getBoundingClientRect().width;
       const thumbWidth = (elWidth / contentWidth) * elWidth; // native width
       const scrollPercentage = el.scrollLeft / (contentWidth - elWidth);
@@ -42,6 +73,37 @@ class VisualDay extends Component {
 
       comp.scrollContainerChanged = false;
     }
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.ui.dragging && !prevProps.dragging) {
+      document.addEventListener('mousemove', this.onMouseMove)
+      document.addEventListener('mouseup', this.onMouseUp)
+    } else if (!this.props.ui.dragging && prevProps.dragging) {
+      document.removeEventListener('mousemove', this.onMouseMove)
+      document.removeEventListener('mouseup', this.onMouseUp)
+    }
+  };
+
+  onMouseDown(e) {
+    if (e.button !== 0) return;
+    this.props.updateUI("dragging", true);
+
+    this._dragStartX = e.pageX;
+    this._dragStartScroll = this.refs.scrollContainer.scrollLeft;
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  onMouseUp(e) {
+    this.props.updateUI("dragging", false);
+    this._dragX = null;
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  onMouseMove(e) {
+    this._dragX = e.pageX;
   };
 
   render() {
@@ -67,7 +129,9 @@ class VisualDay extends Component {
     return (
       <div className="visual-day-wrap">
         <div className="visual-day-scrollbar">
-          <div className="visual-day-thumb" ref="thumb"><DragHandle style={{
+          <div className="visual-day-thumb"
+            onMouseDown={this.onMouseDown.bind(this)}
+            ref="thumb"><DragHandle style={{
               transform: "rotateZ(90deg)",
               height: 13,
               width: 13,
@@ -101,6 +165,7 @@ class VisualDay extends Component {
 export {hourScale, spacingAround}
 export default ui({
   state: {
+    dragging: false,
     style: {
       width: (24 * hourScale) + "px",
       padding: `0 ${spacingAround}px`
