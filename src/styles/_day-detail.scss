@@ -13,6 +13,7 @@
 .visual-day-scroll-wrap {
   flex: 1;
   position: relative;
+  overflow: hidden;
 }
 .visual-day-scroll {
   display: flex;
@@ -20,10 +21,15 @@
   overflow: auto;
   align-items: flex-start;
   position: absolute;
+  padding-bottom: 20px;
   top: 0;
-  bottom: 0;
+  bottom: -20px;
   left: 0;
   right: 0;
+}
+.visual-day-scroll::-webkit-scrollbar {
+  -webkit-appearance: none;
+  height: 0;
 }
 .visual-day {
   flex: 1;
@@ -108,12 +114,11 @@ $colors: $visual-day-colors;
 .visual-day-thumb {
   height: 100%;
   background: #232429;
-  min-width: 50%;
   position: absolute;
   top: 0;
   left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: drag;
+  width: 0;
 }

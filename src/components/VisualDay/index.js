@@ -13,8 +13,43 @@ class VisualDay extends Component {
     selectedDay: PropTypes.object
   };
 
+  componentDidMount() {
+    this.lastScrollPosition = -1;
+    this.tick = window.requestAnimationFrame(this.renderScrollbar.bind(window, this));
+    this.onResizeEvent = window.addEventListener('resize', () => {this.scrollContainerChanged = true});
+  };
+
+  componentWillUnmount() {
+    window.cancelAnimationFrame(this.tick);
+    window.removeEventListener(this.onResizeEvent);
+  };
+
+  renderScrollbar(comp, timestamp) {
+    const el = comp.refs.scrollContainer;
+    if (!comp.scrollContainerChanged && comp.lastScrollPosition == el.scrollLeft) {
+      comp.tick = window.requestAnimationFrame(comp.renderScrollbar.bind(window, comp));
+      return false;
+    } else {
+      const elWidth = el.getBoundingClientRect().width;
+      const contentWidth = comp.refs.container.getBoundingClientRect().width;
+      const thumbWidth = (elWidth / contentWidth) * elWidth; // native width
+      const scrollPercentage = el.scrollLeft / (contentWidth - elWidth);
+      const thumbScroll = (elWidth - thumbWidth) * scrollPercentage;
+      comp.lastScrollPosition = el.scrollLeft;
+      comp.refs.thumb.style.width = `${thumbWidth}px`;
+      comp.refs.thumb.style.transform = `translate3d(${thumbScroll}px,0,0)`;
+      comp.tick = window.requestAnimationFrame(comp.renderScrollbar.bind(window, comp));
+
+      comp.scrollContainerChanged = false;
+    }
+  };
 
   render() {
+    const el = this.refs.scrollContainer;
+    if (el) {
+      this.scrollContainerChanged = true;
+    }
+
     let grid = [];
     for(let i = 0; i < 24; i++) {
       grid.push(
@@ -32,7 +67,7 @@ class VisualDay extends Component {
     return (
       <div className="visual-day-wrap">
         <div className="visual-day-scrollbar">
-          <div className="visual-day-thumb"><DragHandle style={{
+          <div className="visual-day-thumb" ref="thumb"><DragHandle style={{
               transform: "rotateZ(90deg)",
               height: 13,
               width: 13,
@@ -46,7 +81,7 @@ class VisualDay extends Component {
           {moment(this.props.selectedDay).format("dddd, Do MMMM YYYY")}
         </div>
         <div className="visual-day-scroll-wrap">
-          <div className="visual-day-scroll">
+          <div className="visual-day-scroll" ref="scrollContainer">
             <div className="visual-day" ref="container" style={this.props.ui.style}>
               <div className="grid" style={{
                   left: `${spacingAround}px`,
