@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'frozen-moment';
 moment.locale('de');
 
 const createCalendar = (year, month, timeEntriesByDay, dayOffset = 1) => {
@@ -35,6 +35,7 @@ const createCalendar = (year, month, timeEntriesByDay, dayOffset = 1) => {
       before: iterator < firstDate, // add indicator if before current month
       after: iterator > lastDate // add indicator if after current month
     });
+
 
 		// iterate to next day
 		iterator.setDate(iterator.getDate() + 1);

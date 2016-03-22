@@ -199,7 +199,7 @@ let reducer = createReducer({
         calendar: {
           timeEntriesByDay: getTimeEntriesByDay(mappedTimeEntries)
         },
-        projectWrappedTimeEntries: getTimeEntriesByDayAndProject(mappedTimeEntries)
+        projectWrappedTimeEntries: () => getTimeEntriesByDayAndProject(mappedTimeEntries)
       },
       _data: {
         timeEntries: mappedTimeEntries

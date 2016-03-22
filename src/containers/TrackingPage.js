@@ -34,7 +34,9 @@ class TrackingPage extends Component {
         this.props.actions.getCurrentTimeEntry();
         this.props.actions.getTimeEntries();
       });
+  };
 
+  componentWillReceiveProps(newProps) {
   };
 
   showTimeEntryModal(entry = null) {
@@ -82,7 +84,7 @@ class TrackingPage extends Component {
         onEdit={() => this.showTimeEntryModal(entry)}
         onDelete={() => this.props.actions.deleteTimeEntry(entry.id)
           .then(this.props.actions.getTimeEntries)}
-        key={i}
+        key={entry.id}
         index={i+1}
         item={entry} />)
       );
@@ -90,7 +92,7 @@ class TrackingPage extends Component {
         <VisualDayItem
           item={entry}
           index={i}
-          key={i}
+          key={entry.id + entry.started_at + entry.stopped_at}
           />
       ));
 
