@@ -53,13 +53,13 @@ class VisualDay extends Component {
     let grid = [];
     for(let i = 0; i < 24; i++) {
       grid.push(
-        <div className="grid-line" style={{width: hourScale + "px"}}>
+        <div className="grid-line" style={{width: hourScale + "px"}} key={i}>
           <div className="label">{moment().hour(i).minute(0).second(0).format("H:mm")}</div>
         </div>
       );
     }
     grid.push(
-      <div className="grid-line last">
+      <div className="grid-line last" key={24}>
         <div className="label">{moment().hour(24).minute(0).second(0).format("H:mm")}</div>
       </div>
     )
