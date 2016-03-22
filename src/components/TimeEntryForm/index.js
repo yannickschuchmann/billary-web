@@ -50,11 +50,11 @@ class TimeEntryForm extends Component {
   };
 
   handleChangeStartedAtTime(err, time) {
-    this.handleChangeStartedAt(moment(time).set({second: 0}).toDate().toString());
+    this.handleChangeStartedAt(moment(new Date(time)).set({second: 0}).toDate().toString());
   };
 
   handleChangeStoppedAtTime(err, time) {
-    this.handleChangeStoppedAt(moment(time).set({second: 0}).toDate().toString());
+    this.handleChangeStoppedAt(moment(new Date(time)).set({second: 0}).toDate().toString());
   };
 
   handleChangeStartedAt(date) {
@@ -117,7 +117,7 @@ class TimeEntryForm extends Component {
   validateDate(started_at, stopped_at) {
     if (!started_at || !stopped_at) return "Both dates must be set";
 
-    const diff = moment(stopped_at).diff(moment(started_at), 'minutes');
+    const diff = moment(new Date(stopped_at)).diff(moment(new Date(started_at)), 'minutes');
     return diff <= 0 ? "From date must be before Till date" : "";
   };
 
@@ -136,8 +136,8 @@ class TimeEntryForm extends Component {
     const entry = this.props.ui.entry || {};
     const startedAt = entry.started_at ? new Date(entry.started_at) : null;
     const stoppedAt = entry.stopped_at ? new Date(entry.stopped_at) : null;
-    const diff = (this.props.ui.errors.date == "") ?
-      moment(entry.stopped_at).diff(moment(entry.started_at), 'minutes') :
+    const diff = (startedAt && stoppedAt && this.props.ui.errors.date == "") ?
+      moment(stoppedAt).diff(moment(startedAt), 'minutes') :
       0;
 
     const projectOptions = this.props.projects.map((project, i) => (
