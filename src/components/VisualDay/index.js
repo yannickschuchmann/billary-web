@@ -3,6 +3,7 @@ import ui from 'redux-ui';
 import objectAssign from 'object-assign';
 import {moment} from '../../businessLogic/calendarHelper';
 import DragHandle from 'material-ui/lib/svg-icons/editor/drag-handle';
+import wheelEventPolyFill from '../../businessLogic/wheelHelper';
 
 const hourScale = 100;
 const spacingAround = 40; //px
@@ -25,12 +26,14 @@ class VisualDay extends Component {
       super(props);
       this.onMouseMove = this.onMouseMove.bind(this);
       this.onMouseUp = this.onMouseUp.bind(this);
+      this.onWheel = this.onWheel.bind(this);
     }
 
   componentDidMount() {
     this.lastScrollPosition = -1;
     this.tick = window.requestAnimationFrame(this.renderScrollbar.bind(window, this));
     this.onResizeEvent = window.addEventListener('resize', () => {this.scrollContainerChanged = true});
+    this.onWheelEvent = this.refs.scrollContainer.addEventListener('wheel', this.onWheel);
     setTimeout(this.setDefaultScroll.bind(this), 0);
   };
 
@@ -53,6 +56,11 @@ class VisualDay extends Component {
       const scrollDelta = comp._dragX - comp._dragStartX;
       const scrollDeltaInRelation = (scrollDelta / elWidth) * 2480;
       el.scrollLeft = comp._dragStartScroll + scrollDeltaInRelation;
+    }
+
+    if (comp.horiScrollDelta) {
+      el.scrollLeft += comp.horiScrollDelta;
+      comp.horiScrollDelta = null;
     }
 
     if (comp.props.ui.dragging &&
@@ -83,6 +91,11 @@ class VisualDay extends Component {
       document.removeEventListener('mousemove', this.onMouseMove)
       document.removeEventListener('mouseup', this.onMouseUp)
     }
+  };
+
+  onWheel(e) {
+    if (Math.abs(e.deltaY) < 2) return
+    this.horiScrollDelta = e.deltaY;
   };
 
   onMouseDown(e) {

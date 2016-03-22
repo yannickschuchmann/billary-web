@@ -1,3 +1,7 @@
+html, body {
+  overflow: hidden;
+}
+
 body, #app-container, .app {
   margin: 0;
   height: 100vh;
