@@ -38,7 +38,7 @@ class VisualDayItem extends Component {
   render() {
     return (
       <div className="visual-day-item" style={this.props.ui.itemStyle}>
-        {this.props.item.projectNames.join(" - ")}
+        <span>{this.props.item.projectNames.join(" - ")}</span>
       </div>
     );
   };
