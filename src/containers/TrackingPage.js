@@ -187,6 +187,7 @@ class TrackingPage extends Component {
                     this.props.actions.getTimeEntries();
                   })
               }
+
             }
           }
           onStop={() =>

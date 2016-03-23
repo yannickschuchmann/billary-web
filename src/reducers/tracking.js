@@ -60,8 +60,8 @@ const getTimeEntriesByDay = (items) => {
 const extendItemsDueOverhang = (items) => {
   let newItems = [];
   _.forEach(items, (item, i) => {
-    const startedAt = moment(item.started_at);
-    const stoppedAt = moment(item.stopped_at);
+    const startedAt = moment(new Date(item.started_at));
+    const stoppedAt = moment(item.stopped_at ? new Date(item.stopped_at) : new Date());
     const daysDiff = Math.abs(startedAt
                         .startOf('day')
                         .diff(stoppedAt.startOf('day'), 'days'));
@@ -194,6 +194,7 @@ let reducer = createReducer({
   },
   [calls.getTimeEntries.ok]: (state, payload) => {
     const mappedTimeEntries = mapProjectNames(payload.body.time_entries, state.view.projects);
+    console.log(mappedTimeEntries);
     let newState = deepAssign({
       view: {
         calendar: {

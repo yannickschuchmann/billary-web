@@ -11,7 +11,7 @@ const getStoppedAtWithOverhang = (item) => {
   if (item.daysOverhang && item.currentDayOverhang < item.daysOverhang) {
     return moment(new Date(item.groupDate)).startOf('day').add(1, 'day');
   } else {
-    return moment(new Date(item.stopped_at));
+    return moment(item.stopped_at ? new Date(item.stopped_at) : new Date());
   }
 }
 

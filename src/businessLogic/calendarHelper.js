@@ -1,5 +1,6 @@
-import moment from 'frozen-moment';
-moment.locale('de');
+import _moment from 'frozen-moment';
+_moment.locale('de');
+const moment = _moment;
 
 const createCalendar = (year, month, timeEntriesByDay, dayOffset = 1) => {
 	var results = [];
