@@ -69,6 +69,12 @@ class TrackingPage extends Component {
       current == projectId ? null : projectId);
   };
 
+  handleAfterMinute() {
+    if (this.props.trackingState.currentTimeEntry) {
+      this.props.actions.updateTimeEntries();
+    }
+  };
+
   render() {
     const calendarState = this.props.trackingState.calendar;
     const projectWrapsForDay = this.props.trackingState
@@ -123,6 +129,7 @@ class TrackingPage extends Component {
       <div id="tracking-container">
         <div className="visual-day-container">
           <VisualDay
+            afterMinute={this.handleAfterMinute.bind(this)}
             selectedDay={calendarState.selectedDay}>
             {visualProjectWraps}
           </VisualDay>

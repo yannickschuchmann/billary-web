@@ -2,7 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import ui from 'redux-ui';
 import objectAssign from 'object-assign';
 import {moment} from '../../businessLogic/calendarHelper';
-import {hourScale} from './index';
+import {hourScale, minuteInPx} from './index';
+
 class VisualDayItem extends Component {
   static propTypes = {
     index: PropTypes.number,
@@ -11,21 +12,20 @@ class VisualDayItem extends Component {
     updateUI: PropTypes.func
   };
 
-  static minuteInPx = hourScale / 60;
 
   getX() {
     const startedAt = this.props.item.started_at_overhang.clone();
     return startedAt.diff(startedAt
                             .clone()
                             .startOf('day'), 'minute')
-                            * VisualDayItem.minuteInPx;
+                            * minuteInPx;
   };
 
   getWidth() {
     const item = this.props.item;
     return Math.abs(item.stopped_at_overhang
                       .clone()
-                      .diff(item.started_at_overhang, 'minute')) * VisualDayItem.minuteInPx;
+                      .diff(item.started_at_overhang, 'minute')) * minuteInPx;
   };
 
   componentWillMount() {
@@ -43,7 +43,6 @@ class VisualDayItem extends Component {
     );
   };
 }
-
 
 export default ui({
   state: {

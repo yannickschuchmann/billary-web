@@ -187,7 +187,6 @@ let reducer = createReducer({
     }, state);
   },
 
-
   // GET_TIME_ENTRIES
   [calls.getTimeEntries.request]: (state, payload) => {
     return state;

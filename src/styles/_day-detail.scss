@@ -46,6 +46,13 @@
       width: 0;
       flex: 0;
     }
+    &.time-indicator {
+      position: absolute;
+      left: 0;
+      &:after {
+        border-color: nth($visual-day-colors, 1);
+      }
+    }
   }
 }
 .visual-day-rows {

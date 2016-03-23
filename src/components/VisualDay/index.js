@@ -7,27 +7,29 @@ import wheelEventPolyFill from '../../businessLogic/wheelHelper';
 
 const hourScale = 100;
 const spacingAround = 40; //px
+const minuteInPx = hourScale / 60;
 
 class VisualDay extends Component {
   static propTypes = {
     children: PropTypes.node,
     selectedDay: PropTypes.object,
     dragging: PropTypes.bool,
-    rel: PropTypes.object
+    rel: PropTypes.object,
+    afterMinute: PropTypes.func
   };
 
   static defaultProps = {
     dragging: false,
     rel: null
   };
-  state = { dragging: this.props.dragging, rel: this.props.rel };
+  state = { timeIndicatorX: null };
 
   constructor(props){
       super(props);
       this.onMouseMove = this.onMouseMove.bind(this);
       this.onMouseUp = this.onMouseUp.bind(this);
       this.onWheel = this.onWheel.bind(this);
-    }
+  }
 
   componentDidMount() {
     this.lastScrollPosition = -1;
@@ -35,12 +37,30 @@ class VisualDay extends Component {
     this.onResizeEvent = window.addEventListener('resize', () => {this.scrollContainerChanged = true});
     this.onWheelEvent = this.refs.scrollContainer.addEventListener('wheel', this.onWheel);
     setTimeout(this.setDefaultScroll.bind(this), 0);
+
+    this.setupTimeIndicator(this.props.selectedDay);
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.ui.dragging && !prevProps.dragging) {
+      document.addEventListener('mousemove', this.onMouseMove)
+      document.addEventListener('mouseup', this.onMouseUp)
+    } else if (!this.props.ui.dragging && prevProps.dragging) {
+      document.removeEventListener('mousemove', this.onMouseMove)
+      document.removeEventListener('mouseup', this.onMouseUp)
+    }
+  };
+
+  componentWillReceiveProps(nextProps) {
+    clearInterval(this.timeIndicatorInterval);
+    this.setupTimeIndicator(nextProps.selectedDay);
+  }
 
   componentWillUnmount() {
     window.cancelAnimationFrame(this.tick);
     window.removeEventListener('resize', this.onResizeEvent);
     this.refs.scrollContainer.removeEventListener('wheel', this.onWheel);
+    clearInterval(this.timeIndicatorInterval);
   };
 
   setDefaultScroll() {
@@ -84,15 +104,22 @@ class VisualDay extends Component {
     }
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.ui.dragging && !prevProps.dragging) {
-      document.addEventListener('mousemove', this.onMouseMove)
-      document.addEventListener('mouseup', this.onMouseUp)
-    } else if (!this.props.ui.dragging && prevProps.dragging) {
-      document.removeEventListener('mousemove', this.onMouseMove)
-      document.removeEventListener('mouseup', this.onMouseUp)
+  setupTimeIndicator(day) {
+    if (moment(day).isSame(moment(), 'day')) {
+      this.renderTimeIndicator(true);
+      this.timeIndicatorInterval = setInterval(this.renderTimeIndicator.bind(this), 1000 * 60);
+    } else {
+      this.setState({timeIndicatorX: null});
     }
   };
+
+  renderTimeIndicator(initial = false) {
+    const el = this.refs.timeIndicator;
+    const minutes = moment().diff(moment().startOf('day'), 'minute');
+    const x = minutes * minuteInPx;
+    this.setState({timeIndicatorX: x});
+  };
+
 
   onWheel(e) {
     if (Math.abs(e.deltaY) < 2) return
@@ -139,6 +166,19 @@ class VisualDay extends Component {
       </div>
     )
 
+    const timeIndicator = this.state.timeIndicatorX ?
+    (
+      <div
+        key={"time-indicator"}
+        ref="timeIndicator"
+        style={{
+          transform: `translate3d(${this.state.timeIndicatorX}px, 0, 0)`
+        }}
+        className="grid-line time-indicator"></div>
+    ) : "";
+
+    grid.push(timeIndicator);
+
     return (
       <div className="visual-day-wrap">
         <div className="visual-day-scrollbar">
@@ -175,7 +215,7 @@ class VisualDay extends Component {
   };
 }
 
-export {hourScale, spacingAround}
+export {hourScale, spacingAround, minuteInPx}
 export default ui({
   state: {
     dragging: false,
