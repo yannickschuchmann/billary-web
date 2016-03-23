@@ -16,8 +16,6 @@ import TimeEntryForm from '../components/TimeEntryForm';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import VisualDay from '../components/VisualDay';
-import VisualDayRow from '../components/VisualDay/_row';
-import VisualDayItem from '../components/VisualDay/_item';
 
 class TrackingPage extends Component {
   static propTypes = {
@@ -78,11 +76,10 @@ class TrackingPage extends Component {
   render() {
     const calendarState = this.props.trackingState.calendar;
     const projectWrapsForDay = this.props.trackingState
-      .projectWrappedTimeEntries[calendarState.selectedDay.toString()] || [];
+      .projectWrappedTimeEntries[calendarState.selectedDay.toString()] || {};
 
     let durationForSelectedDay = 0;
     let projectWraps = [];
-    let visualProjectWraps = [];
 
     let i = 0;
     _.forOwn(projectWrapsForDay, (items, key) => {
@@ -94,13 +91,6 @@ class TrackingPage extends Component {
         index={i+1}
         item={entry} />)
       );
-      const visualItems = items.map((entry, i) => (
-        <VisualDayItem
-          item={entry}
-          index={i}
-          key={entry.id + entry.started_at + entry.stopped_at}
-          />
-      ));
 
       const duration = _.reduce(items,(sum, entry) => sum + entry.duration_overhang,0);
       projectWraps.push(
@@ -114,13 +104,6 @@ class TrackingPage extends Component {
           {entries}
         </ProjectWrap>
       );
-      visualProjectWraps.push(
-        <VisualDayRow
-          key={key}
-          index={i}>
-          {visualItems}
-        </VisualDayRow>
-      );
 
       durationForSelectedDay += duration;
       i++;
@@ -130,9 +113,9 @@ class TrackingPage extends Component {
         <div className="visual-day-container">
           <VisualDay
             afterMinute={this.handleAfterMinute.bind(this)}
-            selectedDay={calendarState.selectedDay}>
-            {visualProjectWraps}
-          </VisualDay>
+            selectedDay={calendarState.selectedDay}
+            projectWrapsForDay={projectWrapsForDay}
+            />
           <FloatingActionButton
             mini={true}
             style={{

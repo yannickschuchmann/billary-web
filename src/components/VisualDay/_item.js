@@ -8,36 +8,23 @@ class VisualDayItem extends Component {
   static propTypes = {
     index: PropTypes.number,
     item: PropTypes.object,
+    width: PropTypes.number,
+    x: PropTypes.number,
     ui: PropTypes.object,
     updateUI: PropTypes.func
   };
 
-
-  getX() {
-    const startedAt = this.props.item.started_at_overhang.clone();
-    return startedAt.diff(startedAt
-                            .clone()
-                            .startOf('day'), 'minute')
-                            * minuteInPx;
-  };
-
-  getWidth() {
-    const item = this.props.item;
-    return Math.abs(item.stopped_at_overhang
-                      .clone()
-                      .diff(item.started_at_overhang, 'minute')) * minuteInPx;
-  };
-
-  componentWillMount() {
-    this.props.updateUI("itemStyle", objectAssign({}, this.props.ui.itemStyle, {
-      transform: `translateX(${this.getX()}px)`,
-      width: `${this.getWidth()}px`
-    }));
-  };
+  static defaultProps = {
+    width: 0,
+    x: 0
+  }
 
   render() {
     return (
-      <div className="visual-day-item" style={this.props.ui.itemStyle}>
+      <div className="visual-day-item" style={{
+          width: `${this.props.width}px`,
+          transform: `translate3d(${this.props.x}px,0,0)`
+        }}>
         <span>{this.props.item.projectNames.join(" - ")}</span>
       </div>
     );
@@ -45,10 +32,4 @@ class VisualDayItem extends Component {
 }
 
 export default ui({
-  state: {
-    itemStyle: {
-      transform: "translateX(0)",
-      width: 0
-    }
-  }
 })(VisualDayItem);

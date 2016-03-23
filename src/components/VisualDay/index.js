@@ -1,9 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import ui from 'redux-ui';
 import objectAssign from 'object-assign';
+import _ from 'lodash';
 import {moment} from '../../businessLogic/calendarHelper';
 import DragHandle from 'material-ui/lib/svg-icons/editor/drag-handle';
 import wheelEventPolyFill from '../../businessLogic/wheelHelper';
+import VisualDayRow from './_row';
+import VisualDayItem from './_item';
 
 const hourScale = 100;
 const spacingAround = 40; //px
@@ -11,11 +14,11 @@ const minuteInPx = hourScale / 60;
 
 class VisualDay extends Component {
   static propTypes = {
-    children: PropTypes.node,
     selectedDay: PropTypes.object,
     dragging: PropTypes.bool,
     rel: PropTypes.object,
-    afterMinute: PropTypes.func
+    afterMinute: PropTypes.func,
+    projectWrapsForDay: PropTypes.object
   };
 
   static defaultProps = {
@@ -147,11 +150,7 @@ class VisualDay extends Component {
     this._dragX = e.pageX;
   };
 
-  render() {
-    const el = this.refs.scrollContainer;
-    if (el) {
-      this.scrollContainerChanged = true;
-    }
+  getGrid() {
     let grid = [];
     for(let i = 0; i < 24; i++) {
       grid.push(
@@ -165,8 +164,12 @@ class VisualDay extends Component {
         <div className="label">{moment().hour(24).minute(0).second(0).format("H:mm")}</div>
       </div>
     )
+    grid.push(this.getTimeIndicator());
+    return grid;
+  };
 
-    const timeIndicator = this.state.timeIndicatorX ?
+  getTimeIndicator() {
+    return this.state.timeIndicatorX ?
     (
       <div
         key={"time-indicator"}
@@ -176,9 +179,53 @@ class VisualDay extends Component {
         }}
         className="grid-line time-indicator"></div>
     ) : "";
+  };
 
-    grid.push(timeIndicator);
+  getItemX(item) {
+    const startedAt = item.started_at_overhang.clone();
+    return startedAt.diff(startedAt
+                            .clone()
+                            .startOf('day'), 'minute')
+                            * minuteInPx;
+  };
 
+  getItemWidth(item) {
+    const isCurrent = item.stopped_at === null;
+    return Math.abs((!isCurrent ? item.stopped_at_overhang : moment())
+                      .clone()
+                      .diff(item.started_at_overhang, 'minute')) * minuteInPx;
+  };
+
+  getRows() {
+    let visualProjectWraps = [];
+    let i = 0;
+    _.forOwn(this.props.projectWrapsForDay, (items, key) => {
+
+      const visualItems = items.map((entry, i) => (
+        <VisualDayItem
+          item={entry}
+          index={i}
+          width={this.getItemWidth(entry)}
+          x={this.getItemX(entry)}
+          key={entry.id}
+          />
+      ));
+
+      visualProjectWraps.push(
+        <VisualDayRow
+          key={key}
+          index={i}>
+          {visualItems}
+        </VisualDayRow>
+      );
+
+      i++;
+    });
+    return visualProjectWraps;
+  };
+
+  render() {
+    if (this.refs.scrollContainer) this.scrollContainerChanged = true;
     return (
       <div className="visual-day-wrap">
         <div className="visual-day-scrollbar">
@@ -203,9 +250,9 @@ class VisualDay extends Component {
               <div className="grid" style={{
                   left: `${spacingAround}px`,
                   right: `${spacingAround}px`
-                }}>{grid}</div>
+                }}>{this.getGrid()}</div>
               <div className="visual-day-rows">
-                {this.props.children}
+                {this.getRows()}
               </div>
             </div>
           </div>
