@@ -22,6 +22,7 @@ class TimeEntryForm extends Component {
   };
 
   componentWillMount() {
+    console.log("mount ")
     let entry = {};
     if (this.props.entry) {
       entry = objectAssign({}, this.props.entry, {
@@ -133,6 +134,8 @@ class TimeEntryForm extends Component {
   };
 
   render() {
+    console.log("render timentryform");
+
     const entry = this.props.ui.entry || {};
     const startedAt = entry.started_at ? new Date(entry.started_at) : null;
     const stoppedAt = entry.stopped_at ? new Date(entry.stopped_at) : null;

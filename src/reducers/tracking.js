@@ -194,7 +194,6 @@ let reducer = createReducer({
   },
   [calls.getTimeEntries.ok]: (state, payload) => {
     const mappedTimeEntries = mapProjectNames(payload.body.time_entries, state.view.projects);
-    console.log(mappedTimeEntries);
     let newState = deepAssign({
       view: {
         calendar: {

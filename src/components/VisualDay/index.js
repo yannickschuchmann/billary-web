@@ -125,7 +125,6 @@ class VisualDay extends Component {
     if (el) {
       this.scrollContainerChanged = true;
     }
-
     let grid = [];
     for(let i = 0; i < 24; i++) {
       grid.push(

@@ -202,6 +202,7 @@ class TrackingPage extends Component {
         />
         <Modal
           className="modal-time-entry-form"
+          key={this.props.ui.editTimeEntry}
           isOpen={this.props.ui.showTimeEntryModal}
           onClose={this.closeTimeEntryModal.bind(this)}>
           <TimeEntryForm

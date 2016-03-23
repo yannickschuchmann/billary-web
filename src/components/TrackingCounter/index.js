@@ -11,12 +11,25 @@ class TrackingCounter extends Component {
     running: PropTypes.bool
   };
 
+  static defaultProps = {
+    duration: 0
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {time: props.duration};
+  }
+
   incrementTimeEntry() {
-    this.props.updateUI("time", this.props.ui.time + 1);
+    this.setState({
+      time: this.state.time + 1
+    });
   };
 
   componentWillReceiveProps(nextProps) {
-    nextProps.updateUI("time", nextProps.duration);
+    this.setState({
+      time: nextProps.duration
+    });
     if (nextProps.running) {
       this.timer.start()
     } else {
@@ -25,7 +38,9 @@ class TrackingCounter extends Component {
   };
 
   componentWillMount() {
-    this.props.updateUI("time", this.props.duration);
+    this.setState({
+      time: this.props.duration
+    });
     this.timer = new Tock({interval: 1000, callback: this.incrementTimeEntry.bind(this)})
     if (this.props.running) this.timer.start();
   };
@@ -35,9 +50,7 @@ class TrackingCounter extends Component {
   };
 
   render() {
-    const time = this.props.ui.time;
-
-
+    const time = this.state.time;
     return (
       <div className="tracking-counter">
         {secondsToCounterString(time)}
