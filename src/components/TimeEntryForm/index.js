@@ -26,7 +26,9 @@ class TimeEntryForm extends Component {
     if (this.props.entry) {
       entry = objectAssign({}, this.props.entry, {
         started_at: moment(this.props.entry.started_at).seconds(0).format(),
-        stopped_at: moment(this.props.entry.stopped_at).seconds(0).format()
+        stopped_at: this.props.entry.stopped_at ?
+          moment(this.props.entry.stopped_at).seconds(0).format() :
+          null
       });
     }
     this.props.updateUI({entry});
@@ -136,7 +138,9 @@ class TimeEntryForm extends Component {
     const entry = this.props.ui.entry || {};
     const startedAt = entry.started_at ? new Date(entry.started_at) : null;
     const stoppedAt = entry.stopped_at ? new Date(entry.stopped_at) : null;
-    const diff = (startedAt && stoppedAt && this.props.ui.errors.date == "") ?
+    const diff = (entry.started_at &&
+                  entry.stopped_at &&
+                  this.props.ui.errors.date == "") ?
       moment(stoppedAt).diff(moment(startedAt), 'minutes') :
       0;
 
@@ -193,6 +197,7 @@ class TimeEntryForm extends Component {
                 mode="landscape"
                 hintText="Day"
                 autoOk={true}
+                disabled={!stoppedAt}
                 value={stoppedAt}
                 onChange={this.handleChangeStoppedAtDate.bind(this)}
                 />
@@ -200,6 +205,7 @@ class TimeEntryForm extends Component {
                 format="24hr"
                 hintText="Stopped at"
                 errorText={this.props.ui.errors.date}
+                disabled={!stoppedAt}
                 value={stoppedAt}
                 onChange={this.handleChangeStoppedAtTime.bind(this)}
                 />
