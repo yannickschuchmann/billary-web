@@ -114,9 +114,9 @@ let reducer = createReducer({
       view: {
         tree: tree,
         isFetching: false,
-        selected: state.view.projectsById[state._data.selectedProject],
-        projects: mappedProjects,
-        projectsById: _.keyBy(payload.body.projects, "id")
+        selected: () => state.view.projectsById[state._data.selectedProject],
+        projects: () => mappedProjects,
+        projectsById: () => _.keyBy(payload.body.projects, "id")
       }
     }, state);
   },
@@ -197,7 +197,7 @@ let reducer = createReducer({
     let newState = deepAssign({
       view: {
         calendar: {
-          timeEntriesByDay: getTimeEntriesByDay(mappedTimeEntries)
+          timeEntriesByDay: () => getTimeEntriesByDay(mappedTimeEntries)
         },
         projectWrappedTimeEntries: () => getTimeEntriesByDayAndProject(mappedTimeEntries)
       },
