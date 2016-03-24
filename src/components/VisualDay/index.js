@@ -26,6 +26,7 @@ class VisualDay extends Component {
     rel: null
   };
   state = { timeIndicatorX: null };
+  defaultScroll = 8 * hourScale;
 
   constructor(props){
       super(props);
@@ -39,24 +40,23 @@ class VisualDay extends Component {
     this.tick = window.requestAnimationFrame(this.renderScrollbar.bind(window, this));
     this.onResizeEvent = window.addEventListener('resize', () => {this.scrollContainerChanged = true});
     this.onWheelEvent = this.refs.scrollContainer.addEventListener('wheel', this.onWheel);
-    setTimeout(this.setDefaultScroll.bind(this), 0);
 
     this.setupTimeIndicator(this.props.selectedDay);
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.ui.dragging && !prevProps.dragging) {
-      document.addEventListener('mousemove', this.onMouseMove)
-      document.addEventListener('mouseup', this.onMouseUp)
-    } else if (!this.props.ui.dragging && prevProps.dragging) {
-      document.removeEventListener('mousemove', this.onMouseMove)
-      document.removeEventListener('mouseup', this.onMouseUp)
-    }
+    setTimeout(this.setDefaultScroll.bind(this), 0);
   };
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.ui.dragging && !this.props.dragging) {
+      document.addEventListener('mousemove', this.onMouseMove)
+      document.addEventListener('mouseup', this.onMouseUp)
+    } else if (!nextProps.ui.dragging && this.props.dragging) {
+      document.removeEventListener('mousemove', this.onMouseMove)
+      document.removeEventListener('mouseup', this.onMouseUp)
+    }
+
     clearInterval(this.timeIndicatorInterval);
     this.setupTimeIndicator(nextProps.selectedDay);
+
   }
 
   componentWillUnmount() {
@@ -67,9 +67,7 @@ class VisualDay extends Component {
   };
 
   setDefaultScroll() {
-    const hour = 8;
-    const scrollToHour = hour * hourScale;
-    this.refs.scrollContainer.scrollLeft = scrollToHour;
+    this.refs.scrollContainer.scrollLeft = this.defaultScroll;
   };
 
   renderScrollbar(comp, timestamp) {
@@ -120,7 +118,9 @@ class VisualDay extends Component {
     const el = this.refs.timeIndicator;
     const minutes = moment().diff(moment().startOf('day'), 'minute');
     const x = minutes * minuteInPx;
+    const conWidth = this.refs.scrollContainer.getBoundingClientRect().width;
     this.setState({timeIndicatorX: x});
+    this.defaultScroll = x + spacingAround - conWidth / 2;
   };
 
 
