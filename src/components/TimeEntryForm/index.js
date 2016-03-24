@@ -28,8 +28,11 @@ class TimeEntryForm extends Component {
         started_at: moment(this.props.entry.started_at).seconds(0).format(),
         stopped_at: this.props.entry.stopped_at ?
           moment(this.props.entry.stopped_at).seconds(0).format() :
-          null
+          null,
+        isNew: false
       });
+    } else {
+      entry.isNew = true;
     }
     this.props.updateUI({entry});
   };
@@ -144,6 +147,9 @@ class TimeEntryForm extends Component {
       moment(stoppedAt).diff(moment(startedAt), 'minutes') :
       0;
 
+    const isRunning = !stoppedAt && !entry.isNew;
+    const duration = isRunning ? "running" : minutesToCounterString(diff);
+
     const projectOptions = this.props.projects.map((project, i) => (
       <MenuItem
         key={i}
@@ -171,7 +177,7 @@ class TimeEntryForm extends Component {
           </SelectField>
 
           <div className="duration">
-            {minutesToCounterString(diff)}
+            {duration}
           </div>
           <div className="dates">
             <div>
@@ -197,7 +203,7 @@ class TimeEntryForm extends Component {
                 mode="landscape"
                 hintText="Day"
                 autoOk={true}
-                disabled={!stoppedAt}
+                disabled={isRunning}
                 value={stoppedAt}
                 onChange={this.handleChangeStoppedAtDate.bind(this)}
                 />
@@ -205,7 +211,7 @@ class TimeEntryForm extends Component {
                 format="24hr"
                 hintText="Stopped at"
                 errorText={this.props.ui.errors.date}
-                disabled={!stoppedAt}
+                disabled={isRunning}
                 value={stoppedAt}
                 onChange={this.handleChangeStoppedAtTime.bind(this)}
                 />
