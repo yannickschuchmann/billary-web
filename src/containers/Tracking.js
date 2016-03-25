@@ -17,7 +17,7 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import VisualDay from '../components/VisualDay';
 
-class TrackingPage extends Component {
+class Tracking extends Component {
   static propTypes = {
     ui: PropTypes.object,
     updateUI: PropTypes.func,
@@ -227,4 +227,4 @@ export default connect(
     editTimeEntry: null,
     openTimeEntriesForProject: null
   }
-})(TrackingPage));
+})(Tracking));

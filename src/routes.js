@@ -1,12 +1,18 @@
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route, IndexRedirect, IndexRoute } from 'react-router';
+
+import Site from './containers/Site';
+import Content from './containers/Content';
+
+import StartPage from './pages/StartPage';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
+import AboutPage from './pages/AboutPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 import App from './containers/App';
-import Tracking from './containers/TrackingPage.js';
-import AboutPage from './components/AboutPage.js';
-import NotFoundPage from './components/NotFoundPage.js';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
+import Tracking from './containers/Tracking';
+
 
 export function getRoutes(store) {
   const requireAuth = (nextState, transition, cb) => {
@@ -22,10 +28,17 @@ export function getRoutes(store) {
   };
 
   return (
-    <Route path="/" component={App}>
-      <IndexRedirect to="tracking" />
-      <Route path="tracking" component={Tracking} onEnter={requireAuth}/>
-      <Route path="about" component={AboutPage}/>
+    <Route path="/" component={Site}>
+      <Route component={Content}>
+        <IndexRoute component={StartPage}/>
+        <Route path="login" component={SignInPage} />
+        <Route path="register" component={SignUpPage} />
+        <Route path="about" component={AboutPage}/>
+      </Route>
+      <Route path="app" component={App}>
+        <IndexRedirect to="tracking" />
+        <Route path="tracking" component={Tracking} />
+      </Route>
       <Route path="*" component={NotFoundPage} />
     </Route>
   );

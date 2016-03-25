@@ -6,6 +6,9 @@ import {configure} from "redux-auth";
 import { getRoutes } from './routes';
 import configureStore from './store/configureStore';
 import { API_URL } from './api';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 import './styles/styles.scss'; //Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
 
 const store = configureStore();

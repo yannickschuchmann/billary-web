@@ -5,7 +5,6 @@ import { AuthGlobals } from "redux-auth";
 import { Link, IndexLink } from 'react-router';
 import * as actions from '../actions';
 
-
 import Sidebar from '../components/Layout/Sidebar';
 import Topbar from '../components/Layout/Topbar';
 
@@ -15,10 +14,17 @@ class App extends Component {
     appState: PropTypes.object.isRequired
   };
 
+  componentDidMount() {
+    document.body.style.overflow = "hidden";
+  };
+
+  componentWillUnmount() {
+    document.body.style.overflow = "auto";
+  };
+
   render() {
     return (
       <div className="app">
-        <AuthGlobals />
         <Sidebar>
           <div className="user">
             {this.props.appState.currentUser.name}
