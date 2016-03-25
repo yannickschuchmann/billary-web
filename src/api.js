@@ -2,7 +2,7 @@ require('es6-promise').polyfill();
 const request = require('superagent');
 const superagentPromisePlugin = require('superagent-promise-plugin');
 
-const API_PATH = "http://api.localhost:3000/v1";
+export const API_PATH = "http://api.localhost:3000/v1";
 
 export function getProjects() {
   return request

@@ -56,6 +56,7 @@ const getLoaders = function (env) {
     loaders.push({test: /(\.css|\.scss)$/, loader: ExtractTextPlugin.extract("css?sourceMap!sass?sourceMap")});
   } else {
     loaders.push({test: /(\.css|\.scss)$/, loaders: ['style', 'css?sourceMap', 'sass?sourceMap']});
+    loaders.push({ test: /\.json$/, loader: "json-loader" });
     loaders.push({
       test: /\.jsx?$/,
       exclude: /(node_modules|bower_components)/,

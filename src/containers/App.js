@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../actions';
+import { connect } from 'react-redux';
+import { AuthGlobals } from "redux-auth";
 import { Link, IndexLink } from 'react-router';
+import * as actions from '../actions';
+
 
 import Sidebar from '../components/Layout/Sidebar';
 import Topbar from '../components/Layout/Topbar';
@@ -16,6 +18,7 @@ class App extends Component {
   render() {
     return (
       <div className="app">
+        <AuthGlobals />
         <Sidebar>
           <div className="user">
             {this.props.appState.currentUser.name}
