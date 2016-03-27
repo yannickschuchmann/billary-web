@@ -1,0 +1,10 @@
+.app-bar {
+  a {
+    display: flex;
+    flex-flow: column;
+    > button {
+      color: #fff!important;
+      flex: 1;
+    }
+  }
+}

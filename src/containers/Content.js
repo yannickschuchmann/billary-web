@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { AuthGlobals } from "redux-auth";
 import { Link, IndexLink } from 'react-router';
 import * as actions from '../actions';
 import FlatButton from 'material-ui/lib/flat-button';
@@ -24,7 +23,10 @@ class Content extends Component {
 
     return (
       <div className="content">
-        <AppBar title="Billary" iconElementLeft={<span></span>}>
+        <AppBar
+          className="app-bar"
+          title="Billary"
+          iconElementLeft={<span></span>}>
           <IndexLink to="/">{this.getNavButton("Start")}</IndexLink>
           <Link to="/about">{this.getNavButton("About")}</Link>
           <Link to="/app">{this.getNavButton("App")}</Link>
