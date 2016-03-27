@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { AuthGlobals } from "redux-auth";
 import { Link, IndexLink } from 'react-router';
 import * as actions from '../actions';
 
@@ -14,7 +13,6 @@ class Site extends Component {
   render() {
     return (
       <div className="site">
-        <AuthGlobals />
         {this.props.children}
       </div>
     );
