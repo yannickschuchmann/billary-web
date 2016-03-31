@@ -9,7 +9,7 @@ import AppBar from 'material-ui/lib/app-bar';
 class Content extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    appState: PropTypes.object.isRequired
+    app: PropTypes.object.isRequired
   };
 
   getNavButton(label) {
@@ -41,7 +41,7 @@ class Content extends Component {
 
 function mapStateToProps(state) {
   return {
-    appState: state.appState,
+    app: state.app,
   };
 }
 

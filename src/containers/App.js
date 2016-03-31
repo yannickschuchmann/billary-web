@@ -10,7 +10,7 @@ import Topbar from '../components/Layout/Topbar';
 class App extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    appState: PropTypes.object.isRequired
+    app: PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -26,9 +26,9 @@ class App extends Component {
       <div className="app">
         <Sidebar>
           <div className="user">
-            {this.props.appState.currentUser.name}
+            {this.props.app.currentUser.name}
             <br/>
-            {this.props.appState.currentUser.profession}
+            {this.props.app.currentUser.profession}
           </div>
           <IndexLink to="/tracking">Home</IndexLink>
           <Link to="/billing">About</Link>
@@ -48,7 +48,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    appState: state.appState,
+    app: state.app,
   };
 }
 

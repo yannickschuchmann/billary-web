@@ -1,14 +1,15 @@
 import { combineReducers } from 'redux';
-import { reducer as uiReducer } from 'redux-ui'
-import appState from './app';
+import { reducer as ui } from 'redux-ui'
+import app from './app';
 import auth from './auth';
-import trackingState from './tracking';
+import tracking from './tracking';
+
 
 const rootReducer = combineReducers({
-  appState,
+  app,
   auth,
-  trackingState,
-  ui: uiReducer
+  tracking,
+  ui
 });
 
 export default rootReducer;

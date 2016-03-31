@@ -1,5 +1,5 @@
 import chai from 'chai';
-import TrackingPage from './TrackingPage';
+import Tracking from './Tracking';
 
 chai.should();
 

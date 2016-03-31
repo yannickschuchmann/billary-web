@@ -15,7 +15,7 @@ class TrackingBar extends Component {
     updateUI: PropTypes.func,
     project: PropTypes.object,
     currentTimeEntry: PropTypes.object,
-    trackingState: PropTypes.object,
+    tracking: PropTypes.object,
     modalAppElement: PropTypes.element,
     onNew: PropTypes.func,
     onSelect: PropTypes.func,
@@ -67,15 +67,15 @@ class TrackingBar extends Component {
       modalContent = (
         <ProjectForm
           onSubmit={this.submitEditProject.bind(this)}
-          projects={this.props.trackingState.projects}
-          project={this.props.trackingState.projectsById[this.props.ui.editProjectId]} />
+          projects={this.props.tracking.projects}
+          project={this.props.tracking.projectsById[this.props.ui.editProjectId]} />
       );
     } else {
       modalContent = (<ProjectListing
         advanced={true}
-        tree={this.props.trackingState.tree}
-        selected={this.props.trackingState.selected}
-        isFetching={this.props.trackingState.isFetching}
+        tree={this.props.tracking.tree}
+        selected={this.props.tracking.selected}
+        isFetching={this.props.tracking.isFetching}
         onSelect={this.onSelected.bind(this)}
         onUnfold={this.props.onUnfold}
         onEdit={this.onEdit.bind(this)}

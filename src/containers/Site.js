@@ -7,7 +7,7 @@ import * as actions from '../actions';
 class Site extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    appState: PropTypes.object.isRequired
+    app: PropTypes.object.isRequired
   };
 
   render() {
@@ -21,7 +21,7 @@ class Site extends Component {
 
 function mapStateToProps(state) {
   return {
-    appState: state.appState,
+    app: state.app,
   };
 }
 

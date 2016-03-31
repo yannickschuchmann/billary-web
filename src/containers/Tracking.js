@@ -22,7 +22,7 @@ class Tracking extends Component {
     ui: PropTypes.object,
     updateUI: PropTypes.func,
     actions: PropTypes.object.isRequired,
-    trackingState: PropTypes.object.isRequired
+    tracking: PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -68,14 +68,14 @@ class Tracking extends Component {
   };
 
   handleAfterMinute() {
-    if (this.props.trackingState.currentTimeEntry) {
+    if (this.props.tracking.currentTimeEntry) {
       this.props.actions.updateTimeEntries();
     }
   };
 
   render() {
-    const calendarState = this.props.trackingState.calendar;
-    const projectWrapsForDay = this.props.trackingState
+    const calendarState = this.props.tracking.calendar;
+    const projectWrapsForDay = this.props.tracking
       .projectWrappedTimeEntries[calendarState.selectedDay.toString()] || {};
 
     let durationForSelectedDay = 0;
@@ -98,7 +98,7 @@ class Tracking extends Component {
           key={key}
           index={i + 1}
           open={this.props.ui.openTimeEntriesForProject == key}
-          project={this.props.trackingState.projectsById[key]}
+          project={this.props.tracking.projectsById[key]}
           duration={duration}
           onToggle={(e) => this.toggleTimeEntriesForProject(key)}>
           {entries}
@@ -146,9 +146,9 @@ class Tracking extends Component {
           </div>
         </div>
         <TrackingBar
-          trackingState={this.props.trackingState}
-          project={this.props.trackingState.selected}
-          currentTimeEntry={this.props.trackingState.currentTimeEntry}
+          tracking={this.props.tracking}
+          project={this.props.tracking.selected}
+          currentTimeEntry={this.props.tracking.currentTimeEntry}
           onSelect={this.props.actions.selectProject}
           onDelete={(id) =>
             this.props.actions
@@ -168,7 +168,7 @@ class Tracking extends Component {
               .then(this.props.actions.getProjects)
           }
           onStart={() => {
-              const selected = this.props.trackingState.selected;
+              const selected = this.props.tracking.selected;
               if (selected && selected.id) {
                 this.props.actions
                   .postTimeEntry({project_id: selected.id})
@@ -196,7 +196,7 @@ class Tracking extends Component {
           isOpen={this.props.ui.showTimeEntryModal}
           onClose={this.closeTimeEntryModal.bind(this)}>
           <TimeEntryForm
-            projects={this.props.trackingState.projects}
+            projects={this.props.tracking.projects}
             onSubmit={this.submitTimeEntry.bind(this)}
             entry={this.props.ui.editTimeEntry} />
         </Modal>
@@ -207,7 +207,7 @@ class Tracking extends Component {
 
 function mapStateToProps(state) {
   return {
-    trackingState: state.trackingState.view
+    tracking: state.tracking.view
   };
 }
 
