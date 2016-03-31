@@ -10,7 +10,8 @@ import Topbar from '../components/Layout/Topbar';
 class App extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    app: PropTypes.object.isRequired
+    app: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -26,7 +27,7 @@ class App extends Component {
       <div className="app">
         <Sidebar>
           <div className="user">
-            {this.props.app.currentUser.name}
+            {this.props.auth.user.attributes.email}
             <br/>
             {this.props.app.currentUser.profession}
           </div>
@@ -49,6 +50,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     app: state.app,
+    auth: state.auth
   };
 }
 

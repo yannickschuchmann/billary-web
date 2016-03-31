@@ -7,6 +7,7 @@ import Content from './containers/Content';
 import StartPage from './pages/StartPage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
+import SignOutPage from './pages/SignOutPage';
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -33,6 +34,7 @@ export function getRoutes(store) {
         <IndexRoute component={StartPage}/>
         <Route path="login" component={SignInPage} />
         <Route path="register" component={SignUpPage} />
+        <Route path="logout" component={SignOutPage} />
         <Route path="about" component={AboutPage}/>
       </Route>
       <Route path="app" component={App}>

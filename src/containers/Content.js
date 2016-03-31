@@ -9,16 +9,22 @@ import AppBar from 'material-ui/lib/app-bar';
 class Content extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    app: PropTypes.object.isRequired
+    app: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
   };
 
   getNavButton(label) {
     return <FlatButton label={label} />
-  }
+  };
 
   render() {
-    const navElements = [
-
+    const authLinks = this.props.auth.user.isSignedIn ?
+    [
+      <Link key="logout" to="/logout">{this.getNavButton("Logout")}</Link>
+    ] :
+    [
+      <Link key="register" to="/register">{this.getNavButton("Register")}</Link>,
+      <Link key="login" to="/login">{this.getNavButton("Login")}</Link>
     ];
 
     return (
@@ -30,8 +36,7 @@ class Content extends Component {
           <IndexLink to="/">{this.getNavButton("Start")}</IndexLink>
           <Link to="/about">{this.getNavButton("About")}</Link>
           <Link to="/app">{this.getNavButton("App")}</Link>
-          <Link to="/register">{this.getNavButton("Register")}</Link>
-          <Link to="/login">{this.getNavButton("Login")}</Link>
+          {authLinks}
         </AppBar>
         {this.props.children}
       </div>
@@ -42,6 +47,7 @@ class Content extends Component {
 function mapStateToProps(state) {
   return {
     app: state.app,
+    auth: state.auth
   };
 }
 
