@@ -20,6 +20,7 @@ class Content extends Component {
   render() {
     const authLinks = this.props.auth.user.isSignedIn ?
     [
+      <Link key="settings" to="/settings">{this.getNavButton("Settings")}</Link>,
       <Link key="logout" to="/logout">{this.getNavButton("Logout")}</Link>
     ] :
     [

@@ -1,35 +1,34 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
-import * as actions from '../actions/auth';
+import Dialog from 'material-ui/lib/dialog';
+import FlatButton from 'material-ui/lib/flat-button';
+import * as actions from '../../actions/auth';
+import Auth from 'j-toker';
 
 // Since this component is simple and static, there's no parent container for it.
-class SignUp extends Component {
+class ChangePassword extends Component {
   static propTypes = {
-    actions: PropTypes.object.isRequired,
-  };
+    children: PropTypes.node
+  }
 
   handleSubmit(e) {
     e.preventDefault();
-    const user = {
-      email: this.refs.email.value,
+    this.props.actions.updatePassword({
       password: this.refs.password.value,
-      password_confirmation: this.refs.password_confirmation.value
-    };
-    this.props.actions.emailSignUp(user).then(browserHistory.push("/"));
+      password_confirmation: this.refs.passwordConfirmation.value
+    });
 
     return false;
-  }
+  };
 
   render() {
     return (
       <div>
-        <h2>Register yoho</h2>
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <input name="email" ref="email" type="email"/>
-          <input name="password" ref="password" type="password"/>
-          <input name="password-confirmation" ref="password_confirmation" type="password"/>
+          <input type="password" name="password" ref="password"/> <br/>
+          <input type="password" name="password-confirmation" ref="passwordConfirmation"/>
           <input type="submit"/>
         </form>
       </div>
@@ -38,7 +37,9 @@ class SignUp extends Component {
 }
 
 function mapStateToProps(state) {
-  return {}
+  return {
+    auth: state.auth
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -50,4 +51,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignUp);
+)(ChangePassword);

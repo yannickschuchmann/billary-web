@@ -9,6 +9,9 @@ import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import SignOutPage from './pages/SignOutPage';
 import AboutPage from './pages/AboutPage';
+import SettingsPage from './pages/settings';
+import ChangePasswordPage from './pages/settings/ChangePassword';
+import DeleteAccountPage from './pages/settings/DeleteAccount';
 import NotFoundPage from './pages/NotFoundPage';
 
 import App from './containers/App';
@@ -28,6 +31,7 @@ export function getRoutes(store) {
     }, 0);
   };
 
+
   return (
     <Route path="/" component={Site}>
       <Route component={Content}>
@@ -36,6 +40,11 @@ export function getRoutes(store) {
         <Route path="register" component={SignUpPage} />
         <Route path="logout" component={SignOutPage} />
         <Route path="about" component={AboutPage}/>
+        <Route path="settings" component={SettingsPage}>
+          <IndexRedirect to="change-password" />
+          <Route path="change-password" component={ChangePasswordPage}/>
+          <Route path="delete-account" component={DeleteAccountPage}/>
+        </Route>
       </Route>
       <Route path="app" component={App}>
         <IndexRedirect to="tracking" />

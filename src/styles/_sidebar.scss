@@ -1,3 +1,7 @@
 .sidebar {
   background: #E4E7E2;
+  &.page-sidebar {
+    z-index: 1400;
+    background: #fff;
+  }
 }

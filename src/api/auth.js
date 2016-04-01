@@ -10,7 +10,8 @@ const promisify = (req, alwaysResolve = false) => {
 
 export const configure = () => promisify(Auth.configure({
   apiUrl: API_PATH,
-  storage: 'localStorage'
+  storage: 'localStorage',
+  passwordResetSuccessUrl: () => `${window.location.origin}/settings/change-password`
 }), true);
 
 export const authenticate = () => promisify(Auth.validateToken());
@@ -19,3 +20,7 @@ export const emailSignUp = (user) => promisify(Auth.emailSignUp(user));
 export const emailSignIn = (user) => promisify(Auth.emailSignIn(user));
 
 export const signOut = (user) => promisify(Auth.signOut());
+
+export const requestPasswortReset = (mail) => promisify(Auth.requestPasswordReset({email: mail}));
+export const updatePassword = (passwords) => promisify(Auth.updatePassword(passwords));
+export const deleteAccount = () => promisify(Auth.destroyAccount());
