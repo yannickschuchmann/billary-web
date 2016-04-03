@@ -11,8 +11,9 @@ class SignOut extends Component {
   };
 
   componentWillMount() {
-    this.props.actions.signOut();
-    browserHistory.push('/')
+    this.props.actions
+      .signOut()
+      .then(browserHistory.push("/"));
   };
 
   render() {

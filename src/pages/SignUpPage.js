@@ -17,7 +17,9 @@ class SignUp extends Component {
       password: this.refs.password.value,
       password_confirmation: this.refs.password_confirmation.value
     };
-    this.props.actions.emailSignUp(user).then(browserHistory.push("/"));
+    this.props.actions
+      .emailSignUp(user)
+      .then(browserHistory.push("/"));
 
     return false;
   }

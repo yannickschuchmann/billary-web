@@ -22,7 +22,6 @@ class SignIn extends Component {
   };
 
   componentDidMount() {
-    console.log(Auth.mustResetPassword)
   }
 
   handleOpen() {
@@ -34,7 +33,7 @@ class SignIn extends Component {
   };
 
   handleResetPassword() {
-    this.props.actions.requestPasswortReset(this.refs.resetEmail.value)
+    this.props.actions.requestPasswortReset(this.refs.resetEmail.value);
     this.handleClose();
   };
 
@@ -45,7 +44,9 @@ class SignIn extends Component {
       password: this.refs.password.value,
       config: "default"
     };
-    this.props.actions.emailSignIn(user).then(browserHistory.push("/"));
+    this.props.actions
+      .emailSignIn(user)
+      .then(browserHistory.push("/"));
 
     return false;
   }

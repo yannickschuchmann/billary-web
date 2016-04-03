@@ -31,8 +31,8 @@ class App extends Component {
             <br/>
             {this.props.app.currentUser.profession}
           </div>
-          <IndexLink to="/tracking">Home</IndexLink>
-          <Link to="/billing">About</Link>
+          <IndexLink to="/">Start</IndexLink>
+          <Link to="/settings">Settings</Link>
         </Sidebar>
         <div className="container">
           <Topbar>

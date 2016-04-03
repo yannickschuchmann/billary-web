@@ -15,7 +15,7 @@ class DeleteAccount extends Component {
   }
 
   handleDelete(e) {
-    this.props.actions.deleteAccount();
+    this.props.actions.deleteAccount().then(browserHistory.push("/"));
   };
 
   render() {
