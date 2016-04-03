@@ -11,7 +11,8 @@ const promisify = (req, alwaysResolve = false) => {
 export const configure = () => promisify(Auth.configure({
   apiUrl: API_PATH,
   storage: 'localStorage',
-  passwordResetSuccessUrl: () => `${window.location.origin}/settings/change-password`
+  passwordResetSuccessUrl: () => `${window.location.origin}/settings/change-password`,
+  confirmSuccessUrl: () => `${window.location.origin}/login`
 }), true);
 
 export const authenticate = () => promisify(Auth.validateToken());

@@ -34,7 +34,8 @@ let reducer = createReducer({
     }
   },
 
-  [calls.signOut.request]: (state, payload) => initialState,
+  [calls.deleteAccount.ok]: (state, payload) => initialState,
+  [calls.signOut.request]: (state, payload) => state,
   [calls.signOut.ok]: (state, payload) => initialState
 
 }, initialState);

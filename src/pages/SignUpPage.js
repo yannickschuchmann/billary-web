@@ -19,7 +19,8 @@ class SignUp extends Component {
     };
     this.props.actions
       .emailSignUp(user)
-      .then(browserHistory.push("/"));
+      .then(browserHistory.push("/"))
+      .catch((err) => console.warn(err));
 
     return false;
   }

@@ -46,7 +46,7 @@ class SignIn extends Component {
     };
     this.props.actions
       .emailSignIn(user)
-      .then(browserHistory.push("/"));
+      .then((value) => {browserHistory.push("/")}, (err) => console.warn(err));
 
     return false;
   }

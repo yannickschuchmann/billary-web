@@ -2,6 +2,8 @@ import {createActionAsync} from 'redux-act-async';
 import {createAction} from 'redux-act';
 import * as calls from '../api';
 
+export let hideSnackbar = createAction('HIDE_SNACKBAR');
+
 export let getProjects = createActionAsync('GET_PROJECTS', calls.getProjects);
 export let patchProject = createActionAsync('PATCH_PROJECT', calls.patchProject);
 export let postProject = createActionAsync('POST_PROJECT', calls.postProject);

@@ -24,29 +24,37 @@ export function getRoutes(store) {
     // https://github.com/rackt/redux-router/pull/62
     // this will result in a bunch of warnings, but it doesn't seem to be a serious problem
     setTimeout(() => {
-      if (!store.getState().auth.getIn(["user", "isSignedIn"])) {
-        transition(null, "/login");
+      if (!store.getState().auth.user.isSignedIn) {
+        transition("/login");
       }
       cb();
     }, 0);
   };
 
+  const skipAuthIfSignedIn = (nextState, transition, cb) => {
+    setTimeout(() => {
+      if (store.getState().auth.user.isSignedIn) {
+        transition("/");
+      }
+      cb();
+    }, 0)
+  }
 
   return (
     <Route path="/" component={Site}>
       <Route component={Content}>
         <IndexRoute component={StartPage}/>
-        <Route path="login" component={SignInPage} />
-        <Route path="register" component={SignUpPage} />
+        <Route path="login" component={SignInPage} onEnter={skipAuthIfSignedIn} />
+        <Route path="register" component={SignUpPage} onEnter={skipAuthIfSignedIn} />
         <Route path="logout" component={SignOutPage} />
         <Route path="about" component={AboutPage}/>
-        <Route path="settings" component={SettingsPage}>
+        <Route path="settings" component={SettingsPage} onEnter={requireAuth}>
           <IndexRedirect to="change-password" />
           <Route path="change-password" component={ChangePasswordPage}/>
           <Route path="delete-account" component={DeleteAccountPage}/>
         </Route>
       </Route>
-      <Route path="app" component={App}>
+      <Route path="app" component={App} onEnter={requireAuth}>
         <IndexRedirect to="tracking" />
         <Route path="tracking" component={Tracking} />
       </Route>
