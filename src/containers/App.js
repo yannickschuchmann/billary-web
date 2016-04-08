@@ -30,9 +30,16 @@ class App extends Component {
             {this.props.auth.user.attributes.email}
             <br/>
             {this.props.app.currentUser.profession}
+            <Link to="/settings">Settings</Link>
           </div>
-          <IndexLink to="/">Start</IndexLink>
-          <Link to="/settings">Settings</Link>
+          <ul>
+            <li>
+              <Link to="/app/tracking">Tracking</Link>
+            </li>
+            <li>
+              <Link to="/app/dashboard">Dashboard</Link>
+            </li>
+          </ul>
         </Sidebar>
         <div className="container">
           <Topbar>

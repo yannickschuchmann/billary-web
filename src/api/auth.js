@@ -1,6 +1,6 @@
 import Auth from 'j-toker';
 import cookie from 'jquery.cookie';
-import { API_PATH } from "./index";
+import { API_PATH } from "./helpers";
 
 const promisify = (req, alwaysResolve = false) => {
   return new Promise((resolve, reject) => req

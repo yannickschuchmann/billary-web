@@ -1,0 +1,10 @@
+#clients-container {
+  display: flex;
+  .client-listing {
+    flex: 1;
+  }
+  .client-actions {
+    flex: 1;
+    padding: 20px;
+  }
+}

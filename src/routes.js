@@ -16,6 +16,9 @@ import NotFoundPage from './pages/NotFoundPage';
 
 import App from './containers/App';
 import Tracking from './containers/Tracking';
+import Dashboard from './containers/Dashboard';
+import Documents from './containers/Documents';
+import Clients from './containers/Clients';
 
 
 export function getRoutes(store) {
@@ -57,6 +60,9 @@ export function getRoutes(store) {
       <Route path="app" component={App} onEnter={requireAuth}>
         <IndexRedirect to="tracking" />
         <Route path="tracking" component={Tracking} />
+        <Route path="dashboard" component={Dashboard} />
+        <Route path="documents" component={Documents} />
+        <Route path="clients" component={Clients} />
       </Route>
       <Route path="*" component={NotFoundPage} />
     </Route>
