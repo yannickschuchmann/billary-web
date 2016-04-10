@@ -14,12 +14,15 @@ export let openProject = createAction('OPEN_PROJECT', (id) => ({id}));
 export let selectProject = createAction('SELECT_PROJECT', (id) => ({id}));
 
 export let getTimeEntries = createActionAsync('GET_TIME_ENTRIES', timeEntryApi.getTimeEntries);
-export let getCurrentTimeEntry = createActionAsync('GET_CURRENT_TIME_ENTRY', timeEntryApi.getCurrentTimeEntry);
 export let patchTimeEntry = createActionAsync('PATCH_TIME_ENTRY', timeEntryApi.patchTimeEntry);
-export let deleteTimeEntry = createActionAsync('DELETE_TIME_ENTRY', timeEntryApi.deleteTimeEntry);
 export let postTimeEntry = createActionAsync('POST_TIME_ENTRY', timeEntryApi.postTimeEntry);
+export let deleteTimeEntry = createActionAsync('DELETE_TIME_ENTRY', timeEntryApi.deleteTimeEntry);
+export let getCurrentTimeEntry = createActionAsync('GET_CURRENT_TIME_ENTRY', timeEntryApi.getCurrentTimeEntry);
 export let stopTimeEntry = createActionAsync('STOP_TIME_ENTRY', timeEntryApi.stopTimeEntry);
 
 export let getClients = createActionAsync('GET_CLIENTS', clientApi.getClients);
+export let postClients = createActionAsync('POST_CLIENT', clientApi.postClients);
+export let patchClients = createActionAsync('PATCH_CLIENT', clientApi.patchClients);
+export let deleteClients = createActionAsync('DELETE_CLIENT', clientApi.deleteClients);
 
 export let selectDay = createAction('SELECT_DAY', (day) => ({day}));
