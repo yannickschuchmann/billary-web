@@ -4,7 +4,8 @@
     flex: 1;
   }
   .client-actions {
-    flex: 1;
-    padding: 20px;
+    flex: 0 0 auto;
+    padding: 0 20px;
+    overflow-y: auto;
   }
 }

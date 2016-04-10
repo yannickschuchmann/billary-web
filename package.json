@@ -20,7 +20,9 @@
   "license": "MIT",
   "dependencies": {
     "connect-history-api-fallback": "1.1.0",
+    "country-list": "0.0.3",
     "es6-promise": "3.1.2",
+    "formsy-react": "0.17.0",
     "frozen-moment": "0.3.0",
     "history": "2.0.1",
     "j-toker": "0.0.10-beta3",

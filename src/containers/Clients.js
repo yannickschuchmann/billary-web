@@ -38,6 +38,16 @@ class Clients extends Component {
     });
   };
 
+  submit(model) {
+    let promise;
+    if (model.id) {
+      promise = this.props.actions.patchClient(model);
+    } else {
+      promise = this.props.actions.postClient(model);
+    }
+    promise.then(() => this.props.actions.getClients())
+  }
+
   render() {
     return (
       <div id="clients-container">
@@ -46,7 +56,9 @@ class Clients extends Component {
           onSelect={this.selectClient.bind(this)}
           clients={this.props.clients.data}/>
         <Paper zDepth={2} className="client-actions">
-          <ClientForm client={this.state.selectedClient} />
+          <ClientForm
+            submit={this.submit.bind(this)}
+            client={this.state.selectedClient} />
         </Paper>
       </div>
     );

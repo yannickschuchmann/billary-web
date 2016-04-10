@@ -21,8 +21,8 @@ export let getCurrentTimeEntry = createActionAsync('GET_CURRENT_TIME_ENTRY', tim
 export let stopTimeEntry = createActionAsync('STOP_TIME_ENTRY', timeEntryApi.stopTimeEntry);
 
 export let getClients = createActionAsync('GET_CLIENTS', clientApi.getClients);
-export let postClients = createActionAsync('POST_CLIENT', clientApi.postClients);
-export let patchClients = createActionAsync('PATCH_CLIENT', clientApi.patchClients);
-export let deleteClients = createActionAsync('DELETE_CLIENT', clientApi.deleteClients);
+export let postClient = createActionAsync('POST_CLIENT', clientApi.postClient);
+export let patchClient = createActionAsync('PATCH_CLIENT', clientApi.patchClient);
+export let deleteClient = createActionAsync('DELETE_CLIENT', clientApi.deleteClient);
 
 export let selectDay = createAction('SELECT_DAY', (day) => ({day}));
