@@ -26,7 +26,9 @@ browserSync({
     middleware: [
       webpackDevMiddleware(bundler, {
         // Dev middleware can't access config, so we provide publicPath
-        publicPath: webpackConfig.output.publicPath,
+        // publicPath: webpackConfig.output.publicPath,
+        publicPath: "",
+
 
         // pretty colored output
         stats: { colors: true },
