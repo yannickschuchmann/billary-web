@@ -1,7 +1,34 @@
 .sidebar {
   background: #E4E7E2;
+  display: flex;
+  flex-flow: column;
   &.page-sidebar {
     z-index: 1400;
     background: #fff;
+  }
+  .user-profile {
+    flex: 0 0 200px;
+    background: #333;
+    color: #fff;
+    a {
+      color: #fff;
+    }
+  }
+  .app-navigation {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-flow: column;
+    > li {
+      &, > a {
+        flex: 1;
+        display: flex;
+      }
+      > a {
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
 }

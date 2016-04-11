@@ -25,13 +25,13 @@ class App extends Component {
     return (
       <div className="app">
         <Sidebar>
-          <div className="user">
+          <div className="user-profile">
             {this.props.auth.user.attributes.email}
             <br/>
             {this.props.app.currentUser.profession}
             <Link to="/settings">Settings</Link>
           </div>
-          <ul>
+          <ul className="app-navigation">
             <li>
               <Link to="/app/tracking">Tracking</Link>
             </li>
