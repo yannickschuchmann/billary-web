@@ -15,10 +15,12 @@ import DeleteAccountPage from './pages/settings/DeleteAccount';
 import NotFoundPage from './pages/NotFoundPage';
 
 import App from './containers/App';
-import Tracking from './containers/Tracking';
+import Admin from './containers/Admin';
+import Assignments from './containers/Assignments';
+import Clients from './containers/Clients';
 import Dashboard from './containers/Dashboard';
 import Documents from './containers/Documents';
-import Clients from './containers/Clients';
+import Tracking from './containers/Tracking';
 
 
 export function getRoutes(store) {
@@ -60,9 +62,12 @@ export function getRoutes(store) {
       <Route path="app" component={App} onEnter={requireAuth}>
         <IndexRedirect to="tracking" />
         <Route path="tracking" component={Tracking} />
-        <Route path="dashboard" component={Dashboard} />
-        <Route path="documents" component={Documents} />
-        <Route path="clients" component={Clients} />
+        <Route component={Admin}>
+          <Route path="assignments" component={Assignments} />
+          <Route path="clients" component={Clients} />
+          <Route path="dashboard" component={Dashboard} />
+          <Route path="documents" component={Documents} />
+        </Route>
       </Route>
       <Route path="*" component={NotFoundPage} />
     </Route>

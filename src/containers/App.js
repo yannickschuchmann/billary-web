@@ -5,7 +5,6 @@ import { Link, IndexLink } from 'react-router';
 import * as actions from '../actions';
 
 import Sidebar from '../components/Layout/Sidebar';
-import Topbar from '../components/Layout/Topbar';
 
 class App extends Component {
   static propTypes = {
@@ -41,14 +40,7 @@ class App extends Component {
             </li>
           </ul>
         </Sidebar>
-        <div className="container">
-          <Topbar>
-            topbar
-          </Topbar>
-          <main>
-            {this.props.children}
-          </main>
-        </div>
+        {this.props.children}
       </div>
     );
   }

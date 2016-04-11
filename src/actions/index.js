@@ -10,6 +10,7 @@ export let getProjects = createActionAsync('GET_PROJECTS', projectApi.getProject
 export let patchProject = createActionAsync('PATCH_PROJECT', projectApi.patchProject);
 export let postProject = createActionAsync('POST_PROJECT', projectApi.postProject);
 export let deleteProject = createActionAsync('DELETE_PROJECT', projectApi.deleteProject);
+export let assignClientToProject = createActionAsync('ASSIGN_CLIENT_TO_PROJECT', projectApi.patchProject);
 export let openProject = createAction('OPEN_PROJECT', (id) => ({id}));
 export let selectProject = createAction('SELECT_PROJECT', (id) => ({id}));
 

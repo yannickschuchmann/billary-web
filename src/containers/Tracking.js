@@ -16,6 +16,7 @@ import TimeEntryForm from '../components/TimeEntryForm';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import VisualDay from '../components/VisualDay';
+import Topbar from '../components/Layout/Topbar';
 
 class Tracking extends Component {
   static propTypes = {
@@ -109,97 +110,104 @@ class Tracking extends Component {
       i++;
     });
     return (
-      <div id="tracking-container">
-        <div className="visual-day-container">
-          <VisualDay
-            afterMinute={this.handleAfterMinute.bind(this)}
-            selectedDay={calendarState.selectedDay}
-            projectWrapsForDay={projectWrapsForDay}
-            />
-          <FloatingActionButton
-            mini={true}
-            style={{
-              position: "absolute",
-              right: 20,
-              bottom: 20
-            }}
-            onMouseUp={() => this.showTimeEntryModal()}
-          >
-            <ContentAdd />
-          </FloatingActionButton>
-        </div>
-        <div className="time-container">
-          <Calendar
-            onSelectDay={this.props.actions.selectDay}
-            selectedDay={calendarState.selectedDay}
-            timeEntriesByDay={calendarState.timeEntriesByDay}/>
-          <div className="time-entries-container">
-            <div className="time-entry-listing-header">
-              {moment(calendarState.selectedDay).format("dddd, Do MMMM YYYY")}
-              <div className="days-workload">
-                {minutesToCounterString(durationForSelectedDay)} H
+      <div className="container">
+        <Topbar>
+          topbar
+        </Topbar>
+        <main>
+          <div id="tracking-container">
+            <div className="visual-day-container">
+              <VisualDay
+                afterMinute={this.handleAfterMinute.bind(this)}
+                selectedDay={calendarState.selectedDay}
+                projectWrapsForDay={projectWrapsForDay}
+                />
+              <FloatingActionButton
+                mini={true}
+                style={{
+                  position: "absolute",
+                  right: 20,
+                  bottom: 20
+                }}
+                onMouseUp={() => this.showTimeEntryModal()}
+              >
+                <ContentAdd />
+              </FloatingActionButton>
+            </div>
+            <div className="time-container">
+              <Calendar
+                onSelectDay={this.props.actions.selectDay}
+                selectedDay={calendarState.selectedDay}
+                timeEntriesByDay={calendarState.timeEntriesByDay}/>
+              <div className="time-entries-container">
+                <div className="time-entry-listing-header">
+                  {moment(calendarState.selectedDay).format("dddd, Do MMMM YYYY")}
+                  <div className="days-workload">
+                    {minutesToCounterString(durationForSelectedDay)} H
+                  </div>
+                </div>
+                <TimeEntryListing>
+                  {projectWraps}
+                </TimeEntryListing>
               </div>
             </div>
-            <TimeEntryListing>
-              {projectWraps}
-            </TimeEntryListing>
-          </div>
-        </div>
-        <TrackingBar
-          tracking={this.props.tracking}
-          project={this.props.tracking.selected}
-          currentTimeEntry={this.props.tracking.currentTimeEntry}
-          onSelect={this.props.actions.selectProject}
-          onDelete={(id) =>
-            this.props.actions
-              .deleteProject(id)
-              .then(this.props.actions.getProjects)
-              .then(this.props.actions.getTimeEntries)
-          }
-          onEdit={(project) =>
-            this.props.actions
-              .patchProject(project)
-              .then(this.props.actions.getProjects)
-          }
-          onUnfold={this.props.actions.openProject}
-          onNew={(name, parent_id) =>
-            this.props.actions
-              .postProject({name, parent_id})
-              .then(this.props.actions.getProjects)
-          }
-          onStart={() => {
-              const selected = this.props.tracking.selected;
-              if (selected && selected.id) {
+            <TrackingBar
+              tracking={this.props.tracking}
+              project={this.props.tracking.selected}
+              currentTimeEntry={this.props.tracking.currentTimeEntry}
+              onSelect={this.props.actions.selectProject}
+              onDelete={(id) =>
                 this.props.actions
-                  .postTimeEntry({project_id: selected.id})
+                  .deleteProject(id)
+                  .then(this.props.actions.getProjects)
+                  .then(this.props.actions.getTimeEntries)
+              }
+              onEdit={(project) =>
+                this.props.actions
+                  .patchProject(project)
+                  .then(this.props.actions.getProjects)
+              }
+              onUnfold={this.props.actions.openProject}
+              onNew={(name, parent_id) =>
+                this.props.actions
+                  .postProject({name, parent_id})
+                  .then(this.props.actions.getProjects)
+              }
+              onStart={() => {
+                  const selected = this.props.tracking.selected;
+                  if (selected && selected.id) {
+                    this.props.actions
+                      .postTimeEntry({project_id: selected.id})
+                      .then(() => {
+                        this.props.actions.getCurrentTimeEntry();
+                        this.props.actions.getTimeEntries();
+                      })
+                  }
+
+                }
+              }
+              onStop={() =>
+                this.props.actions
+                  .stopTimeEntry()
                   .then(() => {
                     this.props.actions.getCurrentTimeEntry();
                     this.props.actions.getTimeEntries();
                   })
               }
 
-            }
-          }
-          onStop={() =>
-            this.props.actions
-              .stopTimeEntry()
-              .then(() => {
-                this.props.actions.getCurrentTimeEntry();
-                this.props.actions.getTimeEntries();
-              })
-          }
-
-        />
-        <Modal
-          className="modal-time-entry-form"
-          key={this.props.ui.editTimeEntry}
-          isOpen={this.props.ui.showTimeEntryModal}
-          onClose={this.closeTimeEntryModal.bind(this)}>
-          <TimeEntryForm
-            projects={this.props.tracking.projects}
-            onSubmit={this.submitTimeEntry.bind(this)}
-            entry={this.props.ui.editTimeEntry} />
-        </Modal>
+            />
+            <Modal
+              className="modal-time-entry-form"
+              key={this.props.ui.editTimeEntry}
+              isOpen={this.props.ui.showTimeEntryModal}
+              onClose={this.closeTimeEntryModal.bind(this)}>
+              <TimeEntryForm
+                projects={this.props.tracking.projects}
+                onSubmit={this.submitTimeEntry.bind(this)}
+                entry={this.props.ui.editTimeEntry} />
+            </Modal>
+          </div>
+        </main>
       </div>
     );
   };

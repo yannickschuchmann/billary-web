@@ -1,8 +1,8 @@
 import { API_PATH, authorizedReq } from './helpers';
 import request from 'superagent';
 
-export function getProjects() {
-  return authorizedReq(request.get(API_PATH + "/projects"));
+export function getProjects(query) {
+  return authorizedReq(request.get(API_PATH + "/projects").query(query));
 }
 
 export function patchProject(project) {

@@ -6,6 +6,8 @@ import _ from 'lodash';
 import * as actions from '../actions';
 import { Link, IndexLink } from 'react-router';
 
+import Topbar from '../components/Layout/Topbar';
+
 class Dashboard extends Component {
   static propTypes = {
     ui: PropTypes.object,
@@ -22,8 +24,18 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div id="dashboard-container">
-        dashboard
+      <div className="container">
+        <Topbar>
+          <ul>
+            <li><Link to="/app/clients">Clients</Link></li>
+            <li><Link to="/app/dashboard">Dashboard</Link></li>
+            <li><Link to="/app/documents">Documents</Link></li>
+            <li><Link to="/app/assignments">Assignments</Link></li>
+          </ul>
+        </Topbar>
+        <main>
+          {this.props.children}
+        </main>
       </div>
     );
   };
