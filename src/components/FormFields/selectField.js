@@ -4,9 +4,14 @@ import { SelectField } from 'material-ui/lib';
 import objectAssign from 'object-assign';
 
 class Input extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.modelId != nextProps.modelId) nextProps.setValue(nextProps.value);
+  };
+
   render() {
     return (
       <SelectField
+        {...this.props}
         style={objectAssign({
           width: 250,
           display: "block"
@@ -14,8 +19,9 @@ class Input extends Component {
         fullWidth={true}
         maxHeight={300}
         onChange={(e, index, value) => this.props.setValue(value)}
+        defaultValue={this.props.value}
         value={this.props.getValue()}
-        {...this.props}>
+        >
         {this.props.children}
       </SelectField>
     )

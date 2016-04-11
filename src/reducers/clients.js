@@ -18,7 +18,7 @@ let reducer = createReducer({
     isFetching: true
   })),
   [calls.getClients.ok]: (state, payload) => (objectAssign({}, state, {
-    data: payload.body,
+    data: payload.body.clients,
     isFetching: false
   })),
   [calls.getClients.error]: (state, payload) => (objectAssign({}, state, {

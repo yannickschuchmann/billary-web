@@ -7,12 +7,20 @@ import * as actions from '../actions';
 import {Paper} from 'material-ui/lib';
 import ClientListing from '../components/ClientListing';
 import ClientForm from '../components/ClientForm';
+import EditIcon from 'material-ui/lib/svg-icons/image/edit';
+
+const language = (window.navigator.language || window.navigator.userLanguage).split('-');
+const initialClient = {
+  address: {
+    country: language[language.length - 1].toLowerCase()
+  }
+}
 
 class Clients extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedClient: {},
+      selectedClient: initialClient,
       selectedIndex: null
     }
   };
@@ -28,14 +36,15 @@ class Clients extends Component {
     this.props.actions.getClients();
   };
 
-  componentWillReceiveProps(newProps) {
-  };
-
   selectClient(indexes) {
-    this.setState({
-      selectedIndex: indexes.length ? indexes[0] : null,
-      selectedClient: indexes.length ? this.props.clients.data[indexes[0]] : {},
-    });
+    if (indexes.length) {
+      this.setState({
+        selectedIndex: indexes[0],
+        selectedClient: this.props.clients.data[indexes[0]]
+      });
+    } else {
+      this.resetSelection();
+    }
   };
 
   submit(model) {
@@ -44,20 +53,45 @@ class Clients extends Component {
       promise = this.props.actions.patchClient(model);
     } else {
       promise = this.props.actions.postClient(model);
+      this.resetSelection();
     }
     promise.then(() => this.props.actions.getClients())
-  }
+  };
+
+  delete() {
+    const clientId = this.state.selectedClient.id;
+    if (clientId) {
+      this.props.actions
+        .deleteClient(clientId)
+        .then(() => this.props.actions.getClients());
+      this.resetSelection();
+    }
+  };
+
+  resetSelection() {
+    this.setState({
+      selectedIndex: null,
+      selectedClient: initialClient
+    });
+  };
 
   render() {
+    const isEditing = !!this.state.selectedClient.id;
     return (
       <div id="clients-container">
         <ClientListing
           selected={this.state.selectedIndex}
           onSelect={this.selectClient.bind(this)}
           clients={this.props.clients.data}/>
-        <Paper zDepth={2} className="client-actions">
+        <Paper rounded={false} zDepth={2} className="client-actions">
+          <small className={`is-editing ${isEditing ? 'show' : 'hidden'}`}>
+            <EditIcon/>editing
+          </small>
           <ClientForm
-            submit={this.submit.bind(this)}
+            ref="form"
+            onDelete={this.delete.bind(this)}
+            onSubmit={this.submit.bind(this)}
+            isEditing={isEditing}
             client={this.state.selectedClient} />
         </Paper>
       </div>

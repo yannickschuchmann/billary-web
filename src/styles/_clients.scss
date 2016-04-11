@@ -7,5 +7,28 @@
     flex: 0 0 auto;
     padding: 0 20px;
     overflow-y: auto;
+    z-index: 1;
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  .is-editing {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: rgba(0, 0, 0, 0.498039);
+    transition: opacity .2s ease-out, transform .3s ease-out;
+    transform: translate3d(0, -10px, 0);
+    align-items: center;
+    display: flex;
+    opacity: 0;
+    svg {
+      fill: rgba(0, 0, 0, 0.498039)!important;
+    }
+    &.show {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
   }
 }

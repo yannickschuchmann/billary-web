@@ -17,15 +17,18 @@ const ClientListing = ({clients, onSelect, selected}) => {
   ));
 
   return (
-    <Table onRowSelection={onSelect} className="client-listing">
-      <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+    <Table multiSelectable={false} onRowSelection={onSelect} className="client-listing">
+      <TableHeader displaySelectAll={false} adjustForCheckbox={true}>
         <TableRow>
           <TableHeaderColumn tooltip="Client number">#</TableHeaderColumn>
           <TableHeaderColumn>Name</TableHeaderColumn>
           <TableHeaderColumn>Created At</TableHeaderColumn>
         </TableRow>
       </TableHeader>
-      <TableBody displayRowCheckbox={false} showRowHover={true}>
+      <TableBody
+        deselectOnClickaway={false}
+        displayRowCheckbox={true}
+        showRowHover={true}>
         {items}
       </TableBody>
     </Table>
