@@ -26,11 +26,11 @@ class Dashboard extends Component {
     return (
       <div className="container">
         <Topbar>
-          <ul>
-            <li><Link to="/app/clients">Clients</Link></li>
+          <ul className="admin-navigation">
             <li><Link to="/app/dashboard">Dashboard</Link></li>
-            <li><Link to="/app/documents">Documents</Link></li>
+            <li><Link to="/app/clients">Clients</Link></li>
             <li><Link to="/app/assignments">Assignments</Link></li>
+            <li><Link to="/app/documents">Documents</Link></li>
           </ul>
         </Topbar>
         <main>
