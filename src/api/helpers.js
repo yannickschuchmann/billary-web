@@ -1,8 +1,9 @@
 require('es6-promise').polyfill();
 const request = require('superagent');
 const superagentPromisePlugin = require('superagent-promise-plugin');
+const config = require('../config/' + process.env.NODE_ENV);
 
-export const API_PATH = "http://api.localhost:3000/v1";
+export const API_PATH = config.API_PATH;
 
 export const getAuthCookie = () => {
   const b = localStorage.getItem("authHeaders");

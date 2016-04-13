@@ -85,6 +85,11 @@ function getConfig(env) {
     plugins: getPlugins(env),
     module: {
       loaders: getLoaders(env)
+    },
+    resolve: {
+      alias: {
+        'furfm': path.join(__dirname, './src/config/development.js')
+      }
     }
   };
 }

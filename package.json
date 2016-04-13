@@ -14,7 +14,8 @@
     "prebuild": "npm run clean-dist && npm run build:html",
     "build": "babel-node tools/build.js && npm run open:dist",
     "test": "cross-env NODE_ENV=test mocha --reporter progress --compilers js:babel-core/register --recursive \"./src/**/*.spec.js\"",
-    "test:watch": "npm run test -- --watch"
+    "test:watch": "npm run test -- --watch",
+    "deploy": "babel-node tools/deploy.js"
   },
   "author": "Cory House",
   "license": "MIT",
@@ -77,6 +78,7 @@
     "react-transform-hmr": "1.0.1",
     "redbox-react": "1.2.0",
     "rimraf": "2.5.0",
+    "rsync": "0.4.0",
     "sass-loader": "3.1.2",
     "style-loader": "0.13.0",
     "watch": "0.17.1",
