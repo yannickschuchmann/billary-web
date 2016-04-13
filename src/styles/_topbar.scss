@@ -10,9 +10,15 @@
   display: flex;
   margin: 0;
   padding: 0;
-  justify-content: space-around;
-  align-items: center;
+  > li {
+    display: flex;
+    flex: 1;
+  }
   a {
+    justify-content: center;
+    align-items: center;
     color: #fff;
+    display: flex;
+    flex: 1;
   }
 }
