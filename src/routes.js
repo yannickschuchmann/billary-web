@@ -19,8 +19,9 @@ import Admin from './containers/Admin';
 import Assignments from './containers/Assignments';
 import Clients from './containers/Clients';
 import Dashboard from './containers/Dashboard';
-import Documents from './containers/Documents';
+import Invoices from './containers/Invoices';
 import Tracking from './containers/Tracking';
+import Company from './containers/Company';
 
 
 export function getRoutes(store) {
@@ -66,7 +67,8 @@ export function getRoutes(store) {
           <Route path="assignments" component={Assignments} />
           <Route path="clients" component={Clients} />
           <Route path="dashboard" component={Dashboard} />
-          <Route path="documents" component={Documents} />
+          <Route path="invoices" component={Invoices} />
+          <Route path="company" component={Company} />
         </Route>
       </Route>
       <Route path="*" component={NotFoundPage} />

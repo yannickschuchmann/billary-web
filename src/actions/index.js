@@ -3,8 +3,13 @@ import {createAction} from 'redux-act';
 import * as projectApi from '../api/projects';
 import * as timeEntryApi from '../api/timeEntries';
 import * as clientApi from '../api/clients';
+import * as userApi from '../api/users';
+import * as companyApi from '../api/companies';
 
 export let hideSnackbar = createAction('HIDE_SNACKBAR');
+
+export let getUser = createActionAsync('GET_USER', userApi.getUser);
+export let patchCompany = createActionAsync('PATCH_COMPANY', companyApi.patchCompany);
 
 export let getProjects = createActionAsync('GET_PROJECTS', projectApi.getProjects);
 export let patchProject = createActionAsync('PATCH_PROJECT', projectApi.patchProject);

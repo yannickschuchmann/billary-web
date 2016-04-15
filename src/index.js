@@ -6,6 +6,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { getRoutes } from './routes';
 import configureStore from './store/configureStore';
 import { configure } from './actions/auth';
+import { getUser } from './actions/index';
 import { API_URL } from './api/helpers';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
@@ -15,9 +16,10 @@ import './styles/styles.scss'; //Yep, that's right. You can import SASS/CSS file
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store)
 store.dispatch(configure()).then(() => {
-    render(
-      <Provider store={store}>
-        <Router history={history} routes={getRoutes(store)} />
-      </Provider>, document.getElementById('app-container')
-    );
-  });
+  store.dispatch(getUser());
+  render(
+    <Provider store={store}>
+      <Router history={history} routes={getRoutes(store)} />
+    </Provider>, document.getElementById('app-container')
+  );
+});

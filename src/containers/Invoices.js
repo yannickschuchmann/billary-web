@@ -5,7 +5,7 @@ import ui from 'redux-ui';
 import _ from 'lodash';
 import * as actions from '../actions';
 
-class Document extends Component {
+class Invoices extends Component {
   static propTypes = {
     ui: PropTypes.object,
     updateUI: PropTypes.func,
@@ -21,8 +21,8 @@ class Document extends Component {
 
   render() {
     return (
-      <div id="document-container">
-        Document
+      <div id="invoices-container">
+        Invoices
       </div>
     );
   };
@@ -43,6 +43,6 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ui({
-  key: "document-container",
+  key: "invoices-container",
   state: {}
-})(Document));
+})(Invoices));

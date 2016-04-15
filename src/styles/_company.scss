@@ -1,0 +1,17 @@
+#company-container {
+  flex: 1;
+  form {
+    padding: 20px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    .row {
+      justify-content: space-around;
+      display: flex;
+    }
+  }
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
