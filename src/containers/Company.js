@@ -7,7 +7,7 @@ import * as actions from '../actions';
 import { MenuItem, RaisedButton } from 'material-ui/lib';
 import { Form } from 'formsy-react';
 import { SelectField, TextField } from '../components/FormFields';
-import { supportedCountries as countries } from '../businessLogic/i18n';
+import { countries } from '../businessLogic/i18n';
 
 const countryItems = countries.map((item, i) => (
   <MenuItem value={item.code} key={i} primaryText={item.name}/>

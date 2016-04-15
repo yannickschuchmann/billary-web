@@ -13,7 +13,8 @@ const language = (window.navigator.language || window.navigator.userLanguage).sp
 const initialClient = {
   address: {
     country: language[language.length - 1].toLowerCase()
-  }
+  },
+  currency: "EUR"
 }
 
 class Clients extends Component {

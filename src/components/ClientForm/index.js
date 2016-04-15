@@ -3,11 +3,15 @@ import ui from 'redux-ui';
 import { Divider, MenuItem, FlatButton, RaisedButton } from 'material-ui/lib';
 import { Form } from 'formsy-react';
 import { SelectField, TextField } from '../FormFields';
-import { supportedCountries as countries } from '../../businessLogic/i18n';
+import { countries, currencies } from '../../businessLogic/i18n';
 
 const countryItems = countries.map((item, i) => (
   <MenuItem value={item.code} key={i} primaryText={item.name}/>
 ));
+const currencyItems = currencies.map((item, i) => (
+  <MenuItem value={item} key={i} primaryText={item}/>
+));
+
 
 class ClientForm extends Component {
   constructor(props) {
@@ -46,7 +50,7 @@ class ClientForm extends Component {
 
   render() {
     const { isEditing } = this.props;
-    const { number, name, address } = this.props.client;
+    const { number, name, address, rate, currency } = this.props.client;
     const { line_1, line_2, locality, province, postcode, country } = address || {};
     const submitButton = (
       <RaisedButton
@@ -81,6 +85,14 @@ class ClientForm extends Component {
             modelId={this.props.client.id}
             floatingLabelText="Country" required>
             {countryItems}
+          </SelectField>
+          <TextField name="rate" value={rate} floatingLabelText="Hourly Rate" required />
+          <SelectField
+            name="currency"
+            value={currency}
+            modelId={this.props.client.id}
+            floatingLabelText="Currency" required>
+            {currencyItems}
           </SelectField>
           <div className="buttons">
             {submitButton}
