@@ -5,8 +5,9 @@ import assignments from './assignments';
 import auth from './auth';
 import clients from './clients';
 import company from './company';
-import tracking from './tracking';
+import invoices from './invoice';
 import notification from './notification';
+import tracking from './tracking';
 import { routerReducer } from 'react-router-redux'
 
 
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   auth,
   clients,
   company,
-  
+  invoices,
+
   ui,
   notification,
   routing: routerReducer,

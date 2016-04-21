@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 import ui from 'redux-ui';
 import _ from 'lodash';
 import * as actions from '../actions';
+import { RaisedButton } from 'material-ui/lib';
+import InvoiceListing from '../components/InvoiceListing';
 
 class Invoices extends Component {
   static propTypes = {
@@ -13,16 +15,24 @@ class Invoices extends Component {
   };
 
   componentDidMount() {
+    this.props.actions.getInvoices();
   };
 
   componentWillReceiveProps(newProps) {
   };
 
+  handleGenerate(e) {
+    const { generateInvoices, getInvoices } = this.props.actions;
+    generateInvoices().then(getInvoices);
+  };
 
   render() {
     return (
       <div id="invoices-container">
-        Invoices
+        isGenerating: {this.props.invoices.isGenerating ? "true" : "false"}
+        <RaisedButton primary={true} label="Generate" onClick={this.handleGenerate.bind(this)} />
+        <InvoiceListing
+          invoices={this.props.invoices.data}/>
       </div>
     );
   };
@@ -30,6 +40,7 @@ class Invoices extends Component {
 
 function mapStateToProps(state) {
   return {
+    invoices: state.invoices
   };
 }
 

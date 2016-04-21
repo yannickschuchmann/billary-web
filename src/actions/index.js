@@ -5,6 +5,7 @@ import * as timeEntryApi from '../api/timeEntries';
 import * as clientApi from '../api/clients';
 import * as userApi from '../api/users';
 import * as companyApi from '../api/companies';
+import * as invoiceApi from '../api/invoices';
 
 export let hideSnackbar = createAction('HIDE_SNACKBAR');
 
@@ -30,5 +31,11 @@ export let getClients = createActionAsync('GET_CLIENTS', clientApi.getClients);
 export let postClient = createActionAsync('POST_CLIENT', clientApi.postClient);
 export let patchClient = createActionAsync('PATCH_CLIENT', clientApi.patchClient);
 export let deleteClient = createActionAsync('DELETE_CLIENT', clientApi.deleteClient);
+
+export let generateInvoices = createActionAsync('GENERATE_INVOICES', invoiceApi.generateInvoices);
+export let getInvoices = createActionAsync('GET_INVOICES', invoiceApi.getInvoices);
+export let patchInvoice = createActionAsync('PATCH_INVOICE', invoiceApi.patchInvoice);
+export let postInvoice = createActionAsync('POST_INVOICE', invoiceApi.postInvoice);
+export let deleteInvoice = createActionAsync('DELETE_INVOICE', invoiceApi.deleteInvoice);
 
 export let selectDay = createAction('SELECT_DAY', (day) => ({day}));
