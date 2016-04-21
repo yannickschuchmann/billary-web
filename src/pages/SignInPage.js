@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 import * as actions from '../actions/auth';
+import { getUser } from '../actions';
 import Auth from 'j-toker';
 
 // Since this component is simple and static, there's no parent container for it.
@@ -46,7 +47,10 @@ class SignIn extends Component {
     };
     this.props.actions
       .emailSignIn(user)
-      .then((value) => {browserHistory.push("/")}, (err) => console.warn(err));
+      .then((value) => {
+        browserHistory.push("/");
+        this.props.actions.getUser();
+      }, (err) => console.warn(err));
 
     return false;
   }
@@ -102,7 +106,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators({...actions, getUser}, dispatch)
   };
 }
 

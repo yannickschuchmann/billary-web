@@ -16,7 +16,7 @@ import './styles/styles.scss'; //Yep, that's right. You can import SASS/CSS file
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store)
 store.dispatch(configure()).then(() => {
-  store.dispatch(getUser());
+  if (store.getState().auth.user.isSignedIn) store.dispatch(getUser());
   render(
     <Provider store={store}>
       <Router history={history} routes={getRoutes(store)} />
