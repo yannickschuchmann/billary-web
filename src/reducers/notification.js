@@ -25,6 +25,7 @@ let reducer = createReducer({
   [authCalls.emailSignUp.error]: (state, payload) => notify(payload.reason, state),
   [authCalls.emailSignUp.ok]: (state, payload) => notify("Check your mails.", state),
   [authCalls.emailSignIn.ok]: (state, payload) => notify(`Hello ${payload.data.email}`, state),
+  [calls.generateInvoices.ok]: (state, payload) => notify(`${payload} files generated`, state),
   [calls.hideSnackbar]: (state, payload) => (initialState)
 }, initialState);
 

@@ -1,0 +1,10 @@
+#invoices-container {
+  .generation {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    .action {
+      position: relative;
+    }
+  }
+}

@@ -30,6 +30,9 @@ let reducer = createReducer({
   })),
   [calls.generateInvoices.ok]: (state, payload) => (objectAssign({}, state, {
     isGenerating: false
+  })),
+  [calls.generateInvoices.error]: (state, payload) => (objectAssign({}, state, {
+    isGenerating: false
   }))
 }, initialState);
 

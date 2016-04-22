@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux';
 import ui from 'redux-ui';
 import _ from 'lodash';
 import * as actions from '../actions';
-import { RaisedButton } from 'material-ui/lib';
+import { RaisedButton, RefreshIndicator, DatePicker } from 'material-ui/lib';
 import InvoiceListing from '../components/InvoiceListing';
+import { moment } from '../businessLogic/calendarHelper';
 
 class Invoices extends Component {
   static propTypes = {
@@ -23,16 +24,27 @@ class Invoices extends Component {
 
   handleGenerate(e) {
     const { generateInvoices, getInvoices } = this.props.actions;
-    generateInvoices().then(getInvoices);
+    generateInvoices({
+      till: moment(this.refs.tillDate.getDate())
+    }).then(getInvoices);
   };
 
   render() {
+    let { isGenerating, data: invoices } = this.props.invoices;
     return (
       <div id="invoices-container">
-        isGenerating: {this.props.invoices.isGenerating ? "true" : "false"}
-        <RaisedButton primary={true} label="Generate" onClick={this.handleGenerate.bind(this)} />
+        <div className="generation">
+          <DatePicker ref="tillDate" hintText="Till" autoOk={true} floatingLabelText="Trackings till:" defaultDate={new Date()} />
+          <div className="action">
+            <RaisedButton
+              disabled={isGenerating}
+              primary={true}
+              label={isGenerating ? "Generating" : "Generate"}
+              onClick={this.handleGenerate.bind(this)} />
+          </div>
+        </div>
         <InvoiceListing
-          invoices={this.props.invoices.data}/>
+          invoices={invoices}/>
       </div>
     );
   };

@@ -40,10 +40,13 @@ export const saveFile = (path) => {
     xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:4000");
     xhr.onload = function() {
       if (xhr.readyState == 4 && xhr.status == 200) {
-        var blob = new Blob([xhr.response], {type: "octet/stream"});
-        var fileName = "invoices.zip";
-        saveAs(blob, fileName);
-        resolve();
+        const filesCount = parseInt(xhr.getResponseHeader("files"));
+        if (filesCount) {
+          var blob = new Blob([xhr.response], {type: "octet/stream"});
+          var fileName = "invoices.zip";
+          saveAs(blob, fileName);
+        }
+        resolve(filesCount);
       } else {
         reject();
       }
