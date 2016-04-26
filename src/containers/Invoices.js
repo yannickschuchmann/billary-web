@@ -56,6 +56,11 @@ class Invoices extends Component {
     })
   };
 
+  handleFormSubmit(model) {
+    const { patchInvoice, getInvoices } = this.props.actions;
+    patchInvoice(model).then(getInvoices);
+  };
+
   render() {
     let { isGenerating, data: invoices } = this.props.invoices;
     let { showForm, editItem } = this.state;
@@ -63,6 +68,7 @@ class Invoices extends Component {
     const invoiceForm = showForm ? (
       <InvoiceForm
         key="invoiceForm"
+        onSubmit={this.handleFormSubmit.bind(this)}
         onRequestClose={this.handleFormClose.bind(this)}
         item={this.state.editItem} />
     ) : "";
@@ -83,7 +89,7 @@ class Invoices extends Component {
           onEdit={this.handleEditClick.bind(this)}
           invoices={invoices}/>
         <ReactCSSTransitionGroup transitionName="move-up"
-          transitionEnterTimeout={150} transitionLeaveTimeout={150}>
+          transitionEnterTimeout={250} transitionLeaveTimeout={250}>
           {invoiceForm}
         </ReactCSSTransitionGroup>
       </div>
