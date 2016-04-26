@@ -11,8 +11,9 @@ import IconButton from 'material-ui/lib/icon-button';
 import { Link } from 'react-router';
 import { API_PATH } from '../../api/helpers';
 import EditIcon from 'material-ui/lib/svg-icons/image/edit';
+import DeleteIcon from 'material-ui/lib/svg-icons/action/delete';
 
-const InvoiceListing = ({invoices, onSelect, selected, onEdit}) => {
+const InvoiceListing = ({invoices, onSelect, selected, onEdit, onDelete}) => {
   const items = invoices.map((item, i) => (
     <TableRow key={i}>
       <TableRowColumn>{item.number}</TableRowColumn>
@@ -20,10 +21,22 @@ const InvoiceListing = ({invoices, onSelect, selected, onEdit}) => {
       <TableRowColumn>{item.price}</TableRowColumn>
       <TableRowColumn>{moment(item.created_at).format("L")}</TableRowColumn>
       <TableRowColumn>
+        <a
+          style={{
+            height: 48,
+            width: 48,
+            padding: 12,
+            display: "inline-block",
+            boxSizing: "border-box"
+          }}
+          target="_blank"
+          href={`${API_PATH}/invoices/${item.id}.pdf`}><Pdf/></a>
         <IconButton onClick={(e) => onEdit(item)}>
           <EditIcon/>
         </IconButton>
-        <a target="blank" href={`${API_PATH}/invoices/${item.id}.pdf`}><Pdf/></a>
+        <IconButton onClick={(e) => onDelete(item)}>
+          <DeleteIcon/>
+        </IconButton>
       </TableRowColumn>
     </TableRow>
   ));
@@ -52,7 +65,8 @@ const InvoiceListing = ({invoices, onSelect, selected, onEdit}) => {
 InvoiceListing.propTypes = {
   invoices: PropTypes.array,
   selected: PropTypes.number,
-  onEdit: PropTypes.func
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func
 };
 
 export default InvoiceListing;

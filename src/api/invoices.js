@@ -13,6 +13,18 @@ export function patchInvoice(invoice) {
                       );
 }
 
+export function postInvoice(invoice) {
+  return authorizedReq(request
+                        .post(API_PATH + "/invoices")
+                        .send({invoice})
+                      );
+}
+
+export function deleteInvoice(invoiceId) {
+  return authorizedReq(request.delete(API_PATH + "/invoices/" + invoiceId));
+}
+
+
 export function generateInvoices(params) {
   return saveFile(API_PATH + "/invoices/generate?" + queryString.stringify(params)).catch(console.warn);
 }

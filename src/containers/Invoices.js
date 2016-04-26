@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import ui from 'redux-ui';
 import _ from 'lodash';
 import * as actions from '../actions';
-import { RaisedButton, RefreshIndicator, DatePicker } from 'material-ui/lib';
+import { RaisedButton, FlatButton, Dialog, RefreshIndicator, DatePicker } from 'material-ui/lib';
 import InvoiceListing from '../components/InvoiceListing';
 import { moment } from '../businessLogic/calendarHelper';
 import InvoiceForm from '../components/InvoiceForm';
@@ -12,7 +12,9 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const initialState = {
   editItem: {},
-  showForm: false
+  showForm: false,
+  openDestroyConfirmation: false,
+  destroyingItem: null
 };
 
 class Invoices extends Component {
@@ -49,6 +51,13 @@ class Invoices extends Component {
     });
   };
 
+  handleDeleteClick(item) {
+    this.setState({
+      openDestroyConfirmation: true,
+      destroyingItem: item
+    })
+  };
+
   handleFormClose() {
     this.setState({
       editItem: {},
@@ -59,6 +68,13 @@ class Invoices extends Component {
   handleFormSubmit(model) {
     const { patchInvoice, getInvoices } = this.props.actions;
     patchInvoice(model).then(getInvoices);
+  };
+
+  handleDialogClose() {
+    this.setState({
+      openDestroyConfirmation: false,
+      destroyingItem: null
+    });
   };
 
   render() {
@@ -72,6 +88,23 @@ class Invoices extends Component {
         onRequestClose={this.handleFormClose.bind(this)}
         item={this.state.editItem} />
     ) : "";
+
+    const destroyDialogActions = [
+      <FlatButton
+        label="Cancel"
+        secondary={true}
+        onTouchTap={this.handleDialogClose.bind(this)}
+      />,
+      <FlatButton
+        label="I'm sure"
+        primary={true}
+        onTouchTap={() => {
+          const { deleteInvoice, getInvoices } = this.props.actions;
+          deleteInvoice(this.state.destroyingItem.id).then(getInvoices);
+          this.handleDialogClose();
+        }}
+      />,
+    ];
 
     return (
       <div id="invoices-container">
@@ -87,11 +120,20 @@ class Invoices extends Component {
         </div>
         <InvoiceListing
           onEdit={this.handleEditClick.bind(this)}
+          onDelete={this.handleDeleteClick.bind(this)}
           invoices={invoices}/>
         <ReactCSSTransitionGroup transitionName="move-up"
           transitionEnterTimeout={250} transitionLeaveTimeout={250}>
           {invoiceForm}
         </ReactCSSTransitionGroup>
+        <Dialog
+          actions={destroyDialogActions}
+          modal={false}
+          open={this.state.openDestroyConfirmation}
+          onRequestClose={this.handleDialogClose}
+        >
+          Are you sure you want to delete this invoice?
+        </Dialog>
       </div>
     );
   };
