@@ -1,1 +1,1 @@
-export const API_PATH = "http://api.tiktak.io/v1";
+export const API_PATH = "https://api.tiktak.io/v1";
