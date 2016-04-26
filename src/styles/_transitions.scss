@@ -1,0 +1,19 @@
+.move-up-enter {
+  transform: scale(1, 0);
+  transform-origin: bottom;
+}
+
+.move-up-enter.move-up-enter-active {
+  transform: scale(1, 1);
+  transition: transform 150ms ease-out;
+}
+
+.move-up-leave {
+  transform: scale(1, 1);
+  transform-origin: bottom;
+}
+
+.move-up-leave.move-up-leave-active {
+  transform: scale(1, 0);
+  transition: transform 150ms ease-out;
+}

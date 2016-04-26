@@ -7,17 +7,24 @@ import TableHeader from 'material-ui/lib/table/table-header';
 import TableRowColumn from 'material-ui/lib/table/table-row-column';
 import TableBody from 'material-ui/lib/table/table-body';
 import Pdf from 'material-ui/lib/svg-icons/image/picture-as-pdf';
+import IconButton from 'material-ui/lib/icon-button';
 import { Link } from 'react-router';
 import { API_PATH } from '../../api/helpers';
+import EditIcon from 'material-ui/lib/svg-icons/image/edit';
 
-const InvoiceListing = ({invoices, onSelect, selected}) => {
+const InvoiceListing = ({invoices, onSelect, selected, onEdit}) => {
   const items = invoices.map((item, i) => (
     <TableRow key={i}>
       <TableRowColumn>{item.number}</TableRowColumn>
       <TableRowColumn>{item.client.name}</TableRowColumn>
       <TableRowColumn>{item.price}</TableRowColumn>
       <TableRowColumn>{moment(item.created_at).format("L")}</TableRowColumn>
-      <TableRowColumn><a target="blank" href={`${API_PATH}/invoices/${item.id}.pdf`}><Pdf/></a></TableRowColumn>
+      <TableRowColumn>
+        <IconButton onClick={(e) => onEdit(item)}>
+          <EditIcon/>
+        </IconButton>
+        <a target="blank" href={`${API_PATH}/invoices/${item.id}.pdf`}><Pdf/></a>
+      </TableRowColumn>
     </TableRow>
   ));
 
@@ -44,7 +51,8 @@ const InvoiceListing = ({invoices, onSelect, selected}) => {
 
 InvoiceListing.propTypes = {
   invoices: PropTypes.array,
-  selected: PropTypes.number
+  selected: PropTypes.number,
+  onEdit: PropTypes.func
 };
 
 export default InvoiceListing;

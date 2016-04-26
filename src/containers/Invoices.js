@@ -7,12 +7,25 @@ import * as actions from '../actions';
 import { RaisedButton, RefreshIndicator, DatePicker } from 'material-ui/lib';
 import InvoiceListing from '../components/InvoiceListing';
 import { moment } from '../businessLogic/calendarHelper';
+import InvoiceForm from '../components/InvoiceForm';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+const initialState = {
+  editItem: {},
+  showForm: false
+};
 
 class Invoices extends Component {
   static propTypes = {
     ui: PropTypes.object,
     updateUI: PropTypes.func,
     actions: PropTypes.object.isRequired
+  };
+
+
+  constructor(props) {
+    super(props);
+    this.state = initialState;
   };
 
   componentDidMount() {
@@ -29,8 +42,31 @@ class Invoices extends Component {
     }).then(getInvoices);
   };
 
+  handleEditClick(item) {
+    this.setState({
+      editItem: item,
+      showForm: true
+    });
+  };
+
+  handleFormClose() {
+    this.setState({
+      editItem: {},
+      showForm: false
+    })
+  };
+
   render() {
     let { isGenerating, data: invoices } = this.props.invoices;
+    let { showForm, editItem } = this.state;
+
+    const invoiceForm = showForm ? (
+      <InvoiceForm
+        key="invoiceForm"
+        onRequestClose={this.handleFormClose.bind(this)}
+        item={this.state.editItem} />
+    ) : "";
+
     return (
       <div id="invoices-container">
         <div className="generation">
@@ -44,7 +80,12 @@ class Invoices extends Component {
           </div>
         </div>
         <InvoiceListing
+          onEdit={this.handleEditClick.bind(this)}
           invoices={invoices}/>
+        <ReactCSSTransitionGroup transitionName="move-up"
+          transitionEnterTimeout={150} transitionLeaveTimeout={150}>
+          {invoiceForm}
+        </ReactCSSTransitionGroup>
       </div>
     );
   };

@@ -1,4 +1,5 @@
 #invoices-container {
+  position: relative;
   .generation {
     padding: 20px;
     display: flex;
@@ -6,5 +7,14 @@
     .action {
       position: relative;
     }
+  }
+  .invoice-form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #36D6B0;
+    z-index: 1;
   }
 }
