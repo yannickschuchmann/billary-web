@@ -22,7 +22,7 @@ const getPlugins = function (env) {
 
   switch (env) {
     case productionEnvironment:
-      plugins.push(new ExtractTextPlugin('styles.css'));
+      plugins.push(new ExtractTextPlugin('css/styles.css'));
       plugins.push(new webpack.optimize.DedupePlugin());
       plugins.push(new webpack.optimize.UglifyJsPlugin());
       break;
@@ -54,9 +54,11 @@ const getLoaders = function (env) {
   if (env === productionEnvironment ) {
     // generate separate physical stylesheet for production build using ExtractTextPlugin. This provides separate caching and avoids a flash of unstyled content on load.
     loaders.push({test: /(\.css|\.scss)$/, loader: ExtractTextPlugin.extract("css?sourceMap!sass?sourceMap")});
+    loaders.push({ test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' })
   } else {
     loaders.push({test: /(\.css|\.scss)$/, loaders: ['style', 'css?sourceMap', 'sass?sourceMap']});
     loaders.push({ test: /\.json$/, loader: "json-loader" });
+    loaders.push({ test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' })
     loaders.push({
       test: /\.jsx?$/,
       exclude: /(node_modules|bower_components)/,
