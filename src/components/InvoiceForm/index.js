@@ -5,7 +5,7 @@ import AddIcon from 'material-ui/lib/svg-icons/content/add';
 import RemoveIcon from 'material-ui/lib/svg-icons/content/remove-circle-outline';
 import RemoveActiveIcon from 'material-ui/lib/svg-icons/content/remove-circle';
 import { Form } from 'formsy-react';
-import { SelectField, TextField, HiddenField } from '../FormFields';
+import { SelectField, DateField, TextField, HiddenField } from '../FormFields';
 import Table from 'material-ui/lib/table/table';
 import TableHeaderColumn from 'material-ui/lib/table/table-header-column';
 import TableRow from 'material-ui/lib/table/table-row';
@@ -205,7 +205,7 @@ class InvoiceForm extends Component {
           <div className="invoice-fields">
             <TextField name="number" value={number} floatingLabelText="Invoice Number" required />
             <TextField name="terms" type="number" value={terms || 14} floatingLabelText="Terms" placeholder="14 days" required />
-            <TextField name="invoiced_at" value={invoiced_at} floatingLabelText="date of invoice" required />
+            <DateField name="invoiced_at" mode="landscape" value={invoiced_at} floatingLabelText="date of invoice" required />
             <SelectField
               value={client_id}
               name="client_id"

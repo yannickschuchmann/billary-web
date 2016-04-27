@@ -156,7 +156,7 @@ class Invoices extends Component {
           actions={destroyDialogActions}
           modal={false}
           open={this.state.openDestroyConfirmation}
-          onRequestClose={this.handleDialogClose}
+          onRequestClose={this.handleDialogClose.bind(this)}
         >
           Are you sure you want to delete this invoice?
         </Dialog>
