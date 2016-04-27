@@ -54,6 +54,7 @@ class ProjectWrap extends Component {
             }}>
             {isRunning ? <StopIcon/> : <PlayIcon/>}
           </IconButton>
+          <div className="color-identifier"></div>
           <FlatButton
             onClick={this.props.onToggle}
             fullWidth={true}
@@ -64,6 +65,7 @@ class ProjectWrap extends Component {
             <div className="index">{this.props.index}</div>
             <div className="name">{names}</div>
             <div className="duration"><TimerIcon />{minutesToCounterString(this.props.duration)}</div>
+
           </FlatButton>
         </div>
         {children}

@@ -28,6 +28,17 @@
       }
     }
   }
+  $colors: $visual-day-colors;
+  @for $i from 1 through length($colors) {
+      $c: nth($visual-day-colors, $i);
+      .project-wrap:nth-child(#{length($colors)}n+#{$i}) {
+        .color-identifier {
+          flex: 0 0 3px;
+          margin: 7px 5px 7px 0;
+          background: nth($colors, $i);
+        }
+      }
+  }
   .project-wrap-children {
     padding-left: 30px;
   }
