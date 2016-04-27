@@ -88,8 +88,6 @@ class Company extends Component {
                 {countryItems}
               </SelectField>
             </div>
-          </div>
-          <div className="row">
             <div className="payment-address-container">
               <h2>Payment address</h2>
               <TextField name="payment_address_attributes.type" disabled={true} value={type} floatingLabelText="Type" />
@@ -103,7 +101,7 @@ class Company extends Component {
               type="submit"
               label={"update"}
               primary={true}
-              disabled={!this.state.canSubmit}/>
+              disabled={!this.state.canSubmit || this.props.company.isFetching}/>
           </div>
         </Form>
       </div>
