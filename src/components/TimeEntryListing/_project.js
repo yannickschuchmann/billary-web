@@ -32,7 +32,6 @@ class ProjectWrap extends Component {
         {this.props.children}
       </div>
     ) : "";
-
     const names = item.projectNames.map((name, i) => {
       return (
         <span className="name-item" key={i}>

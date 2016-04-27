@@ -102,38 +102,41 @@ class Tracking extends Component {
     let projectWraps = [];
 
     let i = 0;
-    _.forOwn(projectWrapsForDay, (items, key) => {
-      const entries = items.map((entry, i) => (<TimeEntry
-        onEdit={() => this.showTimeEntryModal(entry)}
-        onDelete={() => this.props.actions.deleteTimeEntry(entry.id)
-          .then(this.props.actions.getTimeEntries)}
-        key={entry.id}
-        index={i+1}
-        item={entry} />)
-      );
 
-      const duration = _.reduce(items,(sum, entry) => sum + entry.duration_overhang,0);
-      const project = this.props.tracking.projectsById[key];
-      const isRunning = !!_.find(items, {id: this.props.tracking.currentTimeEntry.id})
-      projectWraps.push(
-        <ProjectWrap
-          key={key}
-          isRunning={isRunning}
-          index={i + 1}
-          onSelectAndStart={this.handleSelectAndStart.bind(this)}
-          onStop={this.handleStop.bind(this)}
-          open={this.props.ui.openTimeEntriesForProject == key}
-          project={project}
-          duration={duration}
+    if (!this.props.tracking.isFetching) {
+      _.forOwn(projectWrapsForDay, (items, key) => {
+        const entries = items.map((entry, i) => (<TimeEntry
+          onEdit={() => this.showTimeEntryModal(entry)}
+          onDelete={() => this.props.actions.deleteTimeEntry(entry.id)
+            .then(this.props.actions.getTimeEntries)}
+          key={entry.id}
+          index={i+1}
+          item={entry} />)
+        );
 
-          onToggle={(e) => this.toggleTimeEntriesForProject(key)}>
-          {entries}
-        </ProjectWrap>
-      );
+        const duration = _.reduce(items,(sum, entry) => sum + entry.duration_overhang,0);
+        const project = this.props.tracking.projectsById[key];
+        const isRunning = !!_.find(items, {id: this.props.tracking.currentTimeEntry.id})
+        projectWraps.push(
+          <ProjectWrap
+            key={key}
+            isRunning={isRunning}
+            index={i + 1}
+            onSelectAndStart={this.handleSelectAndStart.bind(this)}
+            onStop={this.handleStop.bind(this)}
+            open={this.props.ui.openTimeEntriesForProject == key}
+            project={project}
+            duration={duration}
 
-      durationForSelectedDay += duration;
-      i++;
-    });
+            onToggle={(e) => this.toggleTimeEntriesForProject(key)}>
+            {entries}
+          </ProjectWrap>
+        );
+
+        durationForSelectedDay += duration;
+        i++;
+      });
+    }
 
     return (
       <div className="container">
