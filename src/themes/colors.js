@@ -1,0 +1,12 @@
+export const tealA = "#36D6B0";
+export const teal100 = "#71E2C8";
+export const orangeA = "#F66D5E";
+export const blueGrey900 = "#18191B";
+export const blueGrey800 = "#1C1D22";
+export const blueGrey700 = "#232429";
+export const blueGrey600 = "#2D313C";
+export const blueGrey500 = "#353A47";
+export const beigeGrey100 = "#F9F9F8";
+export const beigeGrey200 = "#E4E7E2";
+export const beigeGrey300 = "#EFF1ED";
+export const beigeGrey400 = "#D5DAD2";

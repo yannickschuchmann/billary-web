@@ -5,15 +5,28 @@ import { Link, IndexLink } from 'react-router';
 import { Snackbar } from 'material-ui/lib';
 import * as actions from '../actions';
 
-class Site extends Component {
-  constructor(props) {
-    super(props);
-  };
+import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
+import CustomRawTheme from '../themes';
 
+class Site extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     app: PropTypes.object.isRequired,
     notification: PropTypes.object.isRequired
+  };
+
+  constructor(props) {
+    super(props);
+  };
+
+  static childContextTypes = {
+    muiTheme: React.PropTypes.object,
+  };
+
+  getChildContext() {
+    return {
+      muiTheme: getMuiTheme(CustomRawTheme),
+    };
   };
 
   render() {
