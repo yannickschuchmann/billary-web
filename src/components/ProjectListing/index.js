@@ -5,7 +5,7 @@ import ButtonFormSwitch from '../ProjectForm/buttonFormSwitch';
 import {RefreshIndicator} from 'material-ui/lib'
 
 
-const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onEdit, onDelete, onNew}) => {
+const ProjectListing = ({tree, isFetching, onSelect, onSelectAndStart, onUnfold, selected, onEdit, onDelete, onNew}) => {
 
   const getProjectChildren = (project, index = 0, depth = 0) => {
     if (!project) return;
@@ -18,6 +18,7 @@ const ProjectListing = ({tree, isFetching, onSelect, onUnfold, selected, onEdit,
         isSelected={selected && selected.id == project.id}
         onNew={(name) => onNew(name, project.id)}
         onSelect={() => onSelect(project.id)}
+        onSelectAndStart={() => onSelectAndStart(project.id)}
         onUnfold={() => onUnfold(project.id)}
         onEdit={() => onEdit(project.id)}
         onDelete={() => onDelete(project.id)}

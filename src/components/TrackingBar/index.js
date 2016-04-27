@@ -47,6 +47,11 @@ class TrackingBar extends Component {
     this.props.onSelect(id);
   };
 
+  handleSelectAndStart(id) {
+    this.closeModal();
+    this.props.onSelectAndStart(id);
+  };
+
   onEdit(id) {
     this.props.updateUI("editProjectId", id);
   }
@@ -77,6 +82,7 @@ class TrackingBar extends Component {
         selected={this.props.tracking.selected}
         isFetching={this.props.tracking.isFetching}
         onSelect={this.onSelected.bind(this)}
+        onSelectAndStart={this.handleSelectAndStart.bind(this)}
         onUnfold={this.props.onUnfold}
         onEdit={this.onEdit.bind(this)}
         onDelete={this.props.onDelete}

@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import ui from 'redux-ui';
 import ProjectForm from '../ProjectForm/nameForm';
 import {FlatButton} from 'material-ui/lib';
-import CreateNewFolder from 'material-ui/lib/svg-icons/file/create-new-folder';
+import AddIcon from 'material-ui/lib/svg-icons/content/add-box';
 
 class ButtonFormSwitch extends Component {
   static propTypes = {
@@ -25,7 +25,7 @@ class ButtonFormSwitch extends Component {
               label="New project"
               fullWidth={true}
               onClick={(e) => this.props.updateUI("showForm", true)}
-              icon={<CreateNewFolder />}
+              icon={<AddIcon />}
             />
           </div>
         </li>

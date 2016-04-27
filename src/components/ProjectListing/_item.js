@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import ui from 'redux-ui';
 import {FlatButton} from 'material-ui/lib';
-import Folder from 'material-ui/lib/svg-icons/file/folder';
-import FolderOpen from 'material-ui/lib/svg-icons/file/folder-open';
+import Arrow from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import IconButton from 'material-ui/lib/icon-button';
@@ -15,6 +14,7 @@ class ProjectItem extends Component {
   static propTypes = {
     onNew: PropTypes.func,
     onSelect: PropTypes.func,
+    onSelectAndStart: PropTypes.func,
     onUnfold: PropTypes.func,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
@@ -44,18 +44,26 @@ class ProjectItem extends Component {
     return (
       <li className="project-listing-item">
         <div className="actions">
-          <FlatButton
-            className="item-button"
-            icon={item.unfolded ? <FolderOpen /> : <Folder />}
-            label={item.name}
+          <IconButton
+            className=""
+            style={{
+              transform: `rotateZ(${item.unfolded ? "90deg" : "0deg"})`,
+              transition: "transform .1s ease-out"
+            }}
             onClick={(e) => this.handleClick(() => {
               this.props.updateUI("isCreating", false);
               this.props.onUnfold();
-            }, e)}
+            }, e)}>
+            <Arrow />
+          </IconButton>
+          <FlatButton
+            className="item-button"
+            label={item.name}
+            onClick={(e) => this.handleClick(this.props.onSelect, e)}
           />
           <IconButton
             className="action-button"
-            onClick={(e) => this.handleClick(this.props.onSelect, e)}>
+            onClick={(e) => this.handleClick(this.props.onSelectAndStart, e)}>
             <Play />
           </IconButton>
           <IconMenu

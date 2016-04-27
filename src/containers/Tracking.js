@@ -109,6 +109,7 @@ class Tracking extends Component {
       durationForSelectedDay += duration;
       i++;
     });
+
     return (
       <div className="container">
         <Topbar>
@@ -156,6 +157,15 @@ class Tracking extends Component {
               project={this.props.tracking.selected}
               currentTimeEntry={this.props.tracking.currentTimeEntry}
               onSelect={this.props.actions.selectProject}
+              onSelectAndStart={(id) => {
+                this.props.actions.selectProject(id);
+                this.props.actions
+                  .postTimeEntry({project_id: id})
+                  .then(() => {
+                    this.props.actions.getCurrentTimeEntry();
+                    this.props.actions.getTimeEntries();
+                  })
+              }}
               onDelete={(id) =>
                 this.props.actions
                   .deleteProject(id)
