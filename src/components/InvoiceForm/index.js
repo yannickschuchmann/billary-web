@@ -28,7 +28,8 @@ class InvoiceForm extends Component {
   static propTypes = {
     ui: PropTypes.object,
     updateUI: PropTypes.func,
-    client: PropTypes.object
+    item: PropTypes.object,
+    clients: PropTypes.array
   };
 
   calculatePrice(item) {
@@ -90,7 +91,7 @@ class InvoiceForm extends Component {
   };
 
   render() {
-    const { id, number, terms, invoiced_at } = this.props.item;
+    const { id, number, terms, client_id, invoiced_at } = this.props.item;
     const isEditing = !!id;
     const submitButton = (
       <RaisedButton
@@ -153,6 +154,12 @@ class InvoiceForm extends Component {
       </TableRow>
     ));
 
+    const clientOptions = this.props.clients.map((item, i) => (
+      <MenuItem
+        key={i}
+        value={item.id}
+        primaryText={item.name} />
+    ));
 
     return (
       <div className="invoice-form">
@@ -165,6 +172,19 @@ class InvoiceForm extends Component {
             <TextField name="number" value={number} floatingLabelText="Invoice Number" required />
             <TextField name="terms" type="number" value={terms || 14} floatingLabelText="Terms" placeholder="14 days" required />
             <TextField name="invoiced_at" value={invoiced_at} floatingLabelText="date of invoice" required />
+            <SelectField
+              value={client_id}
+              name="client_id"
+              floatingLabelText="Client"
+              required
+              errorStyle={{
+                top: "100%",
+                bottom: "auto",
+                position: "absolute"
+              }}
+              >
+              {clientOptions}
+            </SelectField>
           </div>
           <h2>Invoice line items</h2>
           <div className="line-items-fields">

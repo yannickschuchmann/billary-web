@@ -4,14 +4,22 @@ import { bindActionCreators } from 'redux';
 import ui from 'redux-ui';
 import _ from 'lodash';
 import * as actions from '../actions';
-import { RaisedButton, FlatButton, Dialog, RefreshIndicator, DatePicker } from 'material-ui/lib';
+import {
+  RaisedButton,
+  FlatButton,
+  Dialog,
+  RefreshIndicator,
+  DatePicker,
+  FloatingActionButton
+  } from 'material-ui/lib';
 import InvoiceListing from '../components/InvoiceListing';
 import { moment } from '../businessLogic/calendarHelper';
 import InvoiceForm from '../components/InvoiceForm';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import AddIcon from 'material-ui/lib/svg-icons/content/add';
 
 const initialState = {
-  editItem: {},
+  editItem: {line_items: []},
   showForm: false,
   openDestroyConfirmation: false,
   destroyingItem: null
@@ -31,7 +39,9 @@ class Invoices extends Component {
   };
 
   componentDidMount() {
-    this.props.actions.getInvoices();
+    const { actions } = this.props;
+    actions.getInvoices();
+    actions.getClients();
   };
 
   componentWillReceiveProps(newProps) {
@@ -43,6 +53,13 @@ class Invoices extends Component {
       till: moment(this.refs.tillDate.getDate())
     }).then(getInvoices);
   };
+
+  handleNewClick() {
+    this.setState({
+      editItem: initialState.editItem,
+      showForm: true
+    });
+  }
 
   handleEditClick(item) {
     this.setState({
@@ -60,14 +77,15 @@ class Invoices extends Component {
 
   handleFormClose() {
     this.setState({
-      editItem: {},
+      editItem: initialState.editItem,
       showForm: false
     })
   };
 
   handleFormSubmit(model) {
-    const { patchInvoice, getInvoices } = this.props.actions;
-    patchInvoice(model).then(getInvoices);
+    const { postInvoice, patchInvoice, getInvoices } = this.props.actions;
+    const method = model.id ? patchInvoice : postInvoice;
+    method(model).then(getInvoices);
   };
 
   handleDialogClose() {
@@ -78,7 +96,14 @@ class Invoices extends Component {
   };
 
   render() {
-    let { isGenerating, data: invoices } = this.props.invoices;
+    let {
+      isGenerating,
+      isFetching: isFetchingInvoices,
+      data: invoices
+    } = this.props.invoices;
+    const {
+      data: clients
+    } = this.props.clients;
     let { showForm, editItem } = this.state;
 
     const invoiceForm = showForm ? (
@@ -86,6 +111,7 @@ class Invoices extends Component {
         key="invoiceForm"
         onSubmit={this.handleFormSubmit.bind(this)}
         onRequestClose={this.handleFormClose.bind(this)}
+        clients={clients}
         item={this.state.editItem} />
     ) : "";
 
@@ -134,6 +160,15 @@ class Invoices extends Component {
         >
           Are you sure you want to delete this invoice?
         </Dialog>
+        <FloatingActionButton
+          onClick={this.handleNewClick.bind(this)}
+          style={{
+            position: "absolute",
+            right: 23,
+            bottom: 23
+          }}>
+          <AddIcon />
+        </FloatingActionButton>
       </div>
     );
   };
@@ -141,7 +176,8 @@ class Invoices extends Component {
 
 function mapStateToProps(state) {
   return {
-    invoices: state.invoices
+    invoices: state.invoices,
+    clients: state.clients
   };
 }
 
