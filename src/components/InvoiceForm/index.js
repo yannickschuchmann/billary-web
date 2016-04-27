@@ -112,6 +112,11 @@ class InvoiceForm extends Component {
       width: 10
     };
 
+    const lineItemTextFieldStyle = {
+      marginBottom: 10,
+      marginTop: 10
+    }
+
     const lineItems = this.state.line_items.map((item, i) => {
       const { id, number, label, quantity, rate, _destroy } = item;
       return (
@@ -121,13 +126,42 @@ class InvoiceForm extends Component {
             <HiddenField name={`line_items_attributes[${i}].id`} value={id} />
           </TableRowColumn>
           <TableRowColumn>
-            <TextField name={`line_items_attributes[${i}].label`} value={label} hintText="Position Label" required={!_destroy} />
+            <TextField
+              style={lineItemTextFieldStyle}
+              name={`line_items_attributes[${i}].label`}
+              value={label}
+              hintText="Position Label"
+              required={!_destroy} />
           </TableRowColumn>
           <TableRowColumn>
-            <TextField onChange={this.handlePrice.bind(this, i, "quantity")} name={`line_items_attributes[${i}].quantity`} value={quantity} hintText="Quantity" required={!_destroy} />
+            <TextField
+              style={lineItemTextFieldStyle}
+              onChange={this.handlePrice.bind(this, i, "quantity")}
+              name={`line_items_attributes[${i}].quantity`}
+              value={quantity}
+              hintText="Quantity"
+              required={!_destroy}
+              validations={{
+                isNumeric: true
+              }}
+              validationError={{
+                isNumeric: "Must be numeric (e.g. 2.4)"
+              }} />
           </TableRowColumn>
           <TableRowColumn>
-            <TextField onChange={this.handlePrice.bind(this, i, "rate")} name={`line_items_attributes[${i}].rate`} value={rate} hintText="Unit price" required={!_destroy} />
+            <TextField
+              style={lineItemTextFieldStyle}
+              onChange={this.handlePrice.bind(this, i, "rate")}
+              name={`line_items_attributes[${i}].rate`}
+              value={rate}
+              hintText="Unit price"
+              required={!_destroy}
+              validations={{
+                isNumeric: true
+              }}
+              validationError={{
+                isNumeric: "Must be numeric (e.g. 2.44)"
+              }} />
           </TableRowColumn>
           <TableRowColumn>
             {item.price}

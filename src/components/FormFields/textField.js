@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { HOC } from 'formsy-react';
 import { TextField } from 'material-ui/lib';
 import objectAssign from 'object-assign';
+import _ from 'lodash';
 
 let changeTimeout;
 
@@ -20,6 +21,7 @@ class Input extends Component {
   }
 
   render() {
+    const errors = _.values(this.props.getErrorMessage());
     return (
       <TextField
         {...this.props}
@@ -28,7 +30,7 @@ class Input extends Component {
         defaultValue={this.props.value}
         value={this.props.getValue()}
         fullWidth={true}
-        errorText={this.props.getErrorMessage()}
+        errorText={errors[0]}
         style={objectAssign({
           width: 250,
           display: "block"
