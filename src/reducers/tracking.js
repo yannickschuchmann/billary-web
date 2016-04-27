@@ -22,7 +22,14 @@ const initialState = {
     selected: null,
     isFetching: false,
     tree: [],
-    currentTimeEntry: {},
+    currentTimeEntry: {
+      started_at: null,
+      stopped_at: null,
+      project_id: null,
+      id: null,
+      duration: null,
+      manual: null
+    },
     calendar: {
       selectedDay: moment().startOf('day').toDate(),
       timeEntriesByDay: {}
@@ -230,9 +237,7 @@ let reducer = createReducer({
     let currentTimeEntry, selectedProject;
 
     if (payload.body == null) {
-      currentTimeEntry = {
-        started_at: null
-      };
+      currentTimeEntry = initialState.view.currentTimeEntry;
       selectedProject = state._data.selectedProject;
     } else {
       currentTimeEntry = payload.body.time_entry;

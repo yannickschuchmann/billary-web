@@ -74,6 +74,25 @@ class Tracking extends Component {
     }
   };
 
+  handleSelectAndStart(id) {
+    this.props.actions.selectProject(id);
+    this.props.actions
+      .postTimeEntry({project_id: id})
+      .then(() => {
+        this.props.actions.getCurrentTimeEntry();
+        this.props.actions.getTimeEntries();
+      })
+  };
+
+  handleStop() {
+    this.props.actions
+      .stopTimeEntry()
+      .then(() => {
+        this.props.actions.getCurrentTimeEntry();
+        this.props.actions.getTimeEntries();
+      })
+  };
+
   render() {
     const calendarState = this.props.tracking.calendar;
     const projectWrapsForDay = this.props.tracking
@@ -94,13 +113,19 @@ class Tracking extends Component {
       );
 
       const duration = _.reduce(items,(sum, entry) => sum + entry.duration_overhang,0);
+      const project = this.props.tracking.projectsById[key];
+      const isRunning = !!_.find(items, {id: this.props.tracking.currentTimeEntry.id})
       projectWraps.push(
         <ProjectWrap
           key={key}
+          isRunning={isRunning}
           index={i + 1}
+          onSelectAndStart={this.handleSelectAndStart.bind(this)}
+          onStop={this.handleStop.bind(this)}
           open={this.props.ui.openTimeEntriesForProject == key}
-          project={this.props.tracking.projectsById[key]}
+          project={project}
           duration={duration}
+
           onToggle={(e) => this.toggleTimeEntriesForProject(key)}>
           {entries}
         </ProjectWrap>
@@ -157,15 +182,7 @@ class Tracking extends Component {
               project={this.props.tracking.selected}
               currentTimeEntry={this.props.tracking.currentTimeEntry}
               onSelect={this.props.actions.selectProject}
-              onSelectAndStart={(id) => {
-                this.props.actions.selectProject(id);
-                this.props.actions
-                  .postTimeEntry({project_id: id})
-                  .then(() => {
-                    this.props.actions.getCurrentTimeEntry();
-                    this.props.actions.getTimeEntries();
-                  })
-              }}
+              onSelectAndStart={this.handleSelectAndStart.bind(this)}
               onDelete={(id) =>
                 this.props.actions
                   .deleteProject(id)
@@ -196,15 +213,7 @@ class Tracking extends Component {
 
                 }
               }
-              onStop={() =>
-                this.props.actions
-                  .stopTimeEntry()
-                  .then(() => {
-                    this.props.actions.getCurrentTimeEntry();
-                    this.props.actions.getTimeEntries();
-                  })
-              }
-
+              onStop={this.handleStop.bind(this)}
             />
             <Modal
               className="modal-time-entry-form"
