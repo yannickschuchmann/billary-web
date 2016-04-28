@@ -14,6 +14,7 @@ class App extends Component {
   };
 
   componentDidMount() {
+    // due swipe back issues on osx
     document.body.style.overflow = "hidden";
   };
 
@@ -22,20 +23,22 @@ class App extends Component {
   };
 
   render() {
+    const { routes } = this.props;
+    const isTracking = routes[2].path == "tracking";
+    const isDashboard = !isTracking;
+
     return (
       <div className="app">
         <Sidebar>
           <div className="user-profile">
-            {this.props.auth.user.attributes.email}
-            <br/>
-            {this.props.app.currentUser.profession}
+            <span>{this.props.auth.user.attributes.email}</span>
             <Link to="/settings">Settings</Link>
           </div>
           <ul className="app-navigation">
-            <li>
+            <li className={isTracking ? "active" : ""}>
               <Link to="/app/tracking">Tracking</Link>
             </li>
-            <li>
+            <li className={isDashboard ? "active" : ""}>
               <Link to="/app/dashboard">Dashboard</Link>
             </li>
           </ul>

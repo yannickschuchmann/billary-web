@@ -2,9 +2,11 @@ import * as MUIColors from 'material-ui/lib/styles/colors';
 import ColorManipulator from 'material-ui/lib/utils/color-manipulator';
 import Spacing from 'material-ui/lib/styles/spacing';
 import zIndex from 'material-ui/lib/styles/zIndex';
+import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
+import deepAssign from 'updeep';
 import * as Colors from './colors';
 
-export default {
+export const CustomRawTheme = {
   spacing: Spacing,
   zIndex: zIndex,
   fontFamily: 'Roboto, sans-serif',
@@ -23,3 +25,11 @@ export default {
     pickerHeaderColor: Colors.tealA,
   }
 };
+
+const customMuiTheme = getMuiTheme(CustomRawTheme)
+
+export const CustomMUITheme = deepAssign({
+  flatButton: {
+    buttonFilterColor: Colors.beigeGrey400
+  }
+}, customMuiTheme);

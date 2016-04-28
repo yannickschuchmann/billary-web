@@ -2,11 +2,15 @@
   flex: 0 0 270px;
   display: flex;
   flex-flow: column;;
+  background: $beigeGrey300;
   .week {
     flex-flow: row;
     flex: 1;
     display: flex;
     flex-wrap: nowrap;
+  }
+  .week-header {
+    color: $beigeGrey500;
   }
   .day {
     flex: 1;
@@ -19,26 +23,48 @@
     justify-content: center;
     margin: 5px;
     &.is-today {
-      border-color: orange;
+      border-color: $orangeA;
     }
     &.contains-time-entries {
-      background: silver;
+      background: $beigeGrey400;
     }
     &.is-selected {
-      background: orange!important;
+      box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      background: $orangeA!important;
+      color: $white;
     }
     &.is-outside {
-      color: silver;
+      opacity: 0.2;
     }
   }
   .date-info-bar {
     display: flex;
+    flex: 0 0 40px;
+    background: $white;
+    border-top: 3px solid $orangeA;
+    border-bottom: 2px solid $beigeGrey400;
+    align-items: center;
+    padding: 0 10px;
+    button {
+      border-radius: 50%;
+      background: $beigeGrey400!important;
+    }
     > .date-info {
       flex: 1;
       display: flex;
       flex-flow: column;
       align-items: center;
+      .month-info {
+        font-size: 17px;
+        align-items: flex-end;
+      }
+      .year-info {
+        color: $beigeGrey500;
+        font-size: 13px;
+      }
       > div {
+        display: flex;
+        align-items: center;
         flex: 1;
       }
     }

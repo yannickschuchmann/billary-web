@@ -170,8 +170,10 @@ class Tracking extends Component {
                 timeEntriesByDay={calendarState.timeEntriesByDay}/>
               <div className="time-entries-container">
                 <div className="time-entry-listing-header">
-                  {moment(calendarState.selectedDay).format("dddd, Do MMMM YYYY")}
-                  <div className="days-workload">
+                  <div className="day-label">
+                    <span>{moment(calendarState.selectedDay).format("dddd, Do MMMM YYYY")}</span>
+                  </div>
+                  <div className="day-workload">
                     {minutesToCounterString(durationForSelectedDay)} H
                   </div>
                 </div>

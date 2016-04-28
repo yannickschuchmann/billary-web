@@ -39,7 +39,7 @@ class Calendar extends Component {
       return (<Week selectedDay={this.props.selectedDay} onSelectDay={this.props.onSelectDay} key={i} days={days}/>)
     });
     const weekHeader = (
-      <div className="week">{
+      <div className="week week-header">{
         weeksData[0].map((day, i) => {
           return (<div key={i} className="day">{day.moment.format('dd')}</div>)
         })
@@ -48,7 +48,11 @@ class Calendar extends Component {
     return (
       <div className="calendar">
         <div className="date-info-bar">
-          <IconButton onClick={this.previousMonth.bind(this)}>
+          <IconButton style={{
+              height: 24,
+              width: 24,
+              padding: 0
+            }} onClick={this.previousMonth.bind(this)}>
             <ArrowLeft/>
           </IconButton>
           <div className="date-info">
@@ -59,7 +63,11 @@ class Calendar extends Component {
               {date.format("YYYY")}
             </div>
           </div>
-          <IconButton onClick={this.nextMonth.bind(this)}>
+          <IconButton style={{
+              height: 24,
+              width: 24,
+              padding: 0
+            }} onClick={this.nextMonth.bind(this)}>
             <ArrowRight/>
           </IconButton>
         </div>

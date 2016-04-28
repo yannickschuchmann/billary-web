@@ -5,8 +5,7 @@ import { Link, IndexLink } from 'react-router';
 import { Snackbar } from 'material-ui/lib';
 import * as actions from '../actions';
 
-import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
-import CustomRawTheme from '../themes';
+import { CustomMUITheme } from '../themes';
 
 class Site extends Component {
   static propTypes = {
@@ -25,7 +24,7 @@ class Site extends Component {
 
   getChildContext() {
     return {
-      muiTheme: getMuiTheme(CustomRawTheme),
+      muiTheme: CustomMUITheme,
     };
   };
 

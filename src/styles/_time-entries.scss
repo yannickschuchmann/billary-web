@@ -75,7 +75,26 @@
 }
 .time-entry-listing-header {
   display: flex;
-  .days-workload {
-    margin-left: auto;
+  height: 45px;
+  font-size: 18px;
+  align-items: stretch;;
+  color: $white;
+  justify-content: space-between;
+  overflow: hidden;
+  .day-label, .day-workload {
+    display: flex;
+    padding: 0 20px;
+    align-items: center;
+  }
+  .day-label {
+    flex: 1;
+    background: $blueGrey500;
+    box-shadow: 0 0 7px #000000;
+    z-index: 1;
+  }
+  .day-workload {
+    flex: 0 0 100px;
+    background: $blueGrey600;
+    justify-content: flex-end;
   }
 }

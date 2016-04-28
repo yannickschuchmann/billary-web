@@ -1,7 +1,7 @@
 .visual-day-container {
   flex: 1;
   position: relative;
-  background: #474B4E;
+  background: $blueGrey400;
   display: flex;
   border-bottom: 1px solid #000;
 }
@@ -124,12 +124,12 @@ $colors: $visual-day-colors;
 }
 .visual-day-scrollbar {
   height: 13px;
-  background: #36393E;
+  background: $blueGrey600;
   position: relative;
 }
 .visual-day-thumb {
   height: 100%;
-  background: #232429;
+  background: $blueGrey700;
   position: absolute;
   top: 0;
   left: 0;

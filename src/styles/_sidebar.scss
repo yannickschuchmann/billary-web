@@ -8,10 +8,20 @@
   }
   .user-profile {
     flex: 0 0 200px;
-    background: #333;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    background: $blueGrey700;
     color: #fff;
     a {
+      padding: 10px;
       color: #fff;
+      border-radius: 5px;
+      border: 1px solid $white;
+    }
+    > * {
+      margin: 10px;
     }
   }
   .app-navigation {
@@ -21,13 +31,21 @@
     display: flex;
     flex-flow: column;
     > li {
+      background: $beigeGrey200;
       &, > a {
         flex: 1;
         display: flex;
+        color: $orangeA;
       }
       > a {
         justify-content: center;
         align-items: center;
+      }
+      &.active {
+        background: $orangeA;
+        &, > a {
+          color: $white;
+        }
       }
     }
   }

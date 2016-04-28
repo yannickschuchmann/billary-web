@@ -1,19 +1,27 @@
 .tracking-bar {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   flex: 0 0 70px;
   margin-top: auto;
-  background: #232429;
+  background: $blueGrey800;
   color: #fff;
   justify-content: flex-end;
+  overflow: hidden;
 }
 .selected-project {
+  display: flex;
+  align-items: center;
   margin-right: auto;
+  flex: 0 1 400px;
+  padding: 0 20px;
+  background: $blueGrey700;
+  box-shadow: 0 0 7px #000000;
 }
 .today-icon {
   display: flex;
   flex-flow: column;
   align-items: center;
+  justify-content: center;
   text-transform: uppercase;
   padding: 0 20px;
   > span:first-of-type {
@@ -22,4 +30,17 @@
   > span:last-of-type {
     font-size: 14px;
   }
+}
+.tracking-counter, .tracking-controls {
+  display: flex;
+  align-items: center;
+}
+.tracking-counter {
+  flex: 1;
+  justify-content: center;
+}
+.tracking-controls {
+  flex: 0 1 100px;
+  justify-content: center;
+  background: $orangeA;
 }
