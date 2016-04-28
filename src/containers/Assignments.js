@@ -22,7 +22,7 @@ class Assignments extends Component {
   };
 
   componentDidMount() {
-    this.props.actions.getProjects({top_level: true});
+    this.props.actions.getProjects();
     this.props.actions.getClients();
   };
 
@@ -35,7 +35,11 @@ class Assignments extends Component {
   };
 
   render() {
-    const { projects, clients, isFetching, isAssigning } = this.props.assignments;
+    const { clients, isFetching, isAssigning } = this.props.assignments;
+
+    if (isFetching) return (<span></span>);
+
+    const projects = this.props.tracking.tree;
 
     const clientOptions = [(
       <MenuItem
@@ -95,7 +99,8 @@ class Assignments extends Component {
 
 function mapStateToProps(state) {
   return {
-    assignments: state.assignments
+    assignments: state.assignments,
+    tracking: state.tracking.view
   };
 }
 

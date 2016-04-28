@@ -9,7 +9,6 @@ import * as calls from '../actions/index';
 import objectAssign from 'object-assign';
 
 const initialState = {
-  projects: [],
   clients: [],
   isFetching: true,
   isFetchingProjects: true,
@@ -36,7 +35,6 @@ let reducer = createReducer({
     isFetching: true
   })),
   [calls.getProjects.ok]: (state, payload) => (objectAssign({}, state, {
-    projects: payload.body.projects,
     isFetchingProjects: false,
     isFetching: state.isFetchingClients == false ? false : true
   })),
