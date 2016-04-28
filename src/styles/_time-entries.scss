@@ -6,13 +6,53 @@
 .time-entry-listing {
   flex: 1;
   overflow-y: auto;
+  .project-wrap:hover {
+    .index {
+      button {
+        opacity: 1;
+      }
+      .index-number {
+        opacity: 0;
+      }
+    }
+  }
   .project-wrap-item {
     display: flex;
+    .index {
+      position: relative;
+      > * {
+        transition: none!important;
+      }
+      .index-number {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        opacity: 1;
+      }
+      button {
+        opacity: 0;
+        padding: 10px!important;
+         > div {
+          background: $orangeA!important;
+          border-radius: 50%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          svg {
+            fill: $white!important;
+          }
+        }
+      }
+    }
     > button > div {
       display: flex;
-      .index {
-        padding: 0 10px;
-      }
       .duration {
         padding: 0 10px;
         margin-left: auto;

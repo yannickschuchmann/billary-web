@@ -44,16 +44,19 @@ class ProjectWrap extends Component {
     return (
       <div className="project-wrap">
         <div className="project-wrap-item">
-          <IconButton onClick={(e) => {
-              e.stopPropagation();
-              if (isRunning) {
-                this.props.onStop();
-              } else {
-                this.props.onSelectAndStart(item.id);
-              }
-            }}>
-            {isRunning ? <StopIcon/> : <PlayIcon/>}
-          </IconButton>
+          <div className="index">
+            <div className="index-number">{this.props.index}</div>
+            <IconButton onClick={(e) => {
+                e.stopPropagation();
+                if (isRunning) {
+                  this.props.onStop();
+                } else {
+                  this.props.onSelectAndStart(item.id);
+                }
+              }}>
+              {isRunning ? <StopIcon/> : <PlayIcon/>}
+            </IconButton>
+          </div>
           <div className="color-identifier"></div>
           <FlatButton
             onClick={this.props.onToggle}
@@ -62,7 +65,6 @@ class ProjectWrap extends Component {
               width: "100%",
               textAlign: "left"
             }}>
-            <div className="index">{this.props.index}</div>
             <div className="name">{names}</div>
             <div className="duration"><TimerIcon />{minutesToCounterString(this.props.duration)}</div>
 
