@@ -29,6 +29,14 @@ class TrackingBar extends Component {
   componentDidMount() {
   };
 
+  componentWillReceiveProps(nextProps) {
+    const { isFetching, projects } = nextProps.tracking;
+    const { isFetching: wasFetching } = this.props.tracking;
+    if (wasFetching && !isFetching && projects.length == 0) {
+      this.props.updateUI("isSelecting", true);
+    }
+  };
+
   submitNewProject(name, parent_id=null) {
     this.props.postProject({name, parent_id});
   };

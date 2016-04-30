@@ -35,9 +35,6 @@ class Tracking extends Component {
       });
   };
 
-  componentWillReceiveProps(newProps) {
-  };
-
   showTimeEntryModal(entry = null) {
     this.props.updateUI({
       showTimeEntryModal: true,
