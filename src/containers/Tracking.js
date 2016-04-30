@@ -151,17 +151,6 @@ class Tracking extends Component {
                 selectedDay={calendarState.selectedDay}
                 projectWrapsForDay={projectWrapsForDay}
                 />
-              <FloatingActionButton
-                mini={true}
-                style={{
-                  position: "absolute",
-                  right: 20,
-                  bottom: 20
-                }}
-                onMouseUp={() => this.showTimeEntryModal()}
-              >
-                <ContentAdd />
-              </FloatingActionButton>
             </div>
             <div className="time-container">
               <Calendar
@@ -180,6 +169,17 @@ class Tracking extends Component {
                 <TimeEntryListing>
                   {projectWraps}
                 </TimeEntryListing>
+                <FloatingActionButton
+                  mini={true}
+                  style={{
+                    position: "absolute",
+                    right: 20,
+                    bottom: 20
+                  }}
+                  onMouseUp={() => this.showTimeEntryModal()}
+                  >
+                  <ContentAdd />
+                </FloatingActionButton>
               </div>
             </div>
             <TrackingBar
