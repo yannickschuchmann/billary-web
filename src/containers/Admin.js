@@ -29,7 +29,7 @@ class Dashboard extends Component {
           <ul className="admin-navigation">
             <li><Link to="/app/dashboard">Dashboard</Link></li>
             <li><Link to="/app/clients">Clients</Link></li>
-            <li><Link to="/app/assignments">Assignments</Link></li>
+            <li><Link to="/app/projects">Projects</Link></li>
             <li><Link to="/app/invoices">Invoices</Link></li>
             <li><Link to="/app/company">Company</Link></li>
           </ul>

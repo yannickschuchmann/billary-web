@@ -1,14 +1,17 @@
 import React, {Component, PropTypes} from 'react';
 import ui from 'redux-ui';
-import {FlatButton} from 'material-ui/lib';
+import classNames from 'classnames';
+import { MenuItem, SelectField, FlatButton, IconButton, IconMenu } from 'material-ui/lib';
 import Arrow from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import IconButton from 'material-ui/lib/icon-button';
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
-import ButtonFormSwitch from '../ProjectForm/buttonFormSwitch';
 import Play from 'material-ui/lib/svg-icons/av/play-arrow';
 
+import {
+  moment,
+  secondsToCounterString,
+  minutesToCounterString
+} from '../../businessLogic/calendarHelper';
+import ButtonFormSwitch from '../ProjectForm/buttonFormSwitch';
 
 class ProjectItem extends Component {
   static propTypes = {
@@ -31,21 +34,80 @@ class ProjectItem extends Component {
   };
 
   render() {
-    const item = this.props.item;
+    const {
+      isAssigning,
+      item,
+      showAssignField,
+      showDurations,
+      clients
+    } = this.props;
 
     let children = Array.apply(undefined,this.props.children);
-    children.push(
-      <ButtonFormSwitch
-        key="ButtonFormSwitch"
-        showForm={this.props.ui.isCreating}
-        onNew={this.props.onNew}
-        onClick={() => this.props.updateUI("isCreating", true)}
-      />);
+    if (this.props.showNewButton) {
+      children.push(
+        <ButtonFormSwitch
+          key="ButtonFormSwitch"
+          showForm={this.props.ui.isCreating}
+          onNew={this.props.onNew}
+          onClick={() => this.props.updateUI("isCreating", true)}
+          />);
+    }
+
+    const startButton = this.props.showStartButton ? (
+      <IconButton
+        className="action-button col-start"
+        onClick={(e) => this.handleClick(this.props.onSelectAndStart, e)}>
+        <Play />
+      </IconButton>
+    ) : "";
+
+    let assignField = "";
+    if (showAssignField) {
+      const clientOptions = [(
+        <MenuItem
+          key={0}
+          value={null}
+          primaryText={"-"} />
+      )].concat(clients.map((item, i) => (
+        <MenuItem
+          key={i + 1}
+          value={item.id}
+          primaryText={item.name} />
+      )));
+
+      assignField = isAssigning == item.id ? "loading" : (
+        <SelectField
+          disabled={this.props.disableAssignField}
+          value={item.client_id}
+          className="col-client"
+          onChange={this.props.onAssign.bind(this, item.id)}
+          errorStyle={{
+            top: "100%",
+            bottom: "auto",
+            position: "absolute"
+          }}
+          >
+          {clientOptions}
+        </SelectField>
+      );
+    }
+
+    const durations = showDurations ? [
+      <div className="duration open col-open" key="duration-open">
+        {minutesToCounterString(item.open_duration)}
+      </div>,
+      <div className="duration total col-total" key="duration-total">
+        {minutesToCounterString(item.duration)}
+      </div>
+    ] : "";
+
     return (
-      <li className="project-listing-item">
+      <li
+        className={classNames("project-listing-item", this.props.className)}
+        style={this.props.style}>
         <div className="actions">
           <IconButton
-            className=""
+            className="col-unfold"
             style={{
               transform: `rotateZ(${item.unfolded ? "90deg" : "0deg"})`,
               transition: "transform .1s ease-out"
@@ -57,17 +119,15 @@ class ProjectItem extends Component {
             <Arrow />
           </IconButton>
           <FlatButton
-            className="item-button"
+            className="item-button col-name"
             label={item.name}
             onClick={(e) => this.handleClick(this.props.onSelect, e)}
           />
-          <IconButton
-            className="action-button"
-            onClick={(e) => this.handleClick(this.props.onSelectAndStart, e)}>
-            <Play />
-          </IconButton>
+          {durations}
+          {assignField}
+          {startButton}
           <IconMenu
-            className="action-button"
+            className="action-button col-actions"
             iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             targetOrigin={{horizontal: 'right', vertical: 'top'}}

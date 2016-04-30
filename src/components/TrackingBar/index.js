@@ -77,7 +77,8 @@ class TrackingBar extends Component {
       );
     } else {
       modalContent = (<ProjectListing
-        advanced={true}
+        showStartButton={true}
+        showNewButton={true}
         tree={this.props.tracking.tree}
         selected={this.props.tracking.selected}
         isFetching={this.props.tracking.isFetching}

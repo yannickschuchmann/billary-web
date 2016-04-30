@@ -1,4 +1,48 @@
 .project-listing {
+  &.project-listing-wide {
+    flex: 1;
+  }
+  .col-unfold {
+    flex: 0 0 48px;
+  }
+  .col-name {
+    flex: 1;
+  }
+  .col-open {
+    flex: 0 0 60px;
+    padding: 0 16px;
+    justify-content: flex-end;
+  }
+  .col-total {
+    flex: 0 0 60px;
+    padding: 0 16px;
+    justify-content: flex-end;
+  }
+  .col-client {
+    flex: 0 0 256px;
+  }
+  .col-actions {
+    flex: 0 0 48px;
+    justify-content: center;
+  }
+  .project-listing-header {
+    ul {
+      display: flex;
+      padding: 0;
+    }
+    li {
+      display: flex;
+      height: 48px;
+      align-items: center;
+      background: $beigeGrey200;
+    }
+    .col-name {
+      padding: 0 16px;
+    }
+    .col-client, .col-open, .col-total {
+      justify-content: flex-end;
+    }
+  }
   ul {
     padding: 0 0 0 20px;
   }
@@ -10,6 +54,10 @@
     padding: 0;
     margin: 0;
     list-style-type: none;
+    .duration {
+      display: flex;
+      align-items: center;
+    }
     .item-button {
       flex: 1;
       text-align: left;

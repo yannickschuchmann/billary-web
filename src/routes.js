@@ -16,12 +16,12 @@ import NotFoundPage from './pages/NotFoundPage';
 
 import App from './containers/App';
 import Admin from './containers/Admin';
-import Assignments from './containers/Assignments';
 import Clients from './containers/Clients';
+import Company from './containers/Company';
 import Dashboard from './containers/Dashboard';
 import Invoices from './containers/Invoices';
+import Projects from './containers/Projects';
 import Tracking from './containers/Tracking';
-import Company from './containers/Company';
 
 
 export function getRoutes(store) {
@@ -64,11 +64,11 @@ export function getRoutes(store) {
         <IndexRedirect to="tracking" />
         <Route path="tracking" component={Tracking} />
         <Route component={Admin}>
-          <Route path="assignments" component={Assignments} />
           <Route path="clients" component={Clients} />
+          <Route path="company" component={Company} />
           <Route path="dashboard" component={Dashboard} />
           <Route path="invoices" component={Invoices} />
-          <Route path="company" component={Company} />
+          <Route path="projects" component={Projects} />
         </Route>
       </Route>
       <Route path="*" component={NotFoundPage} />
