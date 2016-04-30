@@ -195,6 +195,7 @@ class TimeEntryForm extends Component {
               <TimePicker
                 format="24hr"
                 hintText="Time"
+                autoOk={true}
                 errorText={this.props.ui.errors.date}
                 value={startedAt}
                 onChange={this.handleChangeStartedAtTime.bind(this)}
@@ -213,6 +214,7 @@ class TimeEntryForm extends Component {
               <TimePicker
                 format="24hr"
                 hintText="Stopped at"
+                autoOk={true}
                 errorText={this.props.ui.errors.date}
                 disabled={isRunning}
                 value={stoppedAt}
