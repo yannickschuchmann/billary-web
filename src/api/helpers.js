@@ -30,12 +30,12 @@ export const saveFile = (path) => {
   return new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", path, true);
-    // xhr.withCredentials = true;
-    // xhr.setRequestHeader("access-token", authHeaders["access-token"]);
-    // xhr.setRequestHeader("expiry", authHeaders["expiry"]);
-    // xhr.setRequestHeader("token-type", authHeaders["token-type"]);
-    // xhr.setRequestHeader("uid", authHeaders["uid"]);
-    // xhr.setRequestHeader("client", authHeaders["client"]);
+    xhr.withCredentials = true;
+    xhr.setRequestHeader("access-token", authHeaders["access-token"]);
+    xhr.setRequestHeader("expiry", authHeaders["expiry"]);
+    xhr.setRequestHeader("token-type", authHeaders["token-type"]);
+    xhr.setRequestHeader("uid", authHeaders["uid"]);
+    xhr.setRequestHeader("client", authHeaders["client"]);
     xhr.setRequestHeader("Content-type","application/zip");
     xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:4000");
     xhr.onload = function() {
