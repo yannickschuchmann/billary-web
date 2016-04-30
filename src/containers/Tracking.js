@@ -226,6 +226,7 @@ class Tracking extends Component {
               isOpen={this.props.ui.showTimeEntryModal}
               onClose={this.closeTimeEntryModal.bind(this)}>
               <TimeEntryForm
+                selectedProject={this.props.tracking.selected}
                 projects={this.props.tracking.projects}
                 onSubmit={this.submitTimeEntry.bind(this)}
                 entry={this.props.ui.editTimeEntry} />

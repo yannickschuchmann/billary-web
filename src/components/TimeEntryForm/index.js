@@ -16,6 +16,7 @@ class TimeEntryForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     entry: PropTypes.object,
+    selectedProject: PropTypes.object,
     projects: PropTypes.array.isRequired,
     ui: PropTypes.object,
     updateUI: PropTypes.func
@@ -32,7 +33,9 @@ class TimeEntryForm extends Component {
         isNew: false
       });
     } else {
-      entry.isNew = true;
+      entry = objectAssign({}, this.props.ui.entry, {
+        isNew: true
+      });
     }
     this.props.updateUI({entry});
   };
@@ -48,6 +51,7 @@ class TimeEntryForm extends Component {
 
   handleChangeStartedAtDate(err, _date) {
     this.handleChangeStartedAt(this.changeOnlyDate(_date, this.props.ui.entry.started_at));
+    this.handleChangeStoppedAt(this.changeOnlyDate(_date, this.props.ui.entry.stopped_at));
   };
 
   handleChangeStoppedAtDate(err, _date) {
@@ -138,12 +142,11 @@ class TimeEntryForm extends Component {
   };
 
   render() {
-    const entry = this.props.ui.entry || {};
-    const startedAt = entry.started_at ? new Date(entry.started_at) : null;
-    const stoppedAt = entry.stopped_at ? new Date(entry.stopped_at) : null;
-    const diff = (entry.started_at &&
-                  entry.stopped_at &&
-                  this.props.ui.errors.date == "") ?
+    const { entry = {} } = this.props.ui;
+    const { selectedProject = {} } = this.props;
+    const startedAt = new Date(entry.started_at);
+    const stoppedAt = new Date(entry.stopped_at);
+    const diff = (this.props.ui.errors.date == "") ?
       moment(stoppedAt).diff(moment(startedAt), 'minutes') :
       0;
 
@@ -164,7 +167,7 @@ class TimeEntryForm extends Component {
           <SelectField
             fullWidth={true}
             errorText={this.props.ui.errors.project}
-            value={entry.project_id}
+            value={entry.project_id || selectedProject.id}
             onChange={this.onProjectChange.bind(this)}
             floatingLabelText="Choose Project"
             errorStyle={{
@@ -228,12 +231,16 @@ class TimeEntryForm extends Component {
     );
   };
 }
+
 export default ui({
   state: {
     errors: {
       date: "",
       project: ""
     },
-    entry: {}
+    entry: {
+      started_at: moment().seconds(0).format(),
+      stopped_at: moment().add(1, "hour").seconds(0).format()
+    }
   }
 })(TimeEntryForm);
